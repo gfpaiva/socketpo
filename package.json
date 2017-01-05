@@ -1,0 +1,17 @@
+{
+  "name": "socketpo",
+  "version": "1.0.0",
+  "description": "Websockets jakenpo game (for study)",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Guilherme Fernandes de Paiva",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "mongoose": "^4.7.6",
+    "socket.io": "^1.7.2"
+  }
+}

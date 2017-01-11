@@ -1,8 +1,15 @@
 module.exports = app => {
-	const Game = app.models.game;
+	const crypto = require('crypto'),
+		Game = app.models.game;
 	app.route('/game')
 		.get((req, res) => {
-			res.json({'msg': 'game'});
+			Game.find().select('name hash').exec((err, game) => {
+				if(err) {
+					res.json(err);
+				} else {
+					res.json(game);
+				}
+			});
 		})
 		.post((req, res) => {
 			let dateNow = (new Date()).valueOf().toString(),
@@ -10,6 +17,13 @@ module.exports = app => {
 				hash = crypto.createHash('sha1').update(dateNow + gameName).digest('hex'),
 				game = new Game({ name: gameName, hash: hash});
 
-			res.json(game);
+				game.save((err, game) => {
+					if(err) {
+						res.json(err);
+					} else {
+						res.json(game);
+					}
+				});
+
 		});
 };

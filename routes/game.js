@@ -1,6 +1,7 @@
 module.exports = app => {
 	const crypto = require('crypto'),
 		Game = app.models.game;
+
 	app.route('/game')
 		.get((req, res) => {
 			Game.find().select('name hash').exec((err, game) => {
@@ -25,5 +26,16 @@ module.exports = app => {
 					}
 				});
 
+		});
+
+	app.route('/game/:hash')
+		.get((req, res) => {
+			Game.findOne({ 'hash': req.params.hash }).select('name hash').exec((err, game) => {
+				if(err) {
+					res.json(err);
+				} else {
+					res.json(game);
+				}
+			})
 		});
 };

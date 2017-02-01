@@ -1,4 +1,5 @@
 const express = require('express'),
+	dotenv = require('dotenv').config(),
 	consign = require('consign'),
 	bodyParser = require('body-parser'),
 	compression = require('compression'),

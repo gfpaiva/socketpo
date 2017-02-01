@@ -1,13 +1,10 @@
 module.exports = () => {
-	const mongoose = require('mongoose'),
-	env_url = {
-		"development": "mongodb://localhost/socketpo"
-	};
-	
+	const mongoose = require('mongoose');
+
 	mongoose.Promise = global.Promise;
 
 	let single_connection,
-		url = env_url[process.env.NODE_ENV];
+		url = `mongodb://${process.env.DB_HOST}/${process.env.DB_BASE}`;
 
 
 	if(!single_connection) {

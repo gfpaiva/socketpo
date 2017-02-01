@@ -5,19 +5,20 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development node index"
+    "dev": "set NODE_ENV=development && node index"
   },
   "author": "Guilherme Fernandes de Paiva",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.4.7",
-    "body-parser": "^1.15.2",
+    "body-parser": "^1.16.0",
     "compression": "^1.6.2",
     "consign": "^0.1.2",
     "cors": "^2.8.1",
-    "express": "^4.14.0",
-    "helmet": "^3.3.0",
-    "mongoose": "^4.7.6",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1",
+    "helmet": "^3.4.0",
+    "mongoose": "^4.8.1",
     "socket.io": "^1.7.2"
   }
 }

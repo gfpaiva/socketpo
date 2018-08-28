@@ -13,10 +13,7 @@ const express = require('express'),
 app.set('port', 3000);
 app.set("json spaces", 4);
 app.use(helmet());
-app.use(cors({
-	origin: ["http://localhost:3000"],
-	methods: ["GET", "POST", "PUT", "DELETE"]
-}));
+app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
 

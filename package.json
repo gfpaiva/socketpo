@@ -5,7 +5,10 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "set NODE_ENV=development && node index"
+    "start": "nodemon --exec babel-node --presets=latest",
+    "dev": "set NODE_ENV=development && node index",
+    "build": "babel lib -d dist",
+    "serve": "node dist/index.js"
   },
   "author": "Guilherme Fernandes de Paiva",
   "license": "ISC",
@@ -21,6 +24,8 @@
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-latest": "^6.24.1",
     "nodemon": "^1.18.3"
   }
 }

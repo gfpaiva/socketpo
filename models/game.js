@@ -17,7 +17,7 @@ module.exports = (app) => {
 				rounds: [{
 
 				}]
-			}]
+			}],
 			createdAt: { type: Date, default: Date.now }
 		});
 

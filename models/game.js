@@ -1,25 +1,38 @@
 const mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
-module.exports = () => {
-	const player = new Schema({
-		name: { type: String, default: 'Guest' },
-		plays: [ { type: Number, default: 0 } ]
-	}),
-	game = new Schema({
-		name: { type: String, required: true },
-		hash: { type: String, unique: true },
-		status: { type: Number, default: 0 },
-		players: [player],
-		result: [{
-			message: { type: String },
-			won: [player],
-			rounds: [{
+const PlaySchema = new Schema({
+	play: { type: Number, default: 0 }
+});
 
-			}]
-		}],
-		createdAt: { type: Date, default: Date.now }
-	});
+const PlayerSchema = new Schema({
+	name: { type: String, default: 'Guest' },
+	avatar: { type: String }
+});
 
-	return mongoose.model('games', game);
-};
+const RoundSchema = new Schema({
+	first: {
+		player: PlayerSchema,
+		play: PlaySchema
+	},
+	second: {
+		player: PlayerSchema,
+		play: PlaySchema
+	}
+});
+
+const GameSchema = new Schema({
+	name: { type: String, required: true },
+	hash: { type: String, unique: true },
+	status: { type: Number, default: 0 },
+	createdBy: PlayerSchema,
+	players: [ PlayerSchema ],
+	results: [{
+		message: { type: String },
+		matchWinner: PlayerSchema,
+		rounds: [ RoundSchema ]
+	}],
+	createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = () => mongoose.model('Game', GameSchema);

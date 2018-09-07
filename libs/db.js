@@ -1,15 +1,12 @@
+const mongoose = require('mongoose');
+
 module.exports = () => {
-	const mongoose = require('mongoose');
+	const url = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_BASE}`;
+	let single_connection;
 
-	mongoose.Promise = global.Promise;
+	if(!single_connection) single_connection = mongoose.connect(url, { useNewUrlParser: true });
 
-	let single_connection,
-		url = `mongodb://${process.env.DB_HOST}/${process.env.DB_BASE}`;
-
-
-	if(!single_connection) {
-		single_connection = mongoose.connect(url);
-	}
+	mongoose.set('useCreateIndex', true);
 
 	return single_connection;
 };

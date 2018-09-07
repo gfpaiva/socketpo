@@ -10,7 +10,7 @@ const express = require('express'),
 	server = require('http').Server(app),
 	io = socket(server);
 
-app.set('port', 3000);
+app.set('port', process.env.PORT || 3000);
 app.set("json spaces", 4);
 app.use(helmet());
 app.use(cors());
@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 
 consign({verbose: false})
 	.include('libs/config.js')
+	.then('libs/db.js')
 	.then('models')
 	.then('routes')
 	.into(app);

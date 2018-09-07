@@ -1,10 +1,10 @@
 module.exports = app => {
-	const crypto = require('crypto'),
+		const crypto = require('crypto'),
 		Game = app.models.game;
 
 	app.route('/game')
 		.get((req, res) => {
-			Game.find().select('name hash').exec((err, game) => {
+			Game.find().select().exec((err, game) => {
 				if(err) {
 					res.json(err);
 				} else {

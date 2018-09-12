@@ -1,6 +1,8 @@
 const graphqlHTTP = require('express-graphql');
 const schema = require('../graphql/schema');
 
+const subscriptionsEndpoint = `ws://localhost:${process.env.PORT || 5000}/subscriptions`;
+
 module.exports = app => {
 	const context = app;
 
@@ -8,6 +10,7 @@ module.exports = app => {
 		graphqlHTTP((req) => ({
 			schema,
 			graphiql: process.env.NODE_ENV === 'development',
+			subscriptionsEndpoint,
 			context
 		}))
 	);

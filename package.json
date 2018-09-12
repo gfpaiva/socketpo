@@ -18,11 +18,12 @@
     "express": "^4.16.3",
     "express-graphql": "^0.6.12",
     "graphql": "^14.0.2",
+    "graphql-subscriptions": "^0.5.8",
     "graphql-tools": "^3.1.1",
     "helmet": "^3.13.0",
     "lodash": "^4.17.10",
     "mongoose": "^5.2.10",
-    "socket.io": "^2.1.1"
+    "subscriptions-transport-ws": "^0.9.14"
   },
   "devDependencies": {
     "nodemon": "^1.18.3"

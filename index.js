@@ -5,10 +5,14 @@ const express = require('express'),
 	compression = require('compression'),
 	cors = require('cors'),
 	helmet = require('helmet'),
+	{ createServer } = require('http'),
+	{ SubscriptionServer } = require('subscriptions-transport-ws'),
+	{ execute, subscribe } = require('graphql'),
+	schema = require('./graphql/schema');
 	app = express(),
-	server = require('http').Server(app);
+	server = createServer(app);
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 5000);
 app.set("json spaces", 4);
 app.use(helmet());
 app.use(cors({
@@ -27,6 +31,15 @@ consign({verbose: false})
 
 server.listen(app.get('port'), () => {
 	console.log(`SocketPO running on port ${app.get('port')}`);
+
+	new SubscriptionServer({
+			execute,
+			subscribe,
+			schema
+		}, {
+			server,
+			path: '/subscriptions',
+	});
 });
 
 module.exports = app;

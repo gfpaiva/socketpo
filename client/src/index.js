@@ -13,27 +13,27 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:5000/subscriptions`,
-  options: {
-    reconnect: true
-  }
+	uri: `ws://${process.env.WS_HOST || 'localhost:5000'}/subscriptions`,
+	options: {
+		reconnect: true
+	}
 });
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: 'http://localhost:5000/graphql'
+	uri: '/graphql'
 });
 
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
 const link = split(
-  // split based on operation type
-  ({ query }) => {
-    const { kind, operation } = getMainDefinition(query);
-    return kind === 'OperationDefinition' && operation === 'subscription';
-  },
-  wsLink,
-  httpLink,
+	// split based on operation type
+	({ query }) => {
+		const { kind, operation } = getMainDefinition(query);
+		return kind === 'OperationDefinition' && operation === 'subscription';
+	},
+	wsLink,
+	httpLink,
 );
 
 const client = new ApolloClient({

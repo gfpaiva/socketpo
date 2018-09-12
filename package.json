@@ -2,10 +2,11 @@
   "name": "socketpo",
   "version": "1.0.0",
   "description": "Websockets jakenpo game (for study)",
-  "main": "index.js",
+  "main": "server.js",
   "private": true,
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "author": "Guilherme Fernandes de Paiva",
   "license": "ISC",

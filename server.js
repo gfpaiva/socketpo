@@ -12,7 +12,7 @@ const express = require('express'),
 	app = express(),
 	server = createServer(app);
 
-app.set('port', process.env.PORT || 5000);
+app.set('port', process.env.PORT || 3001);
 app.set("json spaces", 4);
 app.use(helmet());
 app.use(cors({

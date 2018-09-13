@@ -7,6 +7,10 @@ import './App.css';
 
 class App extends Component {
 
+	state = {
+		match: ''
+	}
+
 	componentWillMount() {
 		this.props.getGames.subscribeToMore({
 			document: testSub,
@@ -33,9 +37,11 @@ class App extends Component {
 	createGame = e => {
 		e.preventDefault();
 
+		const { match } = this.state;
+
 		this.props.createGame({
 			variables: {
-				name: `Match random: ${Math.floor(Math.random() * 100)}`
+				name: `Match random: ${match}`
 			}
 		})
 		.then(res => {
@@ -44,15 +50,35 @@ class App extends Component {
 		})
 	}
 
+	changeHandler = e => {
+		const { target } = e;
+
+		this.setState({
+			[target.name]: target.value
+		});
+	};
+
 	render() {
 		const { Games } = this.props.getGames;
+		const { match } = this.state;
 
 		return (
 			<div className="App">
 				<p className="App-intro">
 					To get started, edit <code>src/App.js</code> and save to reload.
 				</p>
-				<button onClick={this.createGame}>Create a random named game</button>
+				<form onSubmit={this.createGame}>
+					<input
+						type="text"
+						placeholder="Match Name"
+						name="match"
+						id="match"
+						onChange={this.changeHandler}
+						defaultValue={match}
+						value={match}
+					/>
+					<button type="submit">Create a random game</button>
+				</form>
 				{Games && Games.length > 0 && (
 					<div>
 						<p>Here are the games folks:</p>

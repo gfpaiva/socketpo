@@ -1,37 +1,36 @@
 const mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
+const PlayerSchema = new Schema({
+	name: { type: String, default: 'Guest' },
+	avatar: { type: String, default: 'avatar.png' },
+	ready: { type: Boolean, default: false },
+	roundsWin: { type: Number, default: 0 },
+	creator: { type: Boolean, default: false },
+});
+
 const PlaySchema = new Schema({
+	player: PlayerSchema,
 	play: { type: Number, default: 0 }
 });
 
-const PlayerSchema = new Schema({
-	name: { type: String, default: 'Guest' },
-	avatar: { type: String }
-});
-
 const RoundSchema = new Schema({
-	first: {
-		player: PlayerSchema,
-		play: PlaySchema
-	},
-	second: {
-		player: PlayerSchema,
-		play: PlaySchema
-	}
+	plays: [ PlaySchema ],
+	isDraw: { type: Boolean, default: false },
+	finished: { type: Boolean, default: false },
+	winner: PlayerSchema
 });
 
 const GameSchema = new Schema({
 	name: { type: String, required: true },
 	hash: { type: String, unique: true },
 	status: { type: Number, default: 0 },
-	createdBy: PlayerSchema,
 	players: [ PlayerSchema ],
-	results: [{
+	results: {
 		message: { type: String },
 		matchWinner: PlayerSchema,
 		rounds: [ RoundSchema ]
-	}],
+	},
 	createdAt: { type: Date, default: Date.now }
 });
 

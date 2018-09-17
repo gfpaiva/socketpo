@@ -1,3 +1,3 @@
 module.exports = {
-	JUST_TEST: 'justTesting'
+	GAME: 'gameEvent'
 };

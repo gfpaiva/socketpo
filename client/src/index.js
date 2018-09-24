@@ -20,7 +20,7 @@ const wsLink = new WebSocketLink({
 });
 
 const httpLink = new HttpLink({
-	uri: '//localhost:3001/graphql'
+	uri: `//${process.env.WS_HOST || 'localhost:3001'}/graphql`
 });
 
 const link = split(

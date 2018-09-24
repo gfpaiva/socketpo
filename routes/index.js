@@ -1,7 +1,8 @@
 const graphqlHTTP = require('express-graphql');
 const schema = require('../graphql/schema');
+const path = require('path');
 
-const subscriptionsEndpoint = `ws://localhost:${process.env.PORT || 5000}/subscriptions`;
+const subscriptionsEndpoint = `ws://${process.env.HOST || 'localhost'}:${process.env.PORT || 3001}/subscriptions`;
 
 module.exports = app => {
 	const context = app;
@@ -15,13 +16,8 @@ module.exports = app => {
 		}))
 	);
 
-	app.use((req, res) => {
-		res.status(404);
-		res.json({'msg': '404 not found'});
-	});
-
-	app.use((error, req, res) => {
-		res.status(500);
-		res.json({'msg': `500 ${error}`});
+	app.get('*', (req, res) => {
+		res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
+		return;
 	});
 };

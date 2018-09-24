@@ -12,15 +12,17 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
+const APIURL = process.env.NODE_ENV === 'production' ? 'socketpo.herokuapp.com' : 'localhost:3001';
+
 const wsLink = new WebSocketLink({
-	uri: `ws://${process.env.WS_HOST || 'localhost:3001'}/subscriptions`,
+	uri: `ws://${APIURL}/subscriptions`,
 	options: {
 		reconnect: true
 	}
 });
 
 const httpLink = new HttpLink({
-	uri: `//${process.env.WS_HOST || 'localhost:3001'}/graphql`
+	uri: `//${APIURL}/graphql`
 });
 
 const link = split(

@@ -12,6 +12,7 @@ const express = require('express'),
 	app = express(),
 	server = createServer(app);
 
+app.use(express.static(path.resolve(__dirname, './client/build')));
 app.set('port', process.env.PORT || 3001);
 app.set("json spaces", 4);
 app.use(helmet());

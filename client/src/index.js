@@ -13,9 +13,10 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
 const APIURL = process.env.NODE_ENV === 'production' ? 'socketpo.herokuapp.com' : 'localhost:3001';
+const WS_PROTOCOL = process.env.NODE_ENV === 'production' ? 'wss' : 'ws';
 
 const wsLink = new WebSocketLink({
-	uri: `ws://${APIURL}/subscriptions`,
+	uri: `${WS_PROTOCOL}://${APIURL}/subscriptions`,
 	options: {
 		reconnect: true
 	}

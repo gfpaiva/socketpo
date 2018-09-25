@@ -24,6 +24,7 @@ module.exports = {
 				throw new Error(error);
 			}
 
+			pubsub.publish(GAME, { [GAME]: newGame });
 			return newGame;
 		},
 
@@ -42,7 +43,7 @@ module.exports = {
 				throw new Error('Match full or alredy start');
 			}
 
-			pubsub.publish(GAME, { [GAME]: { ...game, player, message: `Player: ${player.name} join the match!` } });
+			pubsub.publish(GAME, { [GAME]: { ...game, player, message: `Player: ${player.name} join the match!`, hash: '1' } });
 			return game;
 		},
 
@@ -60,7 +61,7 @@ module.exports = {
 				throw new Error(error);
 			}
 
-			pubsub.publish(GAME, { [GAME]: { ...game, player, message: `Player: ${gamePlayer.name} is ready!` } });
+			pubsub.publish(GAME, { [GAME]: { ...game, player, message: `Player: ${gamePlayer.name} is ready!`, hash: '1' } });
 			return game;
 		},
 
@@ -145,7 +146,7 @@ module.exports = {
 				throw new Error(error);
 			}
 
-			pubsub.publish(GAME, { [GAME]: { ...game, message: `IDK FOR NOW` } });
+			pubsub.publish(GAME, { [GAME]: { ...game, message: `IDK FOR NOW`, hash: '1' } });
 			return game;
 		}
 	}

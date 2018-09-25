@@ -13,13 +13,13 @@ class App extends Component {
 
 	componentWillMount() {
 		this.props.getGames.subscribeToMore({
-			document: testSub,
-			variables: { id: 1 },
+			document: gameSub,
+			variables: { hash: '1' },
 			updateQuery: (prev, { subscriptionData }) => {
 				if (!subscriptionData.data) return prev;
 				console.log('😅😅😅😅', prev, subscriptionData);
 
-				const newGame = subscriptionData.data.justTesting;
+				const newGame = subscriptionData.data.gameSubscription;
 				return {
 					Games: [
 						...prev.Games,
@@ -41,7 +41,7 @@ class App extends Component {
 
 		this.props.createGame({
 			variables: {
-				name: `Match random: ${match}`
+				name: `${match}`
 			}
 		})
 		.then(res => {
@@ -74,8 +74,8 @@ class App extends Component {
 						name="match"
 						id="match"
 						onChange={this.changeHandler}
-						defaultValue={match}
 						value={match}
+						required
 					/>
 					<button type="submit">Create a random game</button>
 				</form>
@@ -118,9 +118,9 @@ const createGame = gql`
 	}
 `;
 
-const testSub = gql`
-	subscription test($id: ID!) {
-		justTesting(id: $id) {
+const gameSub = gql`
+	subscription gameSub($hash: String!) {
+		gameSubscription(hash: $hash) {
 			id
 			name
 			hash
@@ -129,6 +129,6 @@ const testSub = gql`
 `;
 
 export default compose(
-		graphql(getGames, {name: 'getGames'}),
-		graphql(createGame, {name: 'createGame'})
+		graphql(getGames, { name: 'getGames' }),
+		graphql(createGame, { name: 'createGame' })
 	)(App);

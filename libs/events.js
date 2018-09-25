@@ -1,3 +1,3 @@
 module.exports = {
-	GAME: 'gameEvent'
+	GAME: 'gameSubscription'
 };

@@ -15,7 +15,7 @@ import { getMainDefinition } from 'apollo-utilities';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import './index.css';
+import './index.scss';
 
 const APIURL = process.env.NODE_ENV === 'production' ? 'socketpo.herokuapp.com' : 'localhost:3001';
 const WS_PROTOCOL = process.env.NODE_ENV === 'production' ? 'wss' : 'ws';
@@ -23,7 +23,10 @@ const WS_PROTOCOL = process.env.NODE_ENV === 'production' ? 'wss' : 'ws';
 const wsLink = new WebSocketLink({
 	uri: `${WS_PROTOCOL}://${APIURL}/subscriptions`,
 	options: {
-		reconnect: true
+		reconnect: true,
+		connectionParams: {
+			myName: 'Guilherme'
+		}
 	}
 });
 

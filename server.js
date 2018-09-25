@@ -37,7 +37,17 @@ server.listen(app.get('port'), () => {
 	new SubscriptionServer({
 			execute,
 			subscribe,
-			schema
+			schema,
+			/* onConnect: (connectionParams, webSocket, context) => {
+				console.log('CONNECT: connectionParams', connectionParams);
+				console.log('CONNECT: webSocket', webSocket);
+				console.log('CONNECT: context', context);
+			}, */
+			/* onDisconnect: (connectionParams, webSocket, context) => {
+				console.log('CONNECT: connectionParams', connectionParams);
+				console.log('CONNECT: webSocket', webSocket);
+				console.log('CONNECT: context', context);
+			}, */
 		}, {
 			server,
 			path: '/subscriptions',

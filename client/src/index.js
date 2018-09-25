@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+
 import App from './App';
+
 import registerServiceWorker from './registerServiceWorker';
 
 import { ApolloClient } from 'apollo-client';
@@ -11,6 +12,10 @@ import { split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import './index.css';
 
 const APIURL = process.env.NODE_ENV === 'production' ? 'socketpo.herokuapp.com' : 'localhost:3001';
 const WS_PROTOCOL = process.env.NODE_ENV === 'production' ? 'wss' : 'ws';
@@ -42,7 +47,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
 	<ApolloProvider client={client}>
-		<App />
+		<Router>
+			<App />
+		</Router>
 	</ApolloProvider>
 	, document.getElementById('root'));
 registerServiceWorker();

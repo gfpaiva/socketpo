@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { Route, Switch, withRouter } from 'react-router-dom';
+
 import './App.css';
 
 class App extends Component {
@@ -64,6 +66,16 @@ class App extends Component {
 
 		return (
 			<div className="App">
+
+				<Switch>
+					<Route exact path="/" component={Home}/>
+					<Route exact path="/create" component={Create}/>
+					<Route exact path="/game/:hash" component={Single}/>
+
+					{/* 404 page */}
+					<Route component={NotFound} />
+				</Switch>
+
 				<p className="App-intro">
 					To get started, edit <code>src/App.js</code> and save to reload.
 				</p>

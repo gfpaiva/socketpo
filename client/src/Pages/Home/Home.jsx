@@ -3,11 +3,9 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
-class App extends Component {
+import { Link } from 'react-router-dom';
 
-	state = {
-		match: ''
-	}
+class App extends Component {
 
 	componentWillMount() {
 		this.props.getGames.subscribeToMore({
@@ -32,52 +30,14 @@ class App extends Component {
 		console.log('💣💣💣💣', nextProps);
 	}
 
-	createGame = e => {
-		e.preventDefault();
-
-		const { match } = this.state;
-
-		this.props.createGame({
-			variables: {
-				name: `${match}`
-			}
-		})
-		.then(res => {
-			console.log('⌛⌛⌛⌛ MUTATION RES', res);
-			// this.props.getGames.refetch();
-		})
-	}
-
-	changeHandler = e => {
-		const { target } = e;
-
-		this.setState({
-			[target.name]: target.value
-		});
-	};
-
 	render() {
-		const { Games } = this.props.getGames;
-		const { match } = this.state;
+		const { Games, loading } = this.props.getGames;
+
+		if(loading) return <p>Loading, please wait</p>
 
 		return (
-			<div className="App">
-
-				<p className="App-intro">
-					To get started, edit <code>src/App.js</code> and save to reload.
-				</p>
-				<form onSubmit={this.createGame}>
-					<input
-						type="text"
-						placeholder="Match Name"
-						name="match"
-						id="match"
-						onChange={this.changeHandler}
-						value={match}
-						required
-					/>
-					<button type="submit">Create a random game</button>
-				</form>
+			<div className="page page--home">
+				<Link to="/create">Create a new one</Link>
 				{Games && Games.length > 0 && (
 					<div>
 						<p>Here are the games folks:</p>

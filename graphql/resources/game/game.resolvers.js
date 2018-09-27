@@ -12,13 +12,19 @@ module.exports = {
 	Mutation: {
 		createGame: (root, { name , player }, ctx) => {
 			const Game = ctx.models.game;
-			const newGame = new Game({ name });
-			const newGamePlayer = { ...player, creator: true };
-
-			newGame.hash = crypto.createHash('sha1').update(newGame.id).digest('hex');
-			newGame.players.push(newGamePlayer);
+			let newGame;
+			let newGamePlayer;
 
 			try {
+				newGame = new Game({ name });
+				newGamePlayer = {
+					...player,
+					creator: true
+				};
+
+				newGame.hash = crypto.createHash('sha1').update(newGame.id).digest('hex');
+				newGame.players.push(newGamePlayer);
+
 				newGame.save();
 			} catch (error) {
 				throw new Error(error);

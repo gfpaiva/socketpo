@@ -46,7 +46,7 @@ module.exports = {
 
 	gameQueries: `
 		Games: [ Game ]
-		GameByHash(hash: String): Game
+		GameByHash(hash: String!): Game
 		GameById(id: ID!): Game
 
 	`,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { Link } from 'react-router-dom';
@@ -67,16 +67,6 @@ const getGames = gql`
 	}
 `;
 
-const createGame = gql`
-	mutation createGame($name: String!) {
-		createGame(name: $name) {
-			id
-			hash
-			name
-		}
-	}
-`;
-
 const gameSub = gql`
 	subscription gameSub($hash: String!) {
 		gameSubscription(hash: $hash) {
@@ -87,7 +77,4 @@ const gameSub = gql`
 	}
 `;
 
-export default compose(
-		graphql(getGames, { name: 'getGames' }),
-		graphql(createGame, { name: 'createGame' })
-	)(App);
+export default graphql(getGames, { name: 'getGames' })(App);

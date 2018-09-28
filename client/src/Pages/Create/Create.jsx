@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { Link } from 'react-router-dom';
+import { setObject } from '../../Utils/storageAPI';
 
 class Create extends Component {
 
@@ -33,6 +34,8 @@ class Create extends Component {
 			const { createGame } = data;
 
 			console.log(createGame);
+
+			setObject(`match-${createGame.id}`, createGame.players[0]);
 
 			this.setState({
 				loading: false,
@@ -108,6 +111,10 @@ const createGame = gql`
 			id
 			hash
 			name
+			players {
+				id
+				name
+			}
 		}
 	}
 `;

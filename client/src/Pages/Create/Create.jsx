@@ -15,34 +15,33 @@ class Create extends Component {
 		loading: false
 	}
 
-	createGame = e => {
+	createGame = async e => {
 		e.preventDefault();
 
 		const { match, author } = this.state;
 
 		this.setState({ loading: true });
 
-		this.props.createGame({
+		const { data } = await this.props.createGame({
 			variables: {
 				name: `${match}`,
 				player: {
 					name: author
 				}
 			}
-		})
-		.then(({ data }) => {
-			const { createGame } = data;
+		});
 
-			console.log(createGame);
+		const { createGame } = data;
 
-			setObject(`match-${createGame.id}`, createGame.players[0]);
+		console.log(createGame);
 
-			this.setState({
-				loading: false,
-				createdGame: createGame
-			});
-			// this.props.getGames.refetch();
-		})
+		setObject(`match-${createGame.hash}`, createGame.players[0]);
+
+		this.setState({
+			loading: false,
+			createdGame: createGame
+		});
+		// this.props.getGames.refetch();
 	}
 
 	changeHandler = e => {

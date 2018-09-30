@@ -4,37 +4,105 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { status } from '../../Utils/enums';
+import { getObject, setObject } from '../../Utils/storageAPI';
 
 class Single extends Component {
 
-	componentWillMount() {
-		/* this.props.getGames.subscribeToMore({
-			document: gameSub,
-			variables: { hash: '1' },
-			updateQuery: (prev, { subscriptionData }) => {
-				if (!subscriptionData.data) return prev;
-				console.log('😅😅😅😅', prev, subscriptionData);
+	state = {
+		player: ''
+	}
 
-				const newGame = subscriptionData.data.gameSubscription;
-				return {
-					Games: [
-						...prev.Games,
-						newGame
-					]
-				}
-			}
-		}) */
+	currentPlayer = getObject(`match-${this.props.match.params.hash}`);
+
+	componentWillMount() {
+		console.log('⌛⌛⌛', this.currentPlayer);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		console.log('💣💣💣💣', nextProps);
 	}
 
+	changeHandler = e => {
+		const { target } = e;
+
+		this.setState({
+			[target.name]: target.value
+		});
+	};
+
+	joinMatch = async e => {
+		e.preventDefault();
+
+		const { player } = this.state;
+		const { hash } = this.props.match.params;
+
+		const { data } = await this.props.joinGame({
+			variables: {
+				hash,
+				player: {
+					name: player
+				}
+			}
+		});
+
+		const { joinGame } = data;
+		console.log(joinGame, `${player} Joined the game`);
+		setObject(`match-${hash}`, joinGame.players[1]);
+		this.props.getGame.refetch();
+	};
+
+	getReady = async e => {
+		e.preventDefault();
+
+		const { hash } = this.props.match.params;
+
+		const { data } = await this.props.ready({
+			variables: {
+				hash,
+				player: {
+					id: this.currentPlayer.id
+				}
+			}
+		});
+
+		const { ready } = data;
+		console.log(ready);
+		this.props.getGame.refetch();
+	}
+
 	render() {
 		const { GameByHash, loading } = this.props.getGame;
+		const { player } = this.state;
 		const game = GameByHash;
 
 		if(loading) return <p>Loading, please wait</p>
+
+		if(!loading && !GameByHash) return <p>Match not found</p>
+
+		if(GameByHash && GameByHash.players.length === 2 && !this.currentPlayer) return <p>Full match</p>
+
+		if(!this.currentPlayer) {
+			return (
+				<div>
+					<p>Want join this match? Enter your name:</p><br />
+					<form onSubmit={this.joinMatch}>
+						<input
+							type="text"
+							placeholder="Player Name"
+							name="player"
+							id="player"
+							onChange={this.changeHandler}
+							value={player}
+							required
+							autoComplete="off"
+						/>
+						<br />
+						<button type="submit">Create game</button>
+					</form>
+
+				</div>
+			)
+		}
 
 		return (
 			<div className="page page--single">
@@ -42,10 +110,10 @@ class Single extends Component {
 				<p>Status: {status(game.status)}</p>
 				<div>
 					{game.players.map(player => (
-						<div>
-							<p key={player.id}>
+						<div key={player.id}>
+							<p>
 								{player.name} | {player.ready ? 'Im ready' : 'Wait pls..'}
-								{!player.ready && <button>Ready</button>}
+								{!player.ready && player.id === this.currentPlayer.id && <button onClick={this.getReady}>Ready</button>}
 							</p>
 						</div>
 					))}
@@ -55,41 +123,61 @@ class Single extends Component {
 	}
 }
 
-const getGame = gql`
-	query getGame($hash: String!) {
-		GameByHash(hash: $hash) {
+const totalGameFields = `
+	name
+	hash
+	status
+	players {
+		id
+		name
+		avatar
+		ready
+		roundsWin
+	}
+	results {
+		message
+		matchWinner {
+			id
 			name
-			hash
-			status
-			players {
-				id
-				name
-				avatar
-				ready
-				roundsWin
-			}
-			results {
-				message
-				matchWinner {
+		}
+		rounds {
+			isDraw
+			finished
+			plays {
+				player {
 					id
 					name
 				}
-				rounds {
-					isDraw
-					finished
-					plays {
-						player {
-							id
-							name
-						}
-						play
-					}
-					winner {
-						id
-						name
-					}
-				}
+				play
 			}
+			winner {
+				id
+				name
+			}
+		}
+	}
+`
+
+const getGame = gql`
+	query getGame($hash: String!) {
+		GameByHash(hash: $hash) {
+			${totalGameFields}
+		}
+	}
+`;
+
+const joinGame = gql`
+	mutation joinGame($hash: String!, $player: PlayerInput!) {
+		joinGame(hash: $hash, player: $player) {
+			${totalGameFields}
+		}
+	}
+`;
+
+const ready = gql`
+	mutation ready($hash: String!, $player: PlayerInput!) {
+		ready(hash: $hash, player: $player) {
+			${totalGameFields}
 		}
 	}
 `;
@@ -109,4 +197,6 @@ export default compose(
 			name: 'getGame',
 			options: (props) => ({ variables: { hash: props.match.params.hash } })
 		}),
+		graphql(joinGame, {name: 'joinGame'}),
+		graphql(ready, {name: 'ready'})
 	)(Single);

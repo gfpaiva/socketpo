@@ -30,7 +30,7 @@ module.exports = {
 				throw new Error(error);
 			}
 
-			pubsub.publish(GAME, { [GAME]: newGame });
+			// pubsub.publish(GAME, { [GAME]: newGame });
 			return newGame;
 		},
 
@@ -49,7 +49,7 @@ module.exports = {
 				throw new Error('Match full or alredy start');
 			}
 
-			pubsub.publish(GAME, { [GAME]: { ...game, player, message: `Player: ${player.name} join the match!`, hash: '1' } });
+			pubsub.publish(GAME, { [GAME]: { game, hash, player: player.id, message: `Player: ${player.name} join the match!` } });
 			return game;
 		},
 
@@ -67,7 +67,7 @@ module.exports = {
 				throw new Error(error);
 			}
 
-			pubsub.publish(GAME, { [GAME]: { ...game, player, message: `Player: ${gamePlayer.name} is ready!`, hash: '1' } });
+			pubsub.publish(GAME, { [GAME]: { game, hash, player: player.id, message: `Player: ${gamePlayer.name} is ready!` } });
 			return game;
 		},
 
@@ -104,17 +104,28 @@ module.exports = {
 				if(playOneValue === playTwoValue) {
 					currentRound.isDraw = true;
 				} else {
+					/*
+						0: W.O.
+						1: Rock
+						2: Paper
+						3: Scissors
+					 */
 					switch (playOneValue) {
+						case 0:
+							winner = playerTwo.player;
+						break;
+
 						case 1:
-							if(playTwoValue === 3) {
+							if(playTwoValue === 3 || playTwoValue === 0) {
 								winner = playOne.player;
 							} else {
 								winner = playTwo.player;
+
 							}
 						break;
 
 						case 2:
-							if(playTwoValue === 1) {
+							if(playTwoValue === 1 || playTwoValue === 0) {
 								winner = playOne.player;
 							} else {
 								winner = playTwo.player;
@@ -122,7 +133,7 @@ module.exports = {
 						break;
 
 						case 3:
-							if(playTwoValue === 2) {
+							if(playTwoValue === 2 || playTwoValue === 0) {
 								winner = playOne.player;
 							} else {
 								winner = playTwo.player;
@@ -152,7 +163,7 @@ module.exports = {
 				throw new Error(error);
 			}
 
-			pubsub.publish(GAME, { [GAME]: { ...game, message: `IDK FOR NOW`, hash: '1' } });
+			pubsub.publish(GAME, { [GAME]: { game, hash, message: `IDK FOR NOW` } });
 			return game;
 		}
 	}

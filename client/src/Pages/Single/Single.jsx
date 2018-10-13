@@ -3,24 +3,55 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { status } from '../../Utils/enums';
+import { parseStatus, parsePlay } from '../../Utils/enums';
 import { getObject, setObject } from '../../Utils/storageAPI';
 
 class Single extends Component {
 
-	state = {
-		player: ''
-	}
+	localMatch = getObject(`match-${this.props.match.params.hash}`);
 
-	currentPlayer = getObject(`match-${this.props.match.params.hash}`);
+	currentPlayer = this.localMatch.player;
+
+	state = {
+		player: '',
+		currentRound: this.localMatch.currentRound || 0,
+		roundPlay: this.localMatch.roundPlay || []
+	}
 
 	componentWillMount() {
-		console.log('⌛⌛⌛', this.currentPlayer);
+
+		const { hash } = this.props.match.params;
+
+		this.props.getGame.subscribeToMore({
+			document: gameSub,
+			variables: { hash },
+			updateQuery: (prev, { subscriptionData }) => {
+				if (!subscriptionData.data) return prev;
+
+				// console.log('😅😅😅😅', prev, subscriptionData);
+				const { currentRound } = this.state;
+				const { game } = subscriptionData.data.gameSubscription;
+				const { results } = game;
+
+				if(!results.matchWinner && results.rounds[currentRound] && results.rounds[currentRound].finished === true ) {
+					this.setState(prevState => ({
+						currentRound: prevState.currentRound + 1
+					}), () => {
+						setObject(`match-${hash}`, {
+							...getObject(`match-${hash}`),
+							currentRound: this.state.currentRound
+						});
+					});
+				}
+
+				return { GameByHash: game }
+			}
+		})
 	}
 
-	componentWillReceiveProps(nextProps) {
-		console.log('💣💣💣💣', nextProps);
-	}
+	/* componentWillReceiveProps(props) {
+		console.log('💣💣💣💣', props);
+	} */
 
 	changeHandler = e => {
 		const { target } = e;
@@ -35,7 +66,6 @@ class Single extends Component {
 
 		const { player } = this.state;
 		const { hash } = this.props.match.params;
-
 		const { data } = await this.props.joinGame({
 			variables: {
 				hash,
@@ -44,11 +74,11 @@ class Single extends Component {
 				}
 			}
 		});
-
 		const { joinGame } = data;
-		console.log(joinGame, `${player} Joined the game`);
-		setObject(`match-${hash}`, joinGame.players[1]);
-		this.props.getGame.refetch();
+
+		setObject(`match-${hash}`, { player: joinGame.players[1] });
+		this.currentPlayer = getObject(`match-${hash}`);
+		// this.props.getGame.refetch();
 	};
 
 	getReady = async e => {
@@ -56,7 +86,7 @@ class Single extends Component {
 
 		const { hash } = this.props.match.params;
 
-		const { data } = await this.props.ready({
+		await this.props.ready({
 			variables: {
 				hash,
 				player: {
@@ -65,15 +95,44 @@ class Single extends Component {
 			}
 		});
 
-		const { ready } = data;
-		console.log(ready);
-		this.props.getGame.refetch();
+		// this.props.getGame.refetch();
+	}
+
+	makePlay = async (e, playValue) => {
+		e.preventDefault();
+
+		const { hash } = this.props.match.params;
+
+		this.setState(prevState => {
+			const roundPlay = prevState.roundPlay.concat(true);
+
+			return { roundPlay }
+		}, () => {
+			setObject(`match-${hash}`, {
+				...getObject(`match-${hash}`),
+				roundPlay: this.state.roundPlay
+			});
+		});
+
+		await this.props.play({
+			variables: {
+				hash,
+				player: {
+					id: this.currentPlayer.id
+				},
+				play: playValue
+			}
+		});
 	}
 
 	render() {
 		const { GameByHash, loading } = this.props.getGame;
-		const { player } = this.state;
+		const { player, currentRound, roundPlay } = this.state;
 		const game = GameByHash;
+		const rounds = game && game.results.rounds;
+		const currentRounds = rounds && rounds[rounds.length - 1];
+
+		console.log(currentRounds);
 
 		if(loading) return <p>Loading, please wait</p>
 
@@ -97,7 +156,7 @@ class Single extends Component {
 							autoComplete="off"
 						/>
 						<br />
-						<button type="submit">Create game</button>
+						<button type="submit">Join game</button>
 					</form>
 
 				</div>
@@ -107,17 +166,51 @@ class Single extends Component {
 		return (
 			<div className="page page--single">
 				<p>Game: {game.name}</p>
-				<p>Status: {status(game.status)}</p>
-				<div>
-					{game.players.map(player => (
-						<div key={player.id}>
-							<p>
-								{player.name} | {player.ready ? 'Im ready' : 'Wait pls..'}
-								{!player.ready && player.id === this.currentPlayer.id && <button onClick={this.getReady}>Ready</button>}
-							</p>
-						</div>
-					))}
-				</div>
+				<p>Status: {parseStatus(game.status)}</p>
+				{game.status === 0 && (
+					<div>
+						{game.players.map(player => (
+							<div key={player.id}>
+								<p>
+									{player.name} | {player.ready ? 'Im ready' : 'Wait pls..'}
+									{
+										game.players.length === 2 &&
+										!player.ready &&
+										player.id === this.currentPlayer.id &&
+										<button onClick={this.getReady}>Ready</button>
+									}
+								</p>
+							</div>
+						))}
+					</div>
+				)}
+
+				{game.status === 1 && !roundPlay[currentRound] && (
+					<div>
+						<button onClick={e => this.makePlay(e, 1)}>Rock</button>
+						<button onClick={e => this.makePlay(e, 2)}>Paper</button>
+						<button onClick={e => this.makePlay(e, 3)}>Scissors</button>
+					</div>
+				)}
+
+				{rounds.length > 0 && rounds.map((round, roundIdx) => {
+					if(round.finished) {
+						return (
+							<div key={`round-${roundIdx}`}>
+								<h3>Round {roundIdx+1}</h3>
+								<p>Result: {round.isDraw ? 'Draw' : `${round.winner.name} win this round`}</p>
+
+								{round.plays.map((play, playIdx) => (
+									<div key={`roud-${roundIdx}-play-${playIdx}`}>
+										<p>Player {play.player.name} choose {parsePlay(play.play)}</p>
+									</div>
+								))}
+							</div>
+						);
+					}
+
+					return null;
+				})}
 			</div>
 		);
 	}
@@ -169,7 +262,12 @@ const getGame = gql`
 const joinGame = gql`
 	mutation joinGame($hash: String!, $player: PlayerInput!) {
 		joinGame(hash: $hash, player: $player) {
-			${totalGameFields}
+			hash
+			players {
+				id
+				name
+				avatar
+			}
 		}
 	}
 `;
@@ -177,7 +275,16 @@ const joinGame = gql`
 const ready = gql`
 	mutation ready($hash: String!, $player: PlayerInput!) {
 		ready(hash: $hash, player: $player) {
-			${totalGameFields}
+			hash
+		}
+	}
+`;
+
+const play = gql`
+	mutation play($hash: String!, $player: PlayerInput!, $play: Int! ) {
+		play(hash: $hash, player: $player, play: $play ) {
+			hash
+			status
 		}
 	}
 `;
@@ -185,9 +292,12 @@ const ready = gql`
 const gameSub = gql`
 	subscription gameSub($hash: String!) {
 		gameSubscription(hash: $hash) {
-			id
-			name
+			game {
+				${totalGameFields}
+			}
+			message
 			hash
+			player
 		}
 	}
 `;
@@ -198,5 +308,6 @@ export default compose(
 			options: (props) => ({ variables: { hash: props.match.params.hash } })
 		}),
 		graphql(joinGame, {name: 'joinGame'}),
-		graphql(ready, {name: 'ready'})
+		graphql(ready, {name: 'ready'}),
+		graphql(play, {name: 'play'}),
 	)(Single);

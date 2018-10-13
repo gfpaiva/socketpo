@@ -33,9 +33,7 @@ class Create extends Component {
 
 		const { createGame } = data;
 
-		console.log(createGame);
-
-		setObject(`match-${createGame.hash}`, createGame.players[0]);
+		setObject(`match-${createGame.hash}`, { player: createGame.players[0] });
 
 		this.setState({
 			loading: false,

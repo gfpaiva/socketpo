@@ -6,6 +6,7 @@ const Mutation = require('./mutation');
 const Subscription = require('./subscription');
 
 const { gameTypes } = require('./resources/game/game.schema');
+const { subsTypes } = require('./resources/subscription/subscription.schema');
 
 const gameResolvers = require('./resources/game/game.resolvers');
 const subscriptionResolvers = require('./resources/subscription/subscription.resolvers');
@@ -29,7 +30,8 @@ module.exports = makeExecutableSchema({
 		Query,
 		Mutation,
 		Subscription,
-		gameTypes
+		gameTypes,
+		subsTypes
 	],
 	resolvers
 })

@@ -7,29 +7,6 @@ import { Link } from 'react-router-dom';
 
 class App extends Component {
 
-	componentWillMount() {
-		this.props.getGames.subscribeToMore({
-			document: gameSub,
-			variables: { hash: '1' },
-			updateQuery: (prev, { subscriptionData }) => {
-				if (!subscriptionData.data) return prev;
-				console.log('😅😅😅😅', prev, subscriptionData);
-
-				const newGame = subscriptionData.data.gameSubscription;
-				return {
-					Games: [
-						...prev.Games,
-						newGame
-					]
-				}
-			}
-		})
-	}
-
-	componentWillReceiveProps(nextProps) {
-		console.log('💣💣💣💣', nextProps);
-	}
-
 	render() {
 		const { Games, loading } = this.props.getGames;
 
@@ -60,16 +37,6 @@ class App extends Component {
 const getGames = gql`
 	query getGames {
 		Games {
-			id
-			name
-			hash
-		}
-	}
-`;
-
-const gameSub = gql`
-	subscription gameSub($hash: String!) {
-		gameSubscription(hash: $hash) {
 			id
 			name
 			hash

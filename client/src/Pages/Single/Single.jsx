@@ -10,12 +10,12 @@ class Single extends Component {
 
 	localMatch = getObject(`match-${this.props.match.params.hash}`);
 
-	currentPlayer = this.localMatch.player;
+	currentPlayer = this.localMatch ? this.localMatch.player : null;
 
 	state = {
 		player: '',
-		currentRound: this.localMatch.currentRound || 0,
-		roundPlay: this.localMatch.roundPlay || []
+		currentRound: this.localMatch ? this.localMatch.currentRound : 0,
+		roundPlay: this.localMatch ? this.localMatch.roundPlay : []
 	}
 
 	componentWillMount() {
@@ -78,7 +78,7 @@ class Single extends Component {
 
 		setObject(`match-${hash}`, { player: joinGame.players[1] });
 		this.currentPlayer = getObject(`match-${hash}`);
-		// this.props.getGame.refetch();
+		window.location.reload();
 	};
 
 	getReady = async e => {
@@ -130,9 +130,6 @@ class Single extends Component {
 		const { player, currentRound, roundPlay } = this.state;
 		const game = GameByHash;
 		const rounds = game && game.results.rounds;
-		const currentRounds = rounds && rounds[rounds.length - 1];
-
-		console.log(currentRounds);
 
 		if(loading) return <p>Loading, please wait</p>
 

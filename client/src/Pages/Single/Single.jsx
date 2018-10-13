@@ -14,8 +14,8 @@ class Single extends Component {
 
 	state = {
 		player: '',
-		currentRound: this.localMatch ? this.localMatch.currentRound : 0,
-		roundPlay: this.localMatch ? this.localMatch.roundPlay : []
+		currentRound: this.localMatch && this.localMatch.currentRound ? this.localMatch.currentRound : 0,
+		roundPlay: this.localMatch && this.localMatch.roundPlay ? this.localMatch.roundPlay : []
 	}
 
 	componentWillMount() {

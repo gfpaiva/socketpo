@@ -2,9 +2,17 @@ import React, { Component } from 'react';
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Link } from 'react-router-dom';
 
 import { parseStatus, parsePlay } from '../../Utils/enums';
 import { getObject, setObject } from '../../Utils/storageAPI';
+import { sanitize } from '../../Utils/helpers';
+
+import Loading from '../../Components/Loading/Loading';
+import Player from '../../Components/Player/Player';
+import Join from '../Join/Join';
+
+import './Single.scss';
 
 class Single extends Component {
 
@@ -13,7 +21,6 @@ class Single extends Component {
 	currentPlayer = this.localMatch ? this.localMatch.player : null;
 
 	state = {
-		player: '',
 		currentRound: this.localMatch && this.localMatch.currentRound ? this.localMatch.currentRound : 0,
 		roundPlay: this.localMatch && this.localMatch.roundPlay ? this.localMatch.roundPlay : []
 	}
@@ -53,51 +60,6 @@ class Single extends Component {
 		console.log('💣💣💣💣', props);
 	} */
 
-	changeHandler = e => {
-		const { target } = e;
-
-		this.setState({
-			[target.name]: target.value
-		});
-	};
-
-	joinMatch = async e => {
-		e.preventDefault();
-
-		const { player } = this.state;
-		const { hash } = this.props.match.params;
-		const { data } = await this.props.joinGame({
-			variables: {
-				hash,
-				player: {
-					name: player
-				}
-			}
-		});
-		const { joinGame } = data;
-
-		setObject(`match-${hash}`, { player: joinGame.players[1] });
-		this.currentPlayer = getObject(`match-${hash}`);
-		window.location.reload();
-	};
-
-	getReady = async e => {
-		e.preventDefault();
-
-		const { hash } = this.props.match.params;
-
-		await this.props.ready({
-			variables: {
-				hash,
-				player: {
-					id: this.currentPlayer.id
-				}
-			}
-		});
-
-		// this.props.getGame.refetch();
-	}
-
 	makePlay = async (e, playValue) => {
 		e.preventDefault();
 
@@ -127,7 +89,7 @@ class Single extends Component {
 
 	render() {
 		const { GameByHash, loading } = this.props.getGame;
-		const { player, currentRound, roundPlay } = this.state;
+		const { currentRound, roundPlay } = this.state;
 		const game = GameByHash;
 		const rounds = game && game.results.rounds;
 
@@ -137,77 +99,73 @@ class Single extends Component {
 
 		if(GameByHash && GameByHash.players.length === 2 && !this.currentPlayer) return <p>Full match</p>
 
-		if(!this.currentPlayer) {
-			return (
-				<div>
-					<p>Want join this match? Enter your name:</p><br />
-					<form onSubmit={this.joinMatch}>
-						<input
-							type="text"
-							placeholder="Player Name"
-							name="player"
-							id="player"
-							onChange={this.changeHandler}
-							value={player}
-							required
-							autoComplete="off"
-						/>
-						<br />
-						<button type="submit">Join game</button>
-					</form>
-
-				</div>
-			)
-		}
+		if(!this.currentPlayer) return <Join game={game} />
 
 		return (
-			<div className="page page--single">
-				<p>Game: {game.name}</p>
-				<p>Status: {parseStatus(game.status)}</p>
-				{game.status === 0 && (
-					<div>
-						{game.players.map(player => (
-							<div key={player.id}>
-								<p>
-									{player.name} | {player.ready ? 'Im ready' : 'Wait pls..'}
-									{
-										game.players.length === 2 &&
-										!player.ready &&
-										player.id === this.currentPlayer.id &&
-										<button onClick={this.getReady}>Ready</button>
-									}
-								</p>
-							</div>
-						))}
+			<div className="page page--full page--bg-gradient page--single">
+				<div className='container'>
+					<div className="single__head">
+						<h1 className="single__socketpo"><Link to='/'>SocketPo</Link></h1>
 					</div>
-				)}
 
-				{game.status === 1 && !roundPlay[currentRound] && (
-					<div>
-						<button onClick={e => this.makePlay(e, 1)}>Rock</button>
-						<button onClick={e => this.makePlay(e, 2)}>Paper</button>
-						<button onClick={e => this.makePlay(e, 3)}>Scissors</button>
+					<div className="single__title">
+						<p><strong>Game: </strong>{game.name}</p>
+						<p>
+							<strong>Status: </strong>{parseStatus(game.status)}
+							<span className={`single__status single__status--${sanitize(parseStatus(game.status))}`}></span>
+						</p>
 					</div>
-				)}
 
-				{rounds.length > 0 && rounds.map((round, roundIdx) => {
-					if(round.finished) {
-						return (
-							<div key={`round-${roundIdx}`}>
-								<h3>Round {roundIdx+1}</h3>
-								<p>Result: {round.isDraw ? 'Draw' : `${round.winner.name} win this round`}</p>
-
-								{round.plays.map((play, playIdx) => (
-									<div key={`roud-${roundIdx}-play-${playIdx}`}>
-										<p>Player {play.player.name} choose {parsePlay(play.play)}</p>
-									</div>
+					<div className="single__content">
+						{game.status === 0 && (
+							<div className='single__get-ready'>
+								{game.players.map(player => (
+									<Player
+										game={game}
+										player={player}
+										currentPlayer={this.currentPlayer}
+									/>
 								))}
-							</div>
-						);
-					}
 
-					return null;
-				})}
+								{game.players.length === 1 && (
+									<div className='single__player'>
+										<div>
+											<Loading />
+											<p>Wating for other player</p>
+										</div>
+									</div>
+								)}
+							</div>
+						)}
+
+						{game.status === 1 && !roundPlay[currentRound] && (
+							<div>
+								<button onClick={e => this.makePlay(e, 1)}>Rock</button>
+								<button onClick={e => this.makePlay(e, 2)}>Paper</button>
+								<button onClick={e => this.makePlay(e, 3)}>Scissors</button>
+							</div>
+						)}
+
+						{rounds.length > 0 && rounds.map((round, roundIdx) => {
+							if(round.finished) {
+								return (
+									<div key={`round-${roundIdx}`}>
+										<h3>Round {roundIdx+1}</h3>
+										<p>Result: {round.isDraw ? 'Draw' : `${round.winner.name} win this round`}</p>
+
+										{round.plays.map((play, playIdx) => (
+											<div key={`roud-${roundIdx}-play-${playIdx}`}>
+												<p>Player {play.player.name} choose {parsePlay(play.play)}</p>
+											</div>
+										))}
+									</div>
+								);
+							}
+
+							return null;
+						})}
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -256,27 +214,6 @@ const getGame = gql`
 	}
 `;
 
-const joinGame = gql`
-	mutation joinGame($hash: String!, $player: PlayerInput!) {
-		joinGame(hash: $hash, player: $player) {
-			hash
-			players {
-				id
-				name
-				avatar
-			}
-		}
-	}
-`;
-
-const ready = gql`
-	mutation ready($hash: String!, $player: PlayerInput!) {
-		ready(hash: $hash, player: $player) {
-			hash
-		}
-	}
-`;
-
 const play = gql`
 	mutation play($hash: String!, $player: PlayerInput!, $play: Int! ) {
 		play(hash: $hash, player: $player, play: $play ) {
@@ -304,7 +241,5 @@ export default compose(
 			name: 'getGame',
 			options: (props) => ({ variables: { hash: props.match.params.hash } })
 		}),
-		graphql(joinGame, {name: 'joinGame'}),
-		graphql(ready, {name: 'ready'}),
 		graphql(play, {name: 'play'}),
-	)(Single);
+)(Single);

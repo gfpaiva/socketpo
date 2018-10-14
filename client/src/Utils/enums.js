@@ -4,7 +4,7 @@ import Avatar from 'avataaars';
 const statusValues = {
 	0: 'Stand By',
 	1: 'In progress',
-	2: 'Fished'
+	2: 'Finished'
 };
 
 const playValues = {

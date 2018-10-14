@@ -7,10 +7,10 @@ import CreatedGame from '../CreatedGame/CreatedGame';
 import Button from '../../Components/Button/Button';
 import Input from '../../Components/Input/Input';
 import Loading from '../../Components/Loading/Loading';
+import SelectAvatar from '../../Components/SelectAvatar/SelectAvatar';
 import Add from '../../Components/Icons/Add';
 
 import { setObject } from '../../Utils/storageAPI';
-import { parseAvatar } from '../../Utils/enums';
 
 import './Create.scss';
 
@@ -111,19 +111,10 @@ class Create extends Component {
 								autoComplete="off"
 							/>
 
-							<div>
-								<p>Select an avatar: </p>
-
-								{[1, 2, 3, 4].map(avatarValue => (
-									<button
-										key={avatarValue}
-										className={`select-avatar${selectedAvatar === avatarValue ? ' select-avatar--active' : ''}`}
-										onClick={e => this.selectAvatar(e, avatarValue)}
-									>
-										{parseAvatar(avatarValue)}
-									</button>
-								))}
-							</div>
+							<SelectAvatar
+								selectedAvatar={selectedAvatar}
+								selectAvatar={this.selectAvatar}
+							/>
 
 							<Button
 								type="submit"

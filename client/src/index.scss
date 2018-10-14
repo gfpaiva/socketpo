@@ -8,7 +8,6 @@ body {
 	background-color: $secondary-color;
 	color: $text-color;
 	font: normal normal 1em/1.5 $fontFamily;
-	text-align: center;
 }
 
 *,
@@ -35,13 +34,11 @@ a {
 
 .container {
 	// max-width: $container;
-	width: 80%;
+	width: 90%;
 	margin: 0 auto;
-	padding: 60px 0;
+	padding: 30px 0;
 
-	@media screen and (max-width: 767px) {
-		padding: 30px 0;
-	}
+	@media screen and (max-width: 767px) { padding: 15px 0; }
 }
 
 .page {
@@ -54,6 +51,7 @@ a {
 		align-items: center;
 		display: flex;
 		justify-content: center;
+		text-align: center;
 	}
 
 	&--bg-gradient {

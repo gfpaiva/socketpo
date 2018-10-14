@@ -1,0 +1,25 @@
+@import '../../Scss/root';
+
+.single {
+	&__player {
+		align-items: center;
+		display: flex;
+		flex-basis: 50%;
+		justify-content: center;
+		width: 50%;
+		text-align: center;
+
+		&-avatar {
+			svg {
+				height: 150px;
+				width: 150px;
+			}
+		}
+
+		&-name {
+			@include responsive-font-size(30px);
+			font-weight: bold;
+			margin: 0;
+		}
+	}
+}

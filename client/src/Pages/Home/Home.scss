@@ -1,0 +1,46 @@
+@import '../../Scss/root';
+
+@keyframes growUp {
+	0% {
+		transform: scale(1);
+	}
+
+	25% {
+		transform: scale(.95);
+	}
+
+	50% {
+		transform: scale(1.3);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+.page {
+	&--home {
+		&__title-section {
+			margin-bottom: 3rem;
+			position: relative;
+
+			* { margin: 0; }
+		}
+
+		&__title-animation {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 1rem;
+		}
+
+		.icon {
+			&-animation { animation: growUp .5s ease infinite forwards; }
+		}
+
+		&__welcome { @include responsive-font-size(30px); }
+		&__title {
+			@include responsive-font-size(112px);
+			font-weight: 300;
+		}
+	}
+}

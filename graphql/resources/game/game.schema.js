@@ -13,7 +13,7 @@ module.exports = {
 		type Player {
 			id: ID
 			name: String
-			avatar: String
+			avatar: Int
 			ready: Boolean
 			roundsWin: Int
 			creator: Boolean
@@ -40,7 +40,7 @@ module.exports = {
 		input PlayerInput {
 			id: ID
 			name: String
-			avatar: String
+			avatar: Int
 		}
 	`,
 

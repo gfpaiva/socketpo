@@ -12,8 +12,6 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<h1>SocketPo</h1>
-
 				<Switch>
 					<Route exact path="/" component={Home}/>
 					<Route exact path="/create" component={Create}/>

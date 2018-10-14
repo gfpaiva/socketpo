@@ -1,47 +1,44 @@
 import React, { Component } from 'react';
-
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-
 import { Link } from 'react-router-dom';
 
-class App extends Component {
+import Add from '../../Components/Icons/Add';
+import Rock from '../../Components/Icons/Rock';
+import Paper from '../../Components/Icons/Paper';
+import Scissors from '../../Components/Icons/Scissors';
+
+import Button from '../../Components/Button/Button';
+
+import './Home.scss';
+import mainSound from '../../Assets/main.mp3';
+
+class Home extends Component {
 
 	render() {
-		const { Games, loading } = this.props.getGames;
-
-		if(loading) return <p>Loading, please wait</p>
-
 		return (
-			<div className="page page--home">
-				<Link to="/create">Create a new one</Link>
-				{Games && Games.length > 0 && (
-					<div>
-						<p>Here are the games folks:</p>
-						{Games.map(game => (
-							<div key={game.id}>
-								<p>
-									<strong>GameID</strong>: {game.id} <br/>
-									<strong>GameHash</strong>: {game.hash} <br/>
-									<strong>GameName</strong>: {game.name} <br/>
-								</p>
-							</div>
-						))}
+			<div className="page page--full page--centered page--bg-gradient page--home">
+				<div className="page--home__content">
+					<div className="page--home__title-section">
+						<div className="page--home__title-animation">
+							<Rock className="icon icon-animation icon-animation--f" width={70} />
+							<Paper className="icon icon-animation icon-animation--s" width={70} />
+							<Scissors className="icon icon-animation icon-animation--t" width={70} />
+						</div>
+						<h2 className="page--home__welcome">Welcome to</h2>
+						<h1 className="page--home__title">SocketPo</h1>
 					</div>
-				)}
+					<Button>
+						<Link className="link link--medium link--spaced" to="/create">
+							<Add fill="#fff" className="icon icon--mr icon--fix icon--medium" />
+							Create a new game
+						</Link>
+					</Button>
+				</div>
+				{/* <audio autoPlay loop>
+					<source src={mainSound} type="audio/mpeg" />
+				</audio> */}
 			</div>
 		);
 	}
 }
 
-const getGames = gql`
-	query getGames {
-		Games {
-			id
-			name
-			hash
-		}
-	}
-`;
-
-export default graphql(getGames, { name: 'getGames' })(App);
+export default Home;

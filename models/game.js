@@ -3,7 +3,7 @@ const mongoose = require('mongoose'),
 
 const PlayerSchema = new Schema({
 	name: { type: String, default: 'Guest' },
-	avatar: { type: String, default: 'avatar.png' },
+	avatar: { type: Number, default: 1 },
 	ready: { type: Boolean, default: false },
 	roundsWin: { type: Number, default: 0 },
 	creator: { type: Boolean, default: false },

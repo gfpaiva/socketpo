@@ -1,0 +1,13 @@
+.select-avatar {
+	background-color: transparent;
+	border: none;
+	margin: .5rem;
+	padding: 0;
+
+	svg {
+		height: 100px;
+		width: 100px;
+	}
+
+	&--active { background-color: rgba(0, 255, 0, .5) }
+}

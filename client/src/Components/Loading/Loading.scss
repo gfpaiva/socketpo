@@ -1,0 +1,10 @@
+@import '../../Scss/root';
+@import '~loaders.css/src/animations/ball-pulse.scss';
+
+.loader-hidden {
+	display: none;
+}
+
+.loader-active {
+	display: block;
+}

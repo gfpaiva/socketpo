@@ -3,22 +3,31 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Link } from 'react-router-dom';
+import CreatedGame from '../CreatedGame/CreatedGame';
+import Button from '../../Components/Button/Button';
+import Input from '../../Components/Input/Input';
+import Loading from '../../Components/Loading/Loading';
+import Add from '../../Components/Icons/Add';
+
 import { setObject } from '../../Utils/storageAPI';
+import { parseAvatar } from '../../Utils/enums';
+
+import './Create.scss';
 
 class Create extends Component {
 
 	state = {
 		match: '',
-		author: '',
+		author: 'Player 1',
 		createdGame: null,
-		loading: false
+		loading: false,
+		selectedAvatar: 1
 	}
 
 	createGame = async e => {
 		e.preventDefault();
 
-		const { match, author } = this.state;
+		const { match, author, selectedAvatar } = this.state;
 
 		this.setState({ loading: true });
 
@@ -26,7 +35,8 @@ class Create extends Component {
 			variables: {
 				name: `${match}`,
 				player: {
-					name: author
+					name: author,
+					avatar: selectedAvatar
 				}
 			}
 		});
@@ -39,7 +49,6 @@ class Create extends Component {
 			loading: false,
 			createdGame: createGame
 		});
-		// this.props.getGames.refetch();
 	}
 
 	changeHandler = e => {
@@ -50,53 +59,83 @@ class Create extends Component {
 		});
 	};
 
+	selectAvatar = (e, avatarValue) => {
+		e.preventDefault();
+
+		this.setState({
+			selectedAvatar: avatarValue
+		});
+	}
+
 	render() {
 
 		const {
 			match,
 			author,
 			loading,
-			createdGame
+			createdGame,
+			selectedAvatar
 		} = this.state;
 
-		if(loading) return <p>Loading, please wait</p>
-
-		if(createdGame) return (
-			<div className="page page--created">
-				<p>Game has been created: </p>
-				<p><strong>Name:</strong> {createdGame.name}</p>
-				<p><strong>Hash:</strong> {createdGame.hash}</p>
-				<p><Link to={`/game/${createdGame.hash}`}>Link</Link></p>
-			</div>
-		);
-
 		return (
-			<div className="page page--create">
-				<form onSubmit={this.createGame}>
-					<input
-						type="text"
-						placeholder="Match Name"
-						name="match"
-						id="match"
-						onChange={this.changeHandler}
-						value={match}
-						required
-						autoComplete="off"
-					/>
-					<br />
-					<input
-						type="text"
-						placeholder="Author Display Name"
-						name="author"
-						id="author"
-						onChange={this.changeHandler}
-						value={author}
-						required
-						autoComplete="off"
-					/>
-					<br />
-					<button type="submit">Create game</button>
-				</form>
+			<div className="page page--full page--centered page--bg-gradient page--create">
+				<div>
+					{loading && <Loading />}
+
+					{!loading && createdGame && (
+						<CreatedGame {...{createdGame}} />
+					)}
+
+					{!loading && !createdGame && (
+						<form onSubmit={this.createGame}>
+							<h1>Create a new game</h1>
+							<Input
+								type="text"
+								placeholder="Match Name"
+								name="match"
+								id="match"
+								onChange={this.changeHandler}
+								value={match}
+								required
+								autoComplete="off"
+							/>
+
+							<Input
+								type="text"
+								placeholder="Player Name"
+								name="author"
+								id="author"
+								onChange={this.changeHandler}
+								value={author}
+								required
+								autoComplete="off"
+							/>
+
+							<div>
+								<p>Select an avatar: </p>
+
+								{[1, 2, 3, 4].map(avatarValue => (
+									<button
+										key={avatarValue}
+										className={`select-avatar${selectedAvatar === avatarValue ? ' select-avatar--active' : ''}`}
+										onClick={e => this.selectAvatar(e, avatarValue)}
+									>
+										{parseAvatar(avatarValue)}
+									</button>
+								))}
+							</div>
+
+							<Button
+								type="submit"
+								medium
+								spaced
+							>
+								<Add fill="#fff" className="icon icon--mr icon--fix icon--medium" />
+								Create Game
+							</Button>
+						</form>
+					)}
+				</div>
 			</div>
 		);
 	}
@@ -111,6 +150,7 @@ const createGame = gql`
 			players {
 				id
 				name
+				avatar
 			}
 		}
 	}

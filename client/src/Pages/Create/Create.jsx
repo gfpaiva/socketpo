@@ -8,7 +8,7 @@ import Button from '../../Components/Button/Button';
 import Input from '../../Components/Input/Input';
 import Loading from '../../Components/Loading/Loading';
 import SelectAvatar from '../../Components/SelectAvatar/SelectAvatar';
-import Add from '../../Components/Icons/Add';
+import { Add } from '../../Components/Icons/Icons';
 
 import { setObject } from '../../Utils/storageAPI';
 

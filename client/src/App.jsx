@@ -7,8 +7,7 @@ import Home from './Pages/Home/Home';
 import Create from './Pages/Create/Create';
 import Single from './Pages/Single/Single';
 
-import SoundOn from './Components/Icons/SoundOn';
-import SoundOff from './Components/Icons/SoundOff';
+import { SoundOn, SoundOff } from './Components/Icons/Icons';
 
 import mainSound from './Assets/main.mp3';
 

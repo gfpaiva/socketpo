@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import Add from '../../Components/Icons/Add';
-import Rock from '../../Components/Icons/Rock';
-import Paper from '../../Components/Icons/Paper';
-import Scissors from '../../Components/Icons/Scissors';
+import {
+	Add,
+	Rock,
+	Paper,
+	Scissors
+} from '../../Components/Icons/Icons';
 
 import Button from '../../Components/Button/Button';
 

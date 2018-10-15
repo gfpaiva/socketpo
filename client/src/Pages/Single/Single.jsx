@@ -11,14 +11,16 @@ import { sanitize } from '../../Utils/helpers';
 import Loading from '../../Components/Loading/Loading';
 import Player from '../../Components/Player/Player';
 import Join from '../Join/Join';
-import Rock from '../../Components/Icons/Rock';
-import Paper from '../../Components/Icons/Paper';
-import Scissors from '../../Components/Icons/Scissors';
-import Time from '../../Components/Icons/Time';
-import Draw from '../../Components/Icons/Draw';
-import Win from '../../Components/Icons/Win';
-import Loose from '../../Components/Icons/Loose';
-import Champion from '../../Components/Icons/Champion';
+import {
+	Rock,
+	Paper,
+	Scissors,
+	Time,
+	Draw,
+	Win,
+	Loose,
+	Champion
+} from '../../Components/Icons/Icons';
 
 import './Single.scss';
 
@@ -73,17 +75,23 @@ class Single extends Component {
 		const { currentRound, roundPlay } = this.state;
 		const game = GameByHash;
 
-		if(game && game.status === 1 && !roundPlay[currentRound]) {
-			this.timeOutTimer = window.setTimeout(() => {
-				this.setState(() => ({
-					timer: false
-				}), () => {
-					window.clearTimeout(this.timeOutTimer);
-					this.makePlay(null, 0);
-				});
-			}, 1000 * 30);
-		} else {
-			window.clearTimeout(this.timeOutTimer);
+		if(game.status === 1) {
+			const delayAction = (game.players.findIndex(player => player.id === this.currentPlayer.id) + 1) * 100;
+
+			if(game && game.status === 1 && !roundPlay[currentRound]) {
+				window.clearTimeout(this.timeOutTimer);
+
+				this.timeOutTimer = window.setTimeout(() => {
+					this.setState(() => ({
+						timer: false
+					}), () => {
+						window.clearTimeout(this.timeOutTimer);
+						this.makePlay(null, 0);
+					});
+				}, ((1000 * 30) + delayAction));
+			} else {
+				window.clearTimeout(this.timeOutTimer);
+			}
 		}
 	}
 

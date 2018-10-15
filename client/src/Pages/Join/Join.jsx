@@ -7,7 +7,7 @@ import { getObject, setObject } from '../../Utils/storageAPI';
 
 import Button from '../../Components/Button/Button';
 import Input from '../../Components/Input/Input';
-import Play from '../../Components/Icons/Play';
+import { Play } from '../../Components/Icons/Icons';
 import SelectAvatar from '../../Components/SelectAvatar/SelectAvatar';
 
 import './Join.scss';

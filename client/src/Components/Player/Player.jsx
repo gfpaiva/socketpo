@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { parseAvatar } from '../../Utils/enums';
 
 import Button from '../Button/Button';
-import Play from '../Icons/Play';
+import { Play } from '../Icons/Icons';
 
 import './Player.scss';
 

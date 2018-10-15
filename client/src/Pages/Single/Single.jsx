@@ -76,7 +76,7 @@ class Single extends Component {
 		const game = GameByHash;
 
 		if(game.status === 1) {
-			const delayAction = (game.players.findIndex(player => player.id === this.currentPlayer.id) + 1) * 100;
+			const delayAction = (game.players.findIndex(player => player.id === this.currentPlayer.id) + 1) * 500;
 
 			if(game && game.status === 1 && !roundPlay[currentRound]) {
 				window.clearTimeout(this.timeOutTimer);

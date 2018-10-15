@@ -9,7 +9,6 @@ import Scissors from '../../Components/Icons/Scissors';
 import Button from '../../Components/Button/Button';
 
 import './Home.scss';
-import mainSound from '../../Assets/main.mp3';
 
 class Home extends Component {
 
@@ -33,9 +32,6 @@ class Home extends Component {
 						</Link>
 					</Button>
 				</div>
-				{/* <audio autoPlay loop>
-					<source src={mainSound} type="audio/mpeg" />
-				</audio> */}
 			</div>
 		);
 	}

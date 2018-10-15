@@ -8,6 +8,7 @@ const statusValues = {
 };
 
 const playValues = {
+	0: 'Miss Play',
 	1: 'Rock',
 	2: 'Paper',
 	3: 'Scissors'

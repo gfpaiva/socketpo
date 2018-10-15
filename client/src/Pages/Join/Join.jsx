@@ -7,6 +7,7 @@ import { getObject, setObject } from '../../Utils/storageAPI';
 
 import Button from '../../Components/Button/Button';
 import Input from '../../Components/Input/Input';
+import Play from '../../Components/Icons/Play';
 import SelectAvatar from '../../Components/SelectAvatar/SelectAvatar';
 
 import './Join.scss';
@@ -86,6 +87,7 @@ class Join extends Component {
 						spaced
 						medium
 					>
+						<Play fill="#fff" className="icon icon--mr icon--fix icon--medium" />
 						Join game
 					</Button>
 				</form>

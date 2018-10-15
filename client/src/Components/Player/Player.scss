@@ -21,5 +21,18 @@
 			font-weight: bold;
 			margin: 0;
 		}
+
+		// TO-DO: reusable with 'single status'
+		&-ready {
+			background: $primary-color;
+			border-radius: 50%;
+			display: inline-block;
+			height: 10px;
+			margin-left: .5rem;
+			width: 10px;
+
+			&--off { background: $status-warn; }
+			&--on { background: $status-ok; }
+		}
 	}
 }

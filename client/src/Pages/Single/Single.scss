@@ -1,5 +1,15 @@
 @import '../../Scss/root';
 
+@keyframes fillBar {
+	0% {
+		width: 100%;
+	}
+
+	100% {
+		width: 0%;
+	}
+}
+
 .single {
 	&__title {
 		display: flex;
@@ -20,17 +30,109 @@
 		margin-left: .5rem;
 		width: 10px;
 
-		&--stand-by { background: #dcdc13; }
-		&--in-progress { background: #0b6f12; }
-		&--finished { background: #320fbd; }
+		&--stand-by { background: $status-warn; }
+		&--in-progress { background: $status-ok; }
+		&--finished { background: $status-notice; }
 	}
 
 	&__content { height: calc(100vh - (60px + 48px + 88px)) }
 
-	&__get-ready {
+	&__split {
 		display: flex;
 		height: 100%;
 
 		&>*:first-child { border-right: 1px solid rgba(0, 0, 0, .25) }
+	}
+
+	&__play {
+		&-countdown {
+			align-items: center;
+			display: flex;
+
+
+			svg {
+				margin-right: .5em;
+				height: 30px;
+				width: 30px;
+			}
+
+			&-bar,
+			&-bar em {
+				border-radius: 5px;
+				display: inline-block;
+			}
+
+			&-bar {
+				background-color: lighten($primary-color, 50%);
+				height: 5px;
+				position: relative;
+				width: 80%;
+
+				em {
+					animation: fillBar 30s linear forwards;
+					background: $primary-color;
+					height: 100%;
+					left: 0;
+					position: absolute;
+					top: 0;
+					width: 100%;
+
+					&.fill { animation: fillBar 60s linear }
+				}
+			}
+		}
+
+		&-btn {
+			background: transparent;
+			border: none;
+			margin: 1em;
+			padding: 0;
+
+			svg {
+				height: 50px;
+				width: 50px;
+			}
+		}
+
+		&-results {
+			display: flex;
+		}
+
+		&-result {
+			border: 1px solid rgba(0, 0, 0, .2);
+			margin: .5em;
+			padding: .5em 1em;
+
+			svg {
+				height: 40px;
+				width: 40px;
+			}
+		}
+	}
+
+	&__win {
+		text-align: center;
+
+		h1 { margin: 0; }
+
+		svg {
+			height: 150px;
+			width: 150px;
+		}
+
+		&-champion svg {
+			height: 115px;
+			width: 115px;
+		}
+
+		&-results {
+			background-color: $secondary-color;
+			padding: .5rem;
+			margin: .5rem 0;
+			text-align: left;
+			@include responsive-font-size(14px)
+
+			* { margin: 0 }
+		}
 	}
 }

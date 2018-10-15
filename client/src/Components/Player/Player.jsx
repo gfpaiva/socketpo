@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { parseAvatar } from '../../Utils/enums';
+
+import Button from '../Button/Button';
+import Play from '../Icons/Play';
 
 import './Player.scss';
 
@@ -27,24 +30,39 @@ class Player extends Component {
 
 	render() {
 
-		const { game, player, currentPlayer } = this.props;
+		const { game, player, currentPlayer, showReady, children } = this.props;
 
 		return (
 			<div className={`single__player${player.id === currentPlayer.id ? ' single__player--me' : ''}`}>
 				<div>
-					<div class="single__player-avatar">
+					<div className="single__player-avatar">
 						{parseAvatar(player.avatar)}
 					</div>
 					<p className='single__player-name'>{player.name}</p>
-					<p>{player.ready ? 'Im ready' : 'Getting Ready'}</p>
-					<p>
-						{
-							game.players.length === 2 &&
-							!player.ready &&
-							player.id === currentPlayer.id &&
-							<button onClick={this.getReady}>Im Ready</button>
-						}
-					</p>
+
+					{/* TO-DO: Improve component split */}
+					{showReady && (
+						<Fragment>
+							<p>{player.ready ? 'Im ready' : 'Getting Ready'}<span className={`single__player-ready ${player.ready ? 'single__player-ready--on' : 'single__player-ready--off'}`}></span></p>
+							<p>
+								{
+									game.players.length === 2 &&
+									!player.ready &&
+									player.id === currentPlayer.id &&
+									<Button
+										onClick={this.getReady}
+										spaced
+										medium
+									>
+										<Play fill="#fff" className="icon icon--mr icon--fix icon--medium" />
+										Im Ready
+									</Button>
+								}
+							</p>
+						</Fragment>
+					)}
+
+					{children ? children : null}
 				</div>
 			</div>
 		);

@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 
 import App from './App';
 
-import registerServiceWorker from './registerServiceWorker';
 
 import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
@@ -55,4 +54,3 @@ ReactDOM.render(
 		</Router>
 	</ApolloProvider>
 	, document.getElementById('root'));
-registerServiceWorker();

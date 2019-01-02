@@ -47,33 +47,6 @@ export const Loose = ({ fill, ...rest }) => (
 	</svg>
 );
 
-export const Paper = ({ fill, ...rest }) => (
-	<svg
-		version="1.1"
-		x="0px"
-		y="0px"
-		viewBox="0 0 78 97.5"
-		enableBackground="new 0 0 78 78"
-		{...rest}
-	>
-		<g>
-			<path d="M33,39h3c0-10,0-20,0-30c-3,0-6,0-9,0v3h6V39z" />
-			<path d="M24,45h3c0-11,0-22,0-33h-3v3c-2,0-4,0-6,0v3c2,0,4,0,6,0C24,27,24,36,24,45z" />
-			<path d="M45,39c0-8,0-16,0-24h6v-3h-6V9h-3c0,10,0,20,0,30H45z" />
-			<path d="M54,48c0-3,0-6,0-9h3v-3h-3V15h-3c0,11,0,22,0,33H54z" />
-			<rect x="15" y="18" width="3" height="36" />
-			<rect x="36" y="6" width="6" height="3" />
-			<rect x="18" y="54" width="3" height="9" />
-			<path d="M48,69H24v-6h-3v9c10,0,20,0,30,0c0-3,0-6,0-9h-3V69z" />
-			<path d="M57,33v3h6v6h3c0-3,0-6,0-9H57z" />
-			<rect x="57" y="45" width="3" height="6" />
-			<rect x="60" y="42" width="3" height="3" />
-			<rect x="51" y="57" width="3" height="6" />
-			<rect x="54" y="51" width="3" height="6" />
-		</g>
-	</svg>
-);
-
 export const Play = ({ fill, ...rest }) => (
 	<svg viewBox="0 0 90 90" version="1.1" x="0px" y="0px" {...rest}>
 		<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -82,25 +55,61 @@ export const Play = ({ fill, ...rest }) => (
 	</svg>
 );
 
-export const Rock = ({ fill, ...rest }) => (
+export const Paper = ({ fill, ...rest }) => (
 	<svg
+
 		version="1.1"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlnsXlink="http://www.w3.org/1999/xlink"
 		x="0px"
 		y="0px"
-		viewBox="0 0 78 97.5"
-		enableBackground="new 0 0 78 78"
+		viewBox="0 0 51 66"
+		enableBackground="new 0 0 51 66"
+		xmlSpace="preserve"
 		{...rest}
 	>
 		<g>
-			<polygon points="48,54 48,51 36,51 36,54 48,54  " />
-			<path d="M60,39c0,6,0,12,0,18h3c0-6,0-12,0-18H60L60,39z" />
-			<polygon points="45,24 39,24 39,27 45,27 45,24  " />
-			<polygon points="51,57 51,54 48,54 48,57 51,57  " />
-			<path d="M27,48v3c3,0,6,0,9,0c0-2,0-4,0-6h-3v3h-3c0-6,0-12,0-18c-3,0-6,0-9,0v3c2,0,4,0,6,0c0,4,0,8,0,12h-6c0-4,0-8,0-12h-3   c0,7,0,14,0,21h3v-6H27L27,48z" />
-			<polygon points="21,54 21,63 24,63 24,54 21,54  " />
-			<path d="M54,63h-3c0,2,0,4,0,6H27v-6h-3v9c10,0,20,0,30,0c0-2,0-4,0-6h3v-6h-3V63L54,63z" />
-			<polygon points="57,60 60,60 60,57 57,57 57,60  " />
-			<path d="M36,39c0,2,0,4,0,6c7,0,14,0,21,0v-6h3v-3h-3v-6h-3c0,4,0,8,0,12h-6c0-4,0-8,0-12h6v-3h-9c0,5,0,10,0,15c-2,0-4,0-6,0   c0-5,0-10,0-15c-3,0-6,0-9,0v3h6V39L36,39z" />
+			<path d="M18,33h3c0-10,0-20,0-30c-3,0-6,0-9,0v3h6V33z"/>
+			<path d="M9,39h3c0-11,0-22,0-33H9v3C7,9,5,9,3,9v3c2,0,4,0,6,0C9,21,9,30,9,39z"/>
+			<path d="M30,33c0-8,0-16,0-24h6V6h-6V3h-3c0,10,0,20,0,30H30z"/>
+			<path d="M39,42c0-3,0-6,0-9h3v-3h-3V9h-3c0,11,0,22,0,33H39z"/>
+			<rect y="12" width="3" height="36"/>
+			<rect x="21" width="6" height="3"/>
+			<rect x="3" y="48" width="3" height="9"/>
+			<path d="M33,63H9v-6H6v9c10,0,20,0,30,0c0-3,0-6,0-9h-3V63z"/>
+			<path d="M42,27v3h6v6h3c0-3,0-6,0-9H42z"/>
+			<rect x="42" y="39" width="3" height="6"/>
+			<rect x="45" y="36" width="3" height="3"/>
+			<rect x="36" y="51" width="3" height="6"/>
+			<rect x="39" y="45" width="3" height="6"/>
+		</g>
+	</svg>
+);
+
+export const Rock = ({ fill, ...rest }) => (
+	<svg
+		version="1.1"
+		id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+		xmlnsXlink="http://www.w3.org/1999/xlink"
+		x="0px"
+		y="0px"
+		viewBox="0 0 45 48"
+		enableBackground="new 0 0 45 48"
+		xmlSpace="preserve"
+		{...rest}
+	>
+		<g>
+			<polygon points="30,30 30,27 18,27 18,30 	"/>
+			<path d="M42,15c0,6,0,12,0,18h3c0-6,0-12,0-18H42L42,15z"/>
+			<polygon points="27,0 21,0 21,3 27,3 	"/>
+			<polygon points="33,33 33,30 30,30 30,33 	"/>
+			<path d="M9,24v3c3,0,6,0,9,0c0-2,0-4,0-6h-3v3h-3c0-6,0-12,0-18C9,6,6,6,3,6v3c2,0,4,0,6,0c0,4,0,8,0,12H3c0-4,0-8,0-12H0
+				c0,7,0,14,0,21h3v-6H9L9,24z"/>
+			<polygon points="3,30 3,39 6,39 6,30 	"/>
+			<path d="M36,39h-3c0,2,0,4,0,6H9v-6H6v9c10,0,20,0,30,0c0-2,0-4,0-6h3v-6h-3V39L36,39z"/>
+			<polygon points="39,36 42,36 42,33 39,33 	"/>
+			<path d="M18,15c0,2,0,4,0,6c7,0,14,0,21,0v-6h3v-3h-3V6h-3c0,4,0,8,0,12h-6c0-4,0-8,0-12h6V3h-9c0,5,0,10,0,15c-2,0-4,0-6,0
+				c0-5,0-10,0-15c-3,0-6,0-9,0v3h6V15L18,15z"/>
 		</g>
 	</svg>
 );
@@ -108,33 +117,37 @@ export const Rock = ({ fill, ...rest }) => (
 export const Scissors = ({ fill, ...rest }) => (
 	<svg
 		version="1.1"
-		x="0px" y="0px"
-		viewBox="0 0 78 97.5"
-		enableBackground="new 0 0 78 78"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlnsXlink="http://www.w3.org/1999/xlink"
+		x="0px"
+		y="0px"
+		viewBox="0 0 48 66"
+		enableBackground="new 0 0 48 66;"
+		xmlSpace="preserve"
 		{...rest}
 	>
 		<g>
-			<rect x="57" y="39" width="3" height="3" />
-			<polygon points="51,51 54,51 54,39 57,39 57,36 54,36 54,27 51,27  " />
-			<rect x="48" y="9" width="3" height="9" />
-			<rect x="54" y="18" width="3" height="9" />
-			<rect x="51" y="6" width="6" height="3" />
-			<rect x="45" y="18" width="3" height="9" />
-			<rect x="27" y="9" width="3" height="9" />
-			<rect x="30" y="6" width="6" height="3" />
-			<rect x="15" y="36" width="3" height="18" />
-			<rect x="57" y="9" width="3" height="9" />
-			<rect x="18" y="33" width="3" height="3" />
-			<path d="M48,69H24v-6h-3v9c10,0,20,0,30,0c0-3,0-6,0-9h-3V69z" />
-			<path d="M51,63h3v-3h3v-3c-2,0-4,0-6,0V63z" />
-			<rect x="42" y="27" width="3" height="12" />
-			<rect x="60" y="42" width="3" height="12" />
-			<rect x="57" y="54" width="3" height="3" />
-			<rect x="18" y="54" width="3" height="9" />
-			<rect x="39" y="18" width="3" height="9" />
-			<rect x="36" y="9" width="3" height="9" />
-			<polygon points="33,36 36,36 36,27 33,27 33,18 30,18 30,27 27,27 27,30 33,30  " />
-			<path d="M24,42h3c0-4,0-8,0-12c-2,0-4,0-6,0v3h3V42z" />
+			<rect x="42" y="33" width="3" height="3"/>
+			<polygon points="36,45 39,45 39,33 42,33 42,30 39,30 39,21 36,21 	"/>
+			<rect x="33" y="3" width="3" height="9"/>
+			<rect x="39" y="12" width="3" height="9"/>
+			<rect x="36" width="6" height="3"/>
+			<rect x="30" y="12" width="3" height="9"/>
+			<rect x="12" y="3" width="3" height="9"/>
+			<rect x="15" width="6" height="3"/>
+			<rect y="30" width="3" height="18"/>
+			<rect x="42" y="3" width="3" height="9"/>
+			<rect x="3" y="27" width="3" height="3"/>
+			<path d="M33,63H9v-6H6v9c10,0,20,0,30,0c0-3,0-6,0-9h-3V63z"/>
+			<path d="M36,57h3v-3h3v-3c-2,0-4,0-6,0V57z"/>
+			<rect x="27" y="21" width="3" height="12"/>
+			<rect x="45" y="36" width="3" height="12"/>
+			<rect x="42" y="48" width="3" height="3"/>
+			<rect x="3" y="48" width="3" height="9"/>
+			<rect x="24" y="12" width="3" height="9"/>
+			<rect x="21" y="3" width="3" height="9"/>
+			<polygon points="18,30 21,30 21,21 18,21 18,12 15,12 15,21 12,21 12,24 18,24 	"/>
+			<path d="M9,36h3c0-4,0-8,0-12c-2,0-4,0-6,0v3h3V36z"/>
 		</g>
 	</svg>
 );

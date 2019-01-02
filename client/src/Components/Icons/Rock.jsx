@@ -7,8 +7,8 @@ const Rock = ({ fill, ...rest }) => (
 		version="1.1"
 		x="0px"
 		y="0px"
-		viewBox="0 0 78 97.5"
-		enableBackground="new 0 0 78 78"
+		viewBox="0 0 45 48"
+		enableBackground="new 0 0 45 48"
 		{...rest}
 	>
 		<g>

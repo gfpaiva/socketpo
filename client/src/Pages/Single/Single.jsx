@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -15,7 +15,7 @@ import {
 	Rock,
 	Paper,
 	Scissors,
-	Time,
+	/* Time, */
 	Draw,
 	Win,
 	Loose,
@@ -28,12 +28,12 @@ class Single extends Component {
 
 	localMatch = getObject(`match-${this.props.match.params.hash}`);
 	currentPlayer = this.localMatch ? this.localMatch.player : null;
-	timeOutTimer = null;
+	// timeOutTimer = null;
 
 	state = {
 		currentRound: this.localMatch && this.localMatch.currentRound ? this.localMatch.currentRound : 0,
 		roundPlay: this.localMatch && this.localMatch.roundPlay ? this.localMatch.roundPlay : [],
-		timer: true
+		// timer: true
 	}
 
 	componentWillMount() {
@@ -70,7 +70,7 @@ class Single extends Component {
 	// componentWillReceiveProps(props) {
 	// }
 
-	componentDidUpdate() {
+	/* componentDidUpdate() {
 		const { GameByHash } = this.props.getGame;
 		const { currentRound, roundPlay } = this.state;
 		const game = GameByHash;
@@ -93,7 +93,7 @@ class Single extends Component {
 				window.clearTimeout(this.timeOutTimer);
 			}
 		}
-	}
+	} */
 
 
 	makePlay = async (e, playValue) => {
@@ -125,9 +125,10 @@ class Single extends Component {
 
 	render() {
 		const { GameByHash, loading } = this.props.getGame;
-		const { currentRound, roundPlay, timer } = this.state;
+		const { currentRound, roundPlay/* , timer */ } = this.state;
 		const game = GameByHash;
 		const rounds = game && game.results.rounds;
+		const players = game && game.players;
 
 		if(loading) return (
 			<div className="page page--full page--centered page--bg-gradient page--single">
@@ -138,13 +139,13 @@ class Single extends Component {
 			</div>
 		);
 
-		if(!loading && !GameByHash) return (
+		if(!loading && !game) return (
 			<div className="page page--full page--centered page--bg-gradient page--single">
 				<p>Match not found <span role='img' aria-label='think'>🤔</span></p>
 			</div>
 		);
 
-		if(GameByHash && GameByHash.players.length === 2 && !this.currentPlayer) return (
+		if(players && players.length === 2 && !this.currentPlayer) return (
 			<div className="page page--full page--centered page--bg-gradient page--single">
 				<div>
 					<p>This match is full and in progress</p>
@@ -163,7 +164,7 @@ class Single extends Component {
 					</div>
 
 					<div className="single__title">
-						<p><strong>Game: </strong>{game.name}</p>
+						<p>{game.name}</p>
 						<p>
 							<strong>Status: </strong>{parseStatus(game.status)}
 							<span className={`single__status single__status--${sanitize(parseStatus(game.status))}`}></span>
@@ -173,7 +174,7 @@ class Single extends Component {
 					<div className={`single__content${game && game.status === 2 ? ' page--height-auto' : ''}`}>
 						{game.status === 0 && (
 							<div className='single__split'>
-								{game.players.map(player => (
+								{players.map(player => (
 									<Player
 										key={`ready-${player.id}`}
 										game={game}
@@ -183,7 +184,7 @@ class Single extends Component {
 									/>
 								))}
 
-								{game.players.length === 1 && (
+								{players.length === 1 && (
 									<div className='single__player'>
 										<div>
 											<Loading />
@@ -196,7 +197,7 @@ class Single extends Component {
 
 						{game.status === 1 && (
 							<div className='single__split'>
-								{game.players.map(player => (
+								{players.map(player => (
 									<Player
 										key={`play-${player.id}`}
 										game={game}
@@ -205,21 +206,23 @@ class Single extends Component {
 									>
 										{!roundPlay[currentRound] && player.id === this.currentPlayer.id && (
 											<div className="single__play-area">
-												{timer && (
+												{/* timer && (
 													<div className="single__play-countdown">
 														<Time />
 														<span className="single__play-countdown-bar"><em></em></span>
 													</div>
-												)}
+												) */}
 
-												<p>Choose an option below: </p>
+												<p>Make a move: </p>
 
 												<button className='single__play-btn' onClick={e => this.makePlay(e, 1)}>
 													<Rock />
 												</button>
+
 												<button className='single__play-btn' onClick={e => this.makePlay(e, 2)}>
 													<Paper />
 												</button>
+
 												<button className='single__play-btn' onClick={e => this.makePlay(e, 3)}>
 													<Scissors />
 												</button>
@@ -227,39 +230,45 @@ class Single extends Component {
 										)}
 
 										{roundPlay[currentRound] && player.id === this.currentPlayer.id && (
-											<Fragment>
+											<div>
 												<Loading />
 												<p>Please wait...</p>
-											</Fragment>
+											</div>
 										)}
 
 										{player.id !== this.currentPlayer.id && (
-											<Fragment>
+											<div>
 												<Loading />
 												<p>Please wait...</p>
-											</Fragment>
-										)}
-
-										{rounds.length > 0 && (
-											<div className='single__play-results'>
-												{rounds.map((round, roundIdx) => {
-													if(round.finished) {
-														return (
-															<div className='single__play-result' key={`round-${roundIdx}`}>
-																<h3>Round {roundIdx+1}</h3>
-																<span>
-																	{round.isDraw && <Draw />}
-																	{!round.isDraw && round.winner.id === player.id && <Win />}
-																	{!round.isDraw && round.winner.id !== player.id && <Loose />}
-																</span>
-															</div>
-														);
-													}
-
-													return null;
-												})}
 											</div>
 										)}
+
+										<div>
+											<p className="single__play-summary-result">
+												<strong>{player.roundsWin}</strong>
+											</p>
+
+											{rounds.length > 0 && (
+												<div className='single__play-results'>
+													{rounds.map((round, roundIdx) => {
+														if(round.finished) {
+															return (
+																<div className='single__play-result' key={`round-${roundIdx}`}>
+																	<h3>Round {roundIdx+1}</h3>
+																	<span>
+																		{round.isDraw && <Draw />}
+																		{!round.isDraw && round.winner.id === player.id && <Win />}
+																		{!round.isDraw && round.winner.id !== player.id && <Loose />}
+																	</span>
+																</div>
+															);
+														}
+
+														return null;
+													})}
+												</div>
+											)}
+										</div>
 									</Player>
 								))}
 							</div>

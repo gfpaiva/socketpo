@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -34,15 +34,17 @@ class Player extends Component {
 
 		return (
 			<div className={`single__player${player.id === currentPlayer.id ? ' single__player--me' : ''}`}>
-				<div>
-					<div className="single__player-avatar">
-						{parseAvatar(player.avatar)}
+				<div className="single__player-container">
+					<div>
+						<div className="single__player-avatar">
+							{parseAvatar(player.avatar)}
+						</div>
+						<p className='single__player-name'>{player.name}</p>
 					</div>
-					<p className='single__player-name'>{player.name}</p>
 
 					{/* TO-DO: Improve component split */}
 					{showReady && (
-						<Fragment>
+						<div>
 							<p>{player.ready ? 'Im ready' : 'Getting Ready'}<span className={`single__player-ready ${player.ready ? 'single__player-ready--on' : 'single__player-ready--off'}`}></span></p>
 							<p>
 								{
@@ -59,7 +61,7 @@ class Player extends Component {
 									</Button>
 								}
 							</p>
-						</Fragment>
+						</div>
 					)}
 
 					{children ? children : null}

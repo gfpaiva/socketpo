@@ -41,13 +41,13 @@ class App extends Component {
 					{/* 404 page */}
 					<Route component={NotFound} />
 				</Switch>
-				<audio
+				{/* <audio
 					ref={audio => this.audio = audio}
 					autoPlay
 					loop
 				>
 					<source src={mainSound} type="audio/mpeg" />
-				</audio>
+				</audio> */}
 
 				<div className="audio-controls">
 					<button

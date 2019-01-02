@@ -85,12 +85,25 @@
 		&-btn {
 			background: transparent;
 			border: none;
+			cursor: pointer;
 			margin: 1em;
 			padding: 0;
+			transform: scale(1);
+			transition: transform .25s ease;
+
+			&:hover {
+				transform: scale(1.25);
+			}
 
 			svg {
-				height: 50px;
-				width: 50px;
+				height: 70px;
+				width: 70px;
+			}
+		}
+
+		&-summary-result {
+			strong {
+				@include responsive-font-size(32px)
 			}
 		}
 

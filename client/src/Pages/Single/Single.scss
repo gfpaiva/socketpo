@@ -90,6 +90,7 @@
 			padding: 0;
 			transform: scale(1);
 			transition: transform .25s ease;
+			@media screen and (max-width: 767px) { margin: .125em }
 
 			&:hover {
 				transform: scale(1.25);
@@ -98,6 +99,11 @@
 			svg {
 				height: 70px;
 				width: 70px;
+
+				@media screen and (max-width: 767px) {
+					height: 40px;
+					width: 40px;
+				}
 			}
 		}
 
@@ -115,6 +121,7 @@
 			border: 1px solid rgba(0, 0, 0, .2);
 			margin: .5em;
 			padding: .5em 1em;
+			@media screen and (max-width: 767px) { display: none }
 
 			svg {
 				height: 40px;

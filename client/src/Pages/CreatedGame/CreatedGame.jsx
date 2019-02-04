@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import Button from '../../Components/Button/Button';
 
+import './CreatedGame.scss';
+
 class CreatedGame extends Component {
 
 	state = {
@@ -43,10 +45,9 @@ class CreatedGame extends Component {
 				<p><strong>Name: </strong>{createdGame.name}</p>
 				<p>
 					<strong>Link: </strong>
-					{this.gameUrl}
+					<span class="created__game-url">{this.gameUrl}</span>
 					<Button
 						spaced
-						mx
 						onClick={this.copyHandler}
 					>
 						{copied ? 'Link Copied' : 'Copy Link'}

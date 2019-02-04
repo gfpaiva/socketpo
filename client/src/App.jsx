@@ -9,23 +9,29 @@ import Single from './Pages/Single/Single';
 
 import { SoundOn, SoundOff } from './Components/Icons/Icons';
 
-import mainSound from './Assets/main.mp3';
-
 class App extends Component {
 
 	state = {
 		isMusicMuted: false
 	}
 
+	audio = null;
+
 	musicHandler = e => {
 		e.preventDefault();
 
-		this.audio.muted = !this.state.isMusicMuted;
-
 		this.setState(prevState => ({
 			isMusicMuted: !prevState.isMusicMuted
-		}))
+		}), () => this.state.isMusicMuted ? this.audio.pause() : this.audio.play())
 	};
+
+	componentDidMount() {
+		this.audio = document.querySelector('#audio-initial');
+
+		setTimeout(() => {
+			this.audio.play();
+		}, 1000);
+	}
 
 	render() {
 
@@ -41,13 +47,6 @@ class App extends Component {
 					{/* 404 page */}
 					<Route component={NotFound} />
 				</Switch>
-				{/* <audio
-					ref={audio => this.audio = audio}
-					autoPlay
-					loop
-				>
-					<source src={mainSound} type="audio/mpeg" />
-				</audio> */}
 
 				<div className="audio-controls">
 					<button

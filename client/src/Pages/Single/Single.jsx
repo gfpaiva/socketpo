@@ -28,6 +28,11 @@ class Single extends Component {
 
 	localMatch = getObject(`match-${this.props.match.params.hash}`);
 	currentPlayer = this.localMatch ? this.localMatch.player : null;
+	audio = {
+		select: null,
+		win: null,
+		lose: null
+	};
 	// timeOutTimer = null;
 
 	state = {
@@ -65,6 +70,15 @@ class Single extends Component {
 				return { GameByHash: game }
 			}
 		})
+	}
+
+	componentDidMount() {
+
+		this.audio = {
+			select: document.querySelector('#audio-select'),
+			win: document.querySelector('#audio-win'),
+			lose: document.querySelector('#audio-lose')
+		}
 	}
 
 	// componentWillReceiveProps(props) {
@@ -110,6 +124,7 @@ class Single extends Component {
 				...getObject(`match-${hash}`),
 				roundPlay: this.state.roundPlay
 			});
+			this.audio.select.play();
 		});
 
 		await this.props.play({
@@ -141,15 +156,20 @@ class Single extends Component {
 
 		if(!loading && !game) return (
 			<div className="page page--full page--centered page--bg-gradient page--single">
-				<p>Match not found <span role='img' aria-label='think'>🤔</span></p>
+				<p>
+					Match not found <span role='img' aria-label='think'>🤔</span><br />
+					<Link className='link link--underline' to='/create'>Create a new match</Link>
+				</p>
 			</div>
 		);
 
 		if(players && players.length === 2 && !this.currentPlayer) return (
 			<div className="page page--full page--centered page--bg-gradient page--single">
 				<div>
-					<p>This match is full and in progress</p>
-					<Link className='link link--underline' to='/create'>Create a new match</Link>
+					<p>
+						This match is full and in progress <br />
+						<Link className='link link--underline' to='/create'>Create a new match</Link>
+					</p>
 				</div>
 			</div>
 		);

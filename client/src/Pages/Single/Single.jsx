@@ -11,11 +11,11 @@ import { sanitize } from '../../Utils/helpers';
 import Loading from '../../Components/Loading/Loading';
 import Player from '../../Components/Player/Player';
 import Join from '../Join/Join';
+import Modal from '../../Components/Modal/Modal';
 import {
 	Rock,
 	Paper,
 	Scissors,
-	/* Time, */
 	Draw,
 	Win,
 	Loose,
@@ -33,12 +33,12 @@ class Single extends Component {
 		win: null,
 		lose: null
 	};
-	// timeOutTimer = null;
 
 	state = {
 		currentRound: this.localMatch && this.localMatch.currentRound ? this.localMatch.currentRound : 0,
+		currentRoundMove: '',
 		roundPlay: this.localMatch && this.localMatch.roundPlay ? this.localMatch.roundPlay : [],
-		// timer: true
+		showModal: false,
 	}
 
 	componentWillMount() {
@@ -58,7 +58,7 @@ class Single extends Component {
 				if(!results.matchWinner && results.rounds[currentRound] && results.rounds[currentRound].finished === true ) {
 					this.setState(prevState => ({
 						currentRound: prevState.currentRound + 1,
-						timer: true
+						showModal: true,
 					}), () => {
 						setObject(`match-${hash}`, {
 							...getObject(`match-${hash}`),
@@ -81,34 +81,17 @@ class Single extends Component {
 		}
 	}
 
-	// componentWillReceiveProps(props) {
-	// }
+	componentDidUpdate() {
+		const { showModal } = this.state;
 
-	/* componentDidUpdate() {
-		const { GameByHash } = this.props.getGame;
-		const { currentRound, roundPlay } = this.state;
-		const game = GameByHash;
-
-		if(game.status === 1) {
-			const delayAction = (game.players.findIndex(player => player.id === this.currentPlayer.id) + 1) * 500;
-
-			if(game && game.status === 1 && !roundPlay[currentRound]) {
-				window.clearTimeout(this.timeOutTimer);
-
-				this.timeOutTimer = window.setTimeout(() => {
-					this.setState(() => ({
-						timer: false
-					}), () => {
-						window.clearTimeout(this.timeOutTimer);
-						this.makePlay(null, 0);
-					});
-				}, ((1000 * 30) + delayAction));
-			} else {
-				window.clearTimeout(this.timeOutTimer);
-			}
+		if(showModal) {
+			setTimeout(() => {
+				this.setState({
+					showModal: false
+				})
+			}, 2500);
 		}
-	} */
-
+	}
 
 	makePlay = async (e, playValue) => {
 		e && e.preventDefault();
@@ -117,8 +100,9 @@ class Single extends Component {
 
 		this.setState(prevState => {
 			const roundPlay = prevState.roundPlay.concat(true);
+			const currentRoundMove = parsePlay(playValue);
 
-			return { roundPlay }
+			return { roundPlay, currentRoundMove }
 		}, () => {
 			setObject(`match-${hash}`, {
 				...getObject(`match-${hash}`),
@@ -140,7 +124,7 @@ class Single extends Component {
 
 	render() {
 		const { GameByHash, loading } = this.props.getGame;
-		const { currentRound, roundPlay/* , timer */ } = this.state;
+		const { currentRound, roundPlay, currentRoundMove, showModal } = this.state;
 		const game = GameByHash;
 		const rounds = game && game.results.rounds;
 		const players = game && game.players;
@@ -226,13 +210,6 @@ class Single extends Component {
 									>
 										{!roundPlay[currentRound] && player.id === this.currentPlayer.id && (
 											<div className="single__play-area">
-												{/* timer && (
-													<div className="single__play-countdown">
-														<Time />
-														<span className="single__play-countdown-bar"><em></em></span>
-													</div>
-												) */}
-
 												<p>Make a move: </p>
 
 												<button className='single__play-btn' onClick={e => this.makePlay(e, 1)}>
@@ -252,14 +229,14 @@ class Single extends Component {
 										{roundPlay[currentRound] && player.id === this.currentPlayer.id && (
 											<div>
 												<Loading />
-												<p>Please wait...</p>
+												<p>You choose {currentRoundMove}</p>
 											</div>
 										)}
 
 										{player.id !== this.currentPlayer.id && (
 											<div>
 												<Loading />
-												<p>Please wait...</p>
+												<p>Wait for other player move...</p>
 											</div>
 										)}
 
@@ -291,11 +268,19 @@ class Single extends Component {
 										</div>
 									</Player>
 								))}
+
+								{showModal && rounds.length > 0 && (
+									<Modal>
+										{rounds[currentRound-1].isDraw && (
+											<p>This round has finished with a draw</p>
+										)}
+									</Modal>
+								)}
 							</div>
 						)}
 
 						{game.status === 2 && (
-							<div className="single__win">
+							<div classNamfe="single__win">
 								<h1>{game.name}</h1>
 								<p className='my-0'>Congratulations!</p>
 								<h2 className='my-0'>{game.results.matchWinner.name}</h2>
@@ -366,6 +351,7 @@ const totalGameFields = `
 			winner {
 				id
 				name
+				avatar
 			}
 		}
 	}
@@ -404,7 +390,7 @@ const gameSub = gql`
 export default compose(
 		graphql(getGame, {
 			name: 'getGame',
-			options: (props) => ({ variables: { hash: props.match.params.hash } })
+			options: props => ({ variables: { hash: props.match.params.hash } })
 		}),
 		graphql(play, {name: 'play'}),
 )(Single);

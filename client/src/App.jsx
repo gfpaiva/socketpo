@@ -28,9 +28,15 @@ class App extends Component {
 	componentDidMount() {
 		this.audio = document.querySelector('#audio-initial');
 
-		setTimeout(() => {
-			this.audio.play();
-		}, 1000);
+		const playPromise = this.audio.play();
+
+		if (playPromise !== undefined) {
+			playPromise.catch(error => {
+				this.setState({
+					isMusicMuted: true
+				});
+			});
+		}
 	}
 
 	render() {

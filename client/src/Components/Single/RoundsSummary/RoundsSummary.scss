@@ -1,0 +1,25 @@
+@import '../../../Scss/root';
+
+.single {
+	&__play {
+		&-summary-result {
+			strong { @include responsive-font-size(32px) }
+		}
+
+		&-results {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			text-align: center;
+		}
+
+		&-result {
+			@media screen and (max-width: 767px) { display: none }
+
+			svg {
+				height: 40px;
+				width: 40px;
+			}
+		}
+	}
+}

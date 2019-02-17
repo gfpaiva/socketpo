@@ -1,0 +1,41 @@
+@import '../../../Scss/root';
+
+.single {
+	&__win {
+		text-align: center;
+
+		h1 { margin: 0; }
+
+		&-champion {
+			display: inline-block;
+
+			svg {
+				height: 150px;
+				width: 150px;
+			}
+
+			&-icon { vertical-align: bottom }
+		}
+
+		&-result {
+			@include responsive-font-size(14px);
+			background-color: $secondary-color;
+			padding: .5rem;
+			margin: .5rem 0;
+			text-align: left;
+
+			&-avatar {
+				display: inline-block;
+
+				svg {
+					height: 30px;
+					width: 30px;
+				}
+			}
+
+			&-icon-draw { vertical-align: text-top }
+
+			* { margin: 0 }
+		}
+	}
+}

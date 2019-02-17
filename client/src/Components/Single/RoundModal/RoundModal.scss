@@ -1,0 +1,22 @@
+@import '../../../Scss/root';
+
+.modal-round {
+	&__title {
+		@include responsive-font-size(28px);
+		font-weight: bold;
+	}
+
+	&__plays {
+		display: flex;
+		justify-content: center;
+	}
+
+	&__play { font-weight: bold }
+
+	&__win {
+		&-avatar svg {
+			height: 100px;
+			width: 100px
+		}
+	}
+}

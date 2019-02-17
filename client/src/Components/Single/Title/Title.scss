@@ -1,0 +1,22 @@
+@import '../../../Scss/root';
+
+.single {
+	&__title {
+		display: flex;
+		justify-content: space-between;
+		padding: 1em 0;
+	}
+
+	&__status {
+		background: $primary-color;
+		border-radius: 50%;
+		display: inline-block;
+		height: 10px;
+		margin-left: .5rem;
+		width: 10px;
+
+		&--stand-by { background: $status-warn; }
+		&--in-progress { background: $status-ok; }
+		&--finished { background: $status-notice; }
+	}
+}

@@ -1,9 +1,22 @@
 .icon {
+	display: inline-block;
+
 	&--mr { margin-right: .5em }
-	&--medium { width: 22px }
 	&--fix { transform: translateY(3px) }
 	&--small {
 		height: 20px;
 		width: 20px;
+	}
+	&--medium {
+		height: 22px;
+		width: 22px;
+	}
+	&--big {
+		height: 50px;
+		width: 50px;
+	}
+	&--huge {
+		height: 115px;
+		width: 115px;
 	}
 }

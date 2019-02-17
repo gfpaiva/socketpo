@@ -4,7 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 
-import { parseStatus, parseAvatar, parsePlay, parsePlayIcons } from '../../Utils/enums';
+import { parseStatus, parseAvatar, parsePlayIcons } from '../../Utils/enums';
 import { getObject, setObject } from '../../Utils/storageAPI';
 import { sanitize } from '../../Utils/helpers';
 
@@ -97,7 +97,7 @@ class Single extends Component {
 				this.setState({
 					showModal: false
 				})
-			}, (1000 * 60));
+			}, 4000);
 		}
 	}
 
@@ -184,119 +184,154 @@ class Single extends Component {
 					</div>
 
 					<div className={`single__content${game && game.status === 2 ? ' page--height-auto' : ''}`}>
-						<div className='single__split'>
-							{game.status === 0 && (
-								<Fragment>
-									{players.map(player => (
-										<Player
-											key={`ready-${player.id}`}
-											game={game}
-											player={player}
-											currentPlayer={this.currentPlayer}
-											showReady
-										/>
-									))}
+						{(game.status === 0 || game.status === 1) && (
+							<div className='single__split'>
+								{game.status === 0 && (
+									<Fragment>
+										{players.map(player => (
+											<Player
+												key={`ready-${player.id}`}
+												game={game}
+												player={player}
+												currentPlayer={this.currentPlayer}
+												showReady
+											/>
+										))}
 
-									{players.length === 1 && (
-										<div className='single__player'>
-											<div>
-												<Loading />
-												<p>Wating for other player</p>
+										{players.length === 1 && (
+											<div className='single__player'>
+												<div>
+													<Loading />
+													<p>Wating for other player</p>
+												</div>
 											</div>
-										</div>
-									)}
-								</Fragment>
-							)}
+										)}
+									</Fragment>
+								)}
 
-							{game.status === 1 && (
-								<Fragment>
-									{players.map(player => (
-										<Player
-											key={`play-${player.id}`}
-											game={game}
-											player={player}
-											currentPlayer={this.currentPlayer}
-										>
-											{!roundPlay[currentRound] && player.id === this.currentPlayer.id && (
-												<div className="single__play-area">
-													<p>Make a move: </p>
+								{game.status === 1 && (
+									<Fragment>
+										{players.map(player => (
+											<Player
+												key={`play-${player.id}`}
+												game={game}
+												player={player}
+												currentPlayer={this.currentPlayer}
+											>
+												{!roundPlay[currentRound] && player.id === this.currentPlayer.id && (
+													<div className="single__play-area">
+														<p>Make a move: </p>
 
-													<button className='single__play-btn' onClick={e => this.makePlay(e, 1)}>
-														<Rock />
-													</button>
+														<button className='single__play-btn' onClick={e => this.makePlay(e, 1)}>
+															<Rock />
+														</button>
 
-													<button className='single__play-btn' onClick={e => this.makePlay(e, 2)}>
-														<Paper />
-													</button>
+														<button className='single__play-btn' onClick={e => this.makePlay(e, 2)}>
+															<Paper />
+														</button>
 
-													<button className='single__play-btn' onClick={e => this.makePlay(e, 3)}>
-														<Scissors />
-													</button>
-												</div>
-											)}
-
-											{roundPlay[currentRound] && player.id === this.currentPlayer.id && (
-												<div>
-													<Loading />
-													<p>You choose <span className="icon icon--small">{parsePlayIcons(currentRoundMove)}</span></p>
-												</div>
-											)}
-
-											{player.id !== this.currentPlayer.id && (
-												<div>
-													<Loading />
-													<p>Wait for other player move...</p>
-												</div>
-											)}
-
-											<div>
-												<p className="single__play-summary-result">
-													<strong>{player.roundsWin}</strong>
-												</p>
-
-												{rounds.length > 0 && (
-													<div className='single__play-results'>
-														{rounds.map((round, roundIdx) => {
-															if(round.finished) {
-																return (
-																	<div className='single__play-result' key={`round-${roundIdx}`}>
-																		<h3>Round {roundIdx+1}</h3>
-																		<span>
-																			{round.isDraw && <Draw />}
-																			{!round.isDraw && round.winner.id === player.id && <Win />}
-																			{!round.isDraw && round.winner.id !== player.id && <Loose />}
-																		</span>
-																	</div>
-																);
-															}
-
-															return null;
-														})}
+														<button className='single__play-btn' onClick={e => this.makePlay(e, 3)}>
+															<Scissors />
+														</button>
 													</div>
 												)}
-											</div>
-										</Player>
-									))}
 
-									{showModal && rounds.length > 0 && (
-										<Modal>
-											{rounds[currentRound-1].isDraw ? (
-												<p>This round has finished with a draw</p>
-											) : (
+												{roundPlay[currentRound] && player.id === this.currentPlayer.id && (
+													<div>
+														<Loading />
+														<p>You choosed <span className="icon icon--small">{parsePlayIcons(currentRoundMove)}</span></p>
+													</div>
+												)}
+
+												{player.id !== this.currentPlayer.id && (
+													<div>
+														<Loading />
+														<p>Wait for other player move...</p>
+													</div>
+												)}
+
 												<div>
-													<p>{rounds[currentRound-1].winner ? rounds[currentRound-1].winner.name : ''} win this round</p>
-													<p>
-														{rounds[currentRound-1].plays.map(( { play, player }, idx ) => (
-															<span key={idx}>{player.name} choose <span className="icon icon--small">{parsePlayIcons(play)}</span></span>
-														))}
+													<p className="single__play-summary-result">
+														<strong>{player.roundsWin}</strong>
 													</p>
+
+													{rounds.length > 0 && (
+														<div className='single__play-results'>
+															{rounds.map((round, roundIdx) => {
+																if(round.finished) {
+																	return (
+																		<div className='card single__play-result' key={`round-${roundIdx}`}>
+																			<h3>Round {roundIdx+1}</h3>
+																			<span>
+																				{round.isDraw && <Draw />}
+																				{!round.isDraw && round.winner.id === player.id && <Win />}
+																				{!round.isDraw && round.winner.id !== player.id && <Loose />}
+																			</span>
+																		</div>
+																	);
+																}
+
+																return null;
+															})}
+														</div>
+													)}
 												</div>
-											)}
-										</Modal>
-									)}
-								</Fragment>
-							)}
-						</div>
+											</Player>
+										))}
+
+										{showModal && rounds.length > 0 && (
+											<Modal className='modal-round'>
+												<p className='modal-round__title'>Round {currentRound}</p>
+												{rounds[currentRound-1].isDraw ? (
+													<div className='modal-round__draw'>
+														<div className='modal-round__draw-icon'>
+															<span className='icon icon--big'>
+																<Draw />
+															</span>
+														</div>
+														<p>This round has finished with a draw</p>
+														<div className='modal-round__plays'>
+															{rounds[currentRound-1].plays.map(( { play, player }, idx ) => (
+																<p key={idx} className='card modal-round__play'>
+																	{player.name} <br /> <span className='icon icon--small'>{parsePlayIcons(play)}</span>
+																</p>
+															))}
+														</div>
+													</div>
+												) : (
+													<div className='modal-round__win'>
+														{rounds[currentRound-1].winner && (
+															<Fragment>
+																<div className='modal-round__win-icon'>
+																	<span className="icon icon--big">
+																		<Win />
+																	</span>
+																</div>
+																<div className='modal-round__win-avatar'>
+																	{parseAvatar(rounds[currentRound-1].winner.avatar)}
+																</div>
+																<p>
+																	<span role="img" aria-label="Party Popper">🎉</span>
+																	<strong>{rounds[currentRound-1].winner.name}</strong> win this round!
+																	<span role="img" aria-label="Party Popper">🎉</span>
+																</p>
+																<div className='modal-round__plays'>
+																	{rounds[currentRound-1].plays.map(( { play, player }, idx ) => (
+																		<p key={idx} className='card modal-round__play'>
+																			{player.name} <br /> <span className='icon icon--small'>{parsePlayIcons(play)}</span>
+																		</p>
+																	))}
+																</div>
+															</Fragment>
+														)}
+													</div>
+												)}
+											</Modal>
+										)}
+									</Fragment>
+								)}
+							</div>
+						)}
 
 						{game.status === 2 && (
 							<div className="single__win">
@@ -305,8 +340,10 @@ class Single extends Component {
 								<h2 className='my-0'>{game.results.matchWinner.name}</h2>
 								<p className='my-0'>You win this match!</p>
 								<div>
-									<span className='single__win-champion'><Champion /></span>
-									{parseAvatar(game.results.matchWinner.avatar)}
+									<div>
+										<span className='single__win-champion'>{parseAvatar(game.results.matchWinner.avatar)}</span>
+										<span className='icon icon--huge single__win-champion-icon'><Champion /></span>
+									</div>
 									<p>
 										<Link className='link link--underline' to='/create'>Create a new game!</Link>
 									</p>
@@ -315,13 +352,31 @@ class Single extends Component {
 								{rounds.length > 0 && rounds.map((round, roundIdx) => {
 									if(round.finished) {
 										return (
-											<div className='single__win-results' key={`round-${roundIdx}`}>
-												<h3>Round {roundIdx+1}</h3>
-												<p><strong>Result: </strong>{round.isDraw ? 'Draw' : `${round.winner.name} win this round`}</p>
+											<div
+												className={`single__win-result${round.isDraw ? ' single__win-result--draw': ''}`}
+												key={`round-${roundIdx}`}
+											>
+												<h3 className='single__win-result-title'>Round {roundIdx+1}</h3>
+												<p className='single__win-result-content'>
+													<strong>Result: </strong>
+													{round.isDraw ?
+														(
+															<Fragment>
+																<span className='icon icon--small single__win-result-icon-draw'><Draw /></span>
+																<span className='single__win-result-text'>&nbsp;Draw</span>
+															</Fragment>
+														)
+														: (
+															<Fragment>
+																<span className='single__win-result-avatar'>{parseAvatar(round.winner.avatar)}</span>
+																<span className='single__win-result-text'><strong>{round.winner.name}</strong> win this round</span>
+															</Fragment>
+														)}
+												</p>
 
 												{round.plays.map((play, playIdx) => (
 													<div key={`roud-${roundIdx}-play-${playIdx}`}>
-														<p>Player {play.player.name} choose {parsePlay(play.play)}</p>
+														<p>Player {play.player.name} choosed <span className='icon icon--small'>{parsePlayIcons(play.play)}</span></p>
 													</div>
 												))}
 											</div>
@@ -368,7 +423,6 @@ const totalGameFields = `
 				play
 			}
 			winner {
-				id
 				name
 				avatar
 			}

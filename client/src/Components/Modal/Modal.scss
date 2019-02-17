@@ -9,11 +9,12 @@
 	&__wrapper {
 		background-color: #fff;
 		left: 50%;
-		min-width: 90%;
+		max-width: 600px;
 		padding: 1em;
 		position: absolute;
 		text-align: center;
 		top: 50%;
 		transform: translate(-50%, -50%);
+		width: 90%;
 	}
 }

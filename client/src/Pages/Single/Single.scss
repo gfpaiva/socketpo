@@ -120,10 +120,6 @@
 		}
 
 		&-result {
-			background-color: rgba(255, 255, 255, .75);
-			box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-			margin: .5em;
-			padding: .5em 1em;
 			@media screen and (max-width: 767px) { display: none }
 
 			svg {
@@ -138,24 +134,62 @@
 
 		h1 { margin: 0; }
 
-		svg {
-			height: 150px;
-			width: 150px;
+		&-champion {
+			display: inline-block;
+
+			svg {
+				height: 150px;
+				width: 150px;
+			}
+
+			&-icon { vertical-align: bottom }
 		}
 
-		&-champion svg {
-			height: 115px;
-			width: 115px;
-		}
-
-		&-results {
+		&-result {
 			@include responsive-font-size(14px);
 			background-color: $secondary-color;
 			padding: .5rem;
 			margin: .5rem 0;
 			text-align: left;
 
+			&-avatar {
+				display: inline-block;
+
+				svg {
+					height: 30px;
+					width: 30px;
+				}
+			}
+
+			&-icon-draw { vertical-align: text-top }
+
 			* { margin: 0 }
+		}
+	}
+}
+
+
+/*
+* MODAL
+*/
+
+.modal-round {
+	&__title {
+		@include responsive-font-size(28px);
+		font-weight: bold;
+	}
+
+	&__plays {
+		display: flex;
+		justify-content: center;
+	}
+
+	&__play { font-weight: bold }
+
+	&__win {
+		&-avatar svg {
+			height: 100px;
+			width: 100px
 		}
 	}
 }

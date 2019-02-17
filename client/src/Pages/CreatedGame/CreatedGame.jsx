@@ -10,8 +10,9 @@ class CreatedGame extends Component {
 
 	state = {
 		copied: false,
+	};
 
-	}
+	copyTimeout = null;
 
 	gameUrl = `${window.location.protocol}//${window.location.host}/game/${this.props.createdGame.hash}`
 
@@ -28,10 +29,15 @@ class CreatedGame extends Component {
 		document.removeEventListener('copy', copyFunc, false);
 
 		this.setState(() => ({ copied: true }), () => {
-			window.setTimeout(() => {
+			this.copyTimeout = setTimeout(() => {
 				this.setState({ copied: false });
 			}, 2000);
 		});
+	}
+
+	componentWillUnmount() {
+
+		clearTimeout(this.copyTimeout);
 	}
 
 	render() {
@@ -45,7 +51,7 @@ class CreatedGame extends Component {
 				<p><strong>Name: </strong>{createdGame.name}</p>
 				<p>
 					<strong>Link: </strong>
-					<span class="created__game-url">{this.gameUrl}</span>
+					<span className="created__game-url">{this.gameUrl}</span>
 					<Button
 						spaced
 						onClick={this.copyHandler}

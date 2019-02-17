@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 
-import { parseStatus, parseAvatar, parsePlay } from '../../Utils/enums';
+import { parseStatus, parseAvatar, parsePlay, parsePlayIcons } from '../../Utils/enums';
 import { getObject, setObject } from '../../Utils/storageAPI';
 import { sanitize } from '../../Utils/helpers';
 
@@ -33,6 +33,7 @@ class Single extends Component {
 		win: null,
 		lose: null
 	};
+	querySubscription = null;
 
 	state = {
 		currentRound: this.localMatch && this.localMatch.currentRound ? this.localMatch.currentRound : 0,
@@ -45,7 +46,7 @@ class Single extends Component {
 
 		const { hash } = this.props.match.params;
 
-		this.props.getGame.subscribeToMore({
+		this.querySubscription = this.props.getGame.subscribeToMore({
 			document: gameSub,
 			variables: { hash },
 			updateQuery: (prev, { subscriptionData }) => {
@@ -56,10 +57,12 @@ class Single extends Component {
 				const { results } = game;
 
 				if(!results.matchWinner && results.rounds[currentRound] && results.rounds[currentRound].finished === true ) {
+
 					this.setState(prevState => ({
 						currentRound: prevState.currentRound + 1,
 						showModal: true,
 					}), () => {
+
 						setObject(`match-${hash}`, {
 							...getObject(`match-${hash}`),
 							currentRound: this.state.currentRound
@@ -70,6 +73,11 @@ class Single extends Component {
 				return { GameByHash: game }
 			}
 		})
+	}
+
+	componentWillUnmount() {
+
+		this.querySubscription();
 	}
 
 	componentDidMount() {
@@ -89,7 +97,7 @@ class Single extends Component {
 				this.setState({
 					showModal: false
 				})
-			}, 2500);
+			}, (1000 * 60));
 		}
 	}
 
@@ -100,7 +108,7 @@ class Single extends Component {
 
 		this.setState(prevState => {
 			const roundPlay = prevState.roundPlay.concat(true);
-			const currentRoundMove = parsePlay(playValue);
+			const currentRoundMove = playValue;
 
 			return { roundPlay, currentRoundMove }
 		}, () => {
@@ -161,7 +169,7 @@ class Single extends Component {
 		if(!this.currentPlayer) return <Join game={game} />
 
 		return (
-			<div className={`page page--full page--bg-gradient page--single${game && game.status === 2 ? ' page--height-auto' : ''}`}>
+			<div className={`page page--bg-gradient page--single${game && game.status === 2 ? ' page--height-auto' : ''}`}>
 				<div className='container'>
 					<div className="single__head">
 						<h1 className="single__socketpo"><Link to='/'>SocketPo</Link></h1>
@@ -176,111 +184,122 @@ class Single extends Component {
 					</div>
 
 					<div className={`single__content${game && game.status === 2 ? ' page--height-auto' : ''}`}>
-						{game.status === 0 && (
-							<div className='single__split'>
-								{players.map(player => (
-									<Player
-										key={`ready-${player.id}`}
-										game={game}
-										player={player}
-										currentPlayer={this.currentPlayer}
-										showReady
-									/>
-								))}
+						<div className='single__split'>
+							{game.status === 0 && (
+								<Fragment>
+									{players.map(player => (
+										<Player
+											key={`ready-${player.id}`}
+											game={game}
+											player={player}
+											currentPlayer={this.currentPlayer}
+											showReady
+										/>
+									))}
 
-								{players.length === 1 && (
-									<div className='single__player'>
-										<div>
-											<Loading />
-											<p>Wating for other player</p>
+									{players.length === 1 && (
+										<div className='single__player'>
+											<div>
+												<Loading />
+												<p>Wating for other player</p>
+											</div>
 										</div>
-									</div>
-								)}
-							</div>
-						)}
+									)}
+								</Fragment>
+							)}
 
-						{game.status === 1 && (
-							<div className='single__split'>
-								{players.map(player => (
-									<Player
-										key={`play-${player.id}`}
-										game={game}
-										player={player}
-										currentPlayer={this.currentPlayer}
-									>
-										{!roundPlay[currentRound] && player.id === this.currentPlayer.id && (
-											<div className="single__play-area">
-												<p>Make a move: </p>
+							{game.status === 1 && (
+								<Fragment>
+									{players.map(player => (
+										<Player
+											key={`play-${player.id}`}
+											game={game}
+											player={player}
+											currentPlayer={this.currentPlayer}
+										>
+											{!roundPlay[currentRound] && player.id === this.currentPlayer.id && (
+												<div className="single__play-area">
+													<p>Make a move: </p>
 
-												<button className='single__play-btn' onClick={e => this.makePlay(e, 1)}>
-													<Rock />
-												</button>
+													<button className='single__play-btn' onClick={e => this.makePlay(e, 1)}>
+														<Rock />
+													</button>
 
-												<button className='single__play-btn' onClick={e => this.makePlay(e, 2)}>
-													<Paper />
-												</button>
+													<button className='single__play-btn' onClick={e => this.makePlay(e, 2)}>
+														<Paper />
+													</button>
 
-												<button className='single__play-btn' onClick={e => this.makePlay(e, 3)}>
-													<Scissors />
-												</button>
-											</div>
-										)}
-
-										{roundPlay[currentRound] && player.id === this.currentPlayer.id && (
-											<div>
-												<Loading />
-												<p>You choose {currentRoundMove}</p>
-											</div>
-										)}
-
-										{player.id !== this.currentPlayer.id && (
-											<div>
-												<Loading />
-												<p>Wait for other player move...</p>
-											</div>
-										)}
-
-										<div>
-											<p className="single__play-summary-result">
-												<strong>{player.roundsWin}</strong>
-											</p>
-
-											{rounds.length > 0 && (
-												<div className='single__play-results'>
-													{rounds.map((round, roundIdx) => {
-														if(round.finished) {
-															return (
-																<div className='single__play-result' key={`round-${roundIdx}`}>
-																	<h3>Round {roundIdx+1}</h3>
-																	<span>
-																		{round.isDraw && <Draw />}
-																		{!round.isDraw && round.winner.id === player.id && <Win />}
-																		{!round.isDraw && round.winner.id !== player.id && <Loose />}
-																	</span>
-																</div>
-															);
-														}
-
-														return null;
-													})}
+													<button className='single__play-btn' onClick={e => this.makePlay(e, 3)}>
+														<Scissors />
+													</button>
 												</div>
 											)}
-										</div>
-									</Player>
-								))}
 
-								{showModal && rounds.length > 0 && (
-									<Modal>
-										{rounds[currentRound-1].isDraw && (
-											<p>This round has finished with a draw</p>
-										)}
-									</Modal>
-								)}
-							</div>
-						)}
+											{roundPlay[currentRound] && player.id === this.currentPlayer.id && (
+												<div>
+													<Loading />
+													<p>You choose <span className="icon icon--small">{parsePlayIcons(currentRoundMove)}</span></p>
+												</div>
+											)}
+
+											{player.id !== this.currentPlayer.id && (
+												<div>
+													<Loading />
+													<p>Wait for other player move...</p>
+												</div>
+											)}
+
+											<div>
+												<p className="single__play-summary-result">
+													<strong>{player.roundsWin}</strong>
+												</p>
+
+												{rounds.length > 0 && (
+													<div className='single__play-results'>
+														{rounds.map((round, roundIdx) => {
+															if(round.finished) {
+																return (
+																	<div className='single__play-result' key={`round-${roundIdx}`}>
+																		<h3>Round {roundIdx+1}</h3>
+																		<span>
+																			{round.isDraw && <Draw />}
+																			{!round.isDraw && round.winner.id === player.id && <Win />}
+																			{!round.isDraw && round.winner.id !== player.id && <Loose />}
+																		</span>
+																	</div>
+																);
+															}
+
+															return null;
+														})}
+													</div>
+												)}
+											</div>
+										</Player>
+									))}
+
+									{showModal && rounds.length > 0 && (
+										<Modal>
+											{rounds[currentRound-1].isDraw ? (
+												<p>This round has finished with a draw</p>
+											) : (
+												<div>
+													<p>{rounds[currentRound-1].winner ? rounds[currentRound-1].winner.name : ''} win this round</p>
+													<p>
+														{rounds[currentRound-1].plays.map(( { play, player }, idx ) => (
+															<span key={idx}>{player.name} choose <span className="icon icon--small">{parsePlayIcons(play)}</span></span>
+														))}
+													</p>
+												</div>
+											)}
+										</Modal>
+									)}
+								</Fragment>
+							)}
+						</div>
 
 						{game.status === 2 && (
-							<div classNamfe="single__win">
+							<div className="single__win">
 								<h1>{game.name}</h1>
 								<p className='my-0'>Congratulations!</p>
 								<h2 className='my-0'>{game.results.matchWinner.name}</h2>

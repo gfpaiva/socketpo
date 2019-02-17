@@ -2,4 +2,8 @@
 	&--mr { margin-right: .5em }
 	&--medium { width: 22px }
 	&--fix { transform: translateY(3px) }
+	&--small {
+		height: 20px;
+		width: 20px;
+	}
 }

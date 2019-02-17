@@ -1,6 +1,12 @@
 import React from 'react';
 import Avatar from 'avataaars';
 
+import {
+	Rock,
+	Paper,
+	Scissors,
+} from '../Components/Icons/Icons';
+
 const statusValues = {
 	0: 'Stand By',
 	1: 'In progress',
@@ -13,6 +19,12 @@ const playValues = {
 	2: 'Paper',
 	3: 'Scissors'
 };
+
+const playIcons = {
+	1: <Rock />,
+	2: <Paper />,
+	3: <Scissors />
+}
 
 const avatarValues = {
 	1: <Avatar
@@ -67,4 +79,5 @@ const avatarValues = {
 
 export const parseStatus = statusNum => statusValues[statusNum];
 export const parsePlay = playNum => playValues[playNum];
+export const parsePlayIcons = playNum => playIcons[playNum];
 export const parseAvatar = avatarNum => avatarValues[avatarNum];

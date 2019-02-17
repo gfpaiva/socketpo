@@ -23,9 +23,21 @@ class Single extends Component {
 	currentPlayer = this.localMatch ? this.localMatch.player : null;
 	querySubscription = null;
 
+	audio = {
+		win: null,
+		lose: null
+	};
+
 	state = {
 		currentRound: this.localMatch && this.localMatch.currentRound ? this.localMatch.currentRound : 0,
 		showModal: false,
+	}
+
+	componentDidMount() {
+		this.audio = {
+			win: document.querySelector('#audio-win'),
+			lose: document.querySelector('#audio-lose')
+		}
 	}
 
 	componentWillMount() {
@@ -36,6 +48,7 @@ class Single extends Component {
 			document: gameSub,
 			variables: { hash },
 			updateQuery: (prev, { subscriptionData }) => {
+
 				if (!subscriptionData.data) return prev;
 
 				const { currentRound } = this.state;
@@ -45,9 +58,20 @@ class Single extends Component {
 				if(!results.matchWinner && results.rounds[currentRound] && results.rounds[currentRound].finished === true ) {
 
 					this.setState(prevState => ({
+
 						currentRound: prevState.currentRound + 1,
 						showModal: true,
 					}), () => {
+
+						const lastRound = results.rounds[currentRound];
+
+						if(lastRound && !lastRound.isDraw) {
+							if(this.currentPlayer.id === lastRound.winner.id) {
+								this.audio.win.play();
+							} else {
+								this.audio.lose.play();
+							}
+						}
 
 						setObject(`match-${hash}`, {
 							...getObject(`match-${hash}`),
@@ -80,6 +104,7 @@ class Single extends Component {
 	}
 
 	render() {
+
 		const { GameByHash, loading } = this.props.getGame;
 		const { currentRound, showModal } = this.state;
 		const game = GameByHash;

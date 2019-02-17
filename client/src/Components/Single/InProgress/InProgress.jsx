@@ -25,8 +25,6 @@ class InProgress extends Component {
 
 	audio = {
 		select: null,
-		win: null,
-		lose: null
 	};
 
 	state = {
@@ -37,9 +35,7 @@ class InProgress extends Component {
 	componentDidMount() {
 
 		this.audio = {
-			select: document.querySelector('#audio-select'),
-			win: document.querySelector('#audio-win'),
-			lose: document.querySelector('#audio-lose')
+			select: document.querySelector('#audio-select')
 		}
 	}
 
@@ -51,15 +47,18 @@ class InProgress extends Component {
 		const { currentPlayer } = this.props;
 
 		this.setState(prevState => {
+
 			const roundPlay = prevState.roundPlay.concat(true);
 			const currentRoundMove = playValue;
 
 			return { roundPlay, currentRoundMove }
 		}, () => {
+
 			setObject(`match-${hash}`, {
 				...getObject(`match-${hash}`),
 				roundPlay: this.state.roundPlay
 			});
+
 			this.audio.select.play();
 		});
 

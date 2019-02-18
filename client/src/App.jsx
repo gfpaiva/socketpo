@@ -56,6 +56,8 @@ class App extends Component {
 
 				<div className="audio-controls">
 					<button
+						role="img"
+						aria-label="Sound"
 						className="audio-controls__volume"
 						onClick={this.musicHandler}
 					>

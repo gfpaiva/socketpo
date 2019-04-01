@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './Button.scss';
 
@@ -17,6 +18,15 @@ const Button = ({ children, className, medium, big, spaced, secondary, mx, ...pr
 		{children}
 	</button>
 );
+
+Button.propTypes = {
+	className: PropTypes.string,
+	medium: PropTypes.bool,
+	big: PropTypes.bool,
+	spaced: PropTypes.bool,
+	secondary: PropTypes.bool,
+	mx: PropTypes.bool
+};
 
 export default Button;
 

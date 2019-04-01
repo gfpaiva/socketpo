@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Button /> should mount properly 1`] = `
+<Button>
+  <button
+    className="
+			button
+			
+			
+			
+			
+			"
+  />
+</Button>
+`;
+
+exports[`<Button /> should mount with children properly 1`] = `
+<Button>
+  <button
+    className="
+			button
+			
+			
+			
+			
+			"
+  >
+    Test
+  </button>
+</Button>
+`;
+
+exports[`<Button /> should mount with props "className, medium, big, spaced, secondary, mx, onClick" 1`] = `
+<Button
+  big={true}
+  className="test"
+  medium={true}
+  mx={true}
+  onClick={[MockFunction]}
+  secondary={true}
+  spaced={true}
+>
+  <button
+    className="test 
+			button
+			 button--big
+			 button--medium
+			 button--spaced
+			 button--secondary
+			 button--mx"
+    onClick={[MockFunction]}
+  >
+    Test
+  </button>
+</Button>
+`;

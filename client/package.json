@@ -1,41 +1,52 @@
 {
-  "name": "client",
-  "version": "1.1.0",
-  "private": true,
-  "dependencies": {
-    "apollo-boost": "^0.1.28",
-    "apollo-link-ws": "^1.0.14",
-    "avataaars": "^1.2.1",
-    "graphql": "^14.1.1",
-    "graphql-tag": "^2.10.1",
-    "loaders.css": "^0.1.2",
-    "normalize.css": "^8.0.1",
-    "react": "^16.8.2",
-    "react-apollo": "^2.4.1",
-    "react-dom": "^16.8.2",
-    "react-loaders": "^3.0.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.5",
-    "rfs": "^8.0.1",
-    "subscriptions-transport-ws": "^0.9.15"
-  },
-  "proxy": "http://localhost:3001",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "devDependencies": {
-    "node-sass": "^4.11.0"
-  }
+	"name": "client",
+	"version": "1.1.0",
+	"private": true,
+	"dependencies": {
+		"apollo-boost": "^0.1.28",
+		"apollo-link-ws": "^1.0.14",
+		"avataaars": "^1.2.1",
+		"graphql": "^14.1.1",
+		"graphql-tag": "^2.10.1",
+		"loaders.css": "^0.1.2",
+		"normalize.css": "^8.0.1",
+		"react": "^16.8.2",
+		"react-apollo": "^2.4.1",
+		"react-dom": "^16.8.2",
+		"react-loaders": "^3.0.1",
+		"react-router-dom": "^4.3.1",
+		"react-scripts": "^2.1.8",
+		"rfs": "^8.0.1",
+		"subscriptions-transport-ws": "^0.9.15"
+	},
+	"proxy": "http://localhost:3001",
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"test:coverage": "npm run test -- --coverage",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	],
+	"devDependencies": {
+		"enzyme": "^3.9.0",
+		"enzyme-adapter-react-16": "^1.11.2",
+		"enzyme-to-json": "^3.3.5",
+		"jest-transform-graphql": "^2.1.0",
+		"node-sass": "^4.11.0",
+		"waait": "^1.0.4"
+	},
+	"jest": {
+		"snapshotSerializers": [
+			"enzyme-to-json/serializer"
+		]
+	}
 }

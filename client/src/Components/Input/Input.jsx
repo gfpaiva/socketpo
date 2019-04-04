@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './Input.scss';
 
@@ -10,6 +11,11 @@ const Input = ({ className, ...props }) => (
 		{...props}
 	/>
 );
+
+Input.propTypes = {
+	className: PropTypes.string,
+	type: PropTypes.string.isRequired
+};
 
 export default Input;
 

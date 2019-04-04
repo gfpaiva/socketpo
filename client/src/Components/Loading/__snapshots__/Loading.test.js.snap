@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Loading /> should mount properly with props 1`] = `
+<Loading
+  test="test"
+>
+  <Loader
+    active={true}
+    test="test"
+    type="ball-pulse"
+  >
+    <div
+      className="loader loader-undefined loader-active"
+    >
+      <div
+        className="loader-inner ball-pulse"
+      >
+        <div
+          key="0"
+          style={Object {}}
+        />
+        <div
+          key="1"
+          style={Object {}}
+        />
+        <div
+          key="2"
+          style={Object {}}
+        />
+      </div>
+    </div>
+  </Loader>
+</Loading>
+`;

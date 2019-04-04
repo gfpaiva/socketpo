@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Modal /> should mount properly with class, props and children 1`] = `
+<Modal
+  className="test"
+  test="test"
+>
+  <div
+    className="test modal"
+    test="test"
+  >
+    <div
+      className="modal__wrapper"
+    >
+      <div
+        className="modal__content"
+      >
+        <p>
+          Test
+        </p>
+      </div>
+    </div>
+  </div>
+</Modal>
+`;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -12,6 +13,13 @@ import './Player.scss';
 
 
 class Player extends Component {
+
+	static propTypes = {
+		game: PropTypes.object.isRequired,
+		player: PropTypes.object.isRequired,
+		currentPlayer: PropTypes.object.isRequired,
+		showReady: PropTypes.bool
+	}
 
 	getReady = async e => {
 		e.preventDefault();
@@ -71,7 +79,7 @@ class Player extends Component {
 	}
 };
 
-const ready = gql`
+export const ready = gql`
 	mutation ready($hash: String!, $player: PlayerInput!) {
 		ready(hash: $hash, player: $player) {
 			hash

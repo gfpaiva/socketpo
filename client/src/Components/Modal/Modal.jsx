@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './Modal.scss';
 
@@ -15,5 +16,13 @@ const Modal = ({ children, className, ...rest }) => (
 		</div>
 	</div>
 );
+
+Modal.propTypes = {
+	className: PropTypes.string,
+	children: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.node),
+		PropTypes.node
+	]).isRequired
+};
 
 export default Modal;

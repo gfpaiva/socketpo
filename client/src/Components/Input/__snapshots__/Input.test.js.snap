@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Input /> should mount properly with class and props 1`] = `
+<Input
+  className="test"
+  type="text"
+>
+  <input
+    className="test 
+		input"
+    type="text"
+  />
+</Input>
+`;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { parseAvatar } from '../../Utils/enums';
 
@@ -19,6 +20,11 @@ const SelectAvatar = ( { selectedAvatar, selectAvatar } ) => (
 		))}
 	</div>
 );
+
+SelectAvatar.propTypes = {
+	selectedAvatar: PropTypes.number.isRequired,
+	selectAvatar: PropTypes.func.isRequired
+};
 
 export default SelectAvatar;
 

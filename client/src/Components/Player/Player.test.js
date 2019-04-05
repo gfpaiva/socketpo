@@ -12,25 +12,106 @@ const mocks = [
 		request: { query: ready, variables: { hash: game.hash, player: {id: player.id} } },
 		result: {
 			data: {
-				hash: game.hash
+				ready: {
+					__typename: 'Game',
+					hash: 'test'
+				}
 			}
 		},
 	},
 ];
 
 describe('<Player />', () => {
-	it('should mount properly with class, props and children', () => {
+	it('should mount same player properly (getting ready and ready)', () => {
+		const wrapperReadySamePlayer = mount(
+			<MockedProvider>
+				<Player
+					game={game}
+					player={player}
+					currentPlayer={player}
+					showReady
+				/>
+			</MockedProvider>
+		);
+
+		const wrapperNotReadySamePlayer = mount(
+			<MockedProvider>
+				<Player
+					game={game}
+					player={fakePlayer({ ready: true })}
+					currentPlayer={player}
+					showReady
+				/>
+			</MockedProvider>
+		);
+
+		expect(wrapperReadySamePlayer.find('Player')).toMatchSnapshot();
+		expect(wrapperNotReadySamePlayer.find('Player')).toMatchSnapshot();
+	});
+
+	it('should mount other player properly (getting ready and ready)', () => {
+		const wrapperReadyOtherPlayer = mount(
+			<MockedProvider>
+				<Player
+					game={game}
+					player={player}
+					currentPlayer={ { id: 'player02' } }
+					showReady
+				/>
+			</MockedProvider>
+		);
+
+		const wrapperNotReadyOtherPlayer = mount(
+			<MockedProvider>
+				<Player
+					game={game}
+					player={fakePlayer({ ready: true })}
+					currentPlayer={ { id: 'player02' } }
+					showReady
+				/>
+			</MockedProvider>
+		);
+
+		expect(wrapperReadyOtherPlayer.find('Player')).toMatchSnapshot();
+		expect(wrapperNotReadyOtherPlayer.find('Player')).toMatchSnapshot();
+	});
+
+	it('should call mutation player ready', async () => {
 		const wrapper = mount(
 			<MockedProvider mocks={mocks}>
 				<Player
 					game={game}
 					player={player}
 					currentPlayer={player}
+					showReady
 				/>
 			</MockedProvider>
 		);
 
-		console.log("TCL: wrapper", wrapper.find('Player').debug())
-		// expect(wrapper).toMatchSnapshot();
+		const PlayerInstance = wrapper.find('Player').instance();
+		const { data: { ready } } = await PlayerInstance.getReady({ preventDefault: jest.fn() });
+
+		expect(ready.hash).toBe('test');
+	});
+
+	it('should call handler when click', async () => {
+		const wrapper = mount(
+			<MockedProvider mocks={mocks}>
+				<Player
+					game={game}
+					player={player}
+					currentPlayer={player}
+					showReady
+				/>
+			</MockedProvider>
+		);
+
+		const PlayerInstance = wrapper.find('Player').instance();
+		PlayerInstance.getReady = jest.fn();
+		PlayerInstance.forceUpdate();
+
+		wrapper.find('Button').simulate('click');
+
+		expect(PlayerInstance.getReady).toHaveBeenCalled();
 	});
 });

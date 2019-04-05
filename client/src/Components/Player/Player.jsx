@@ -26,7 +26,7 @@ class Player extends Component {
 
 		const { hash } = this.props.game;
 
-		await this.props.ready({
+		return await this.props.ready({
 			variables: {
 				hash,
 				player: {

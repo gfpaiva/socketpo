@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Alerts /> should mount "full" properly 1`] = `
+<Alerts
+  type="Full"
+>
+  <div
+    className="page page--full page--centered page--bg-gradient page--single"
+  >
+    <div>
+      <p>
+        This match is full and in progress 
+        <br />
+        <Link
+          className="link link--underline"
+          replace={false}
+          to="/create"
+        >
+          <a
+            className="link link--underline"
+            href="/create"
+            onClick={[Function]}
+          >
+            Create a new match
+          </a>
+        </Link>
+      </p>
+    </div>
+  </div>
+</Alerts>
+`;
+
+exports[`<Alerts /> should mount "loading" properly 1`] = `
+<Alerts
+  type="Loading"
+>
+  <div
+    className="page page--full page--centered page--bg-gradient page--single"
+  >
+    <div>
+      <Loading>
+        <Loader
+          active={true}
+          type="ball-pulse"
+        >
+          <div
+            className="loader loader-undefined loader-active"
+          >
+            <div
+              className="loader-inner ball-pulse"
+            >
+              <div
+                key="0"
+                style={Object {}}
+              />
+              <div
+                key="1"
+                style={Object {}}
+              />
+              <div
+                key="2"
+                style={Object {}}
+              />
+            </div>
+          </div>
+        </Loader>
+      </Loading>
+      <p>
+        Loading, please wait
+      </p>
+    </div>
+  </div>
+</Alerts>
+`;
+
+exports[`<Alerts /> should mount "not found" properly 1`] = `
+<Alerts
+  type="Not Found"
+>
+  <div
+    className="page page--full page--centered page--bg-gradient page--single"
+  >
+    <div>
+      <p>
+        Match not found 
+        <span
+          aria-label="think"
+          role="img"
+        >
+          🤔
+        </span>
+        <br />
+        <Link
+          className="link link--underline"
+          replace={false}
+          to="/create"
+        >
+          <a
+            className="link link--underline"
+            href="/create"
+            onClick={[Function]}
+          >
+            Create a new match
+          </a>
+        </Link>
+      </p>
+    </div>
+  </div>
+</Alerts>
+`;

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 
@@ -34,5 +35,9 @@ const Alerts = ( { type } ) => (
 		</div>
 	</div>
 );
+
+Alerts.propTypes = {
+	type: PropTypes.string.isRequired
+};
 
 export default Alerts;

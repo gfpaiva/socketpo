@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Title /> should mount properly 1`] = `
+<div
+  className="single__title"
+>
+  <p>
+    Game 01
+  </p>
+  <p>
+    <strong>
+      Status: 
+    </strong>
+    Stand By
+    <span
+      className="single__status single__status--stand-by"
+    />
+  </p>
+</div>
+`;

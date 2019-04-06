@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> should mount properly 1`] = `
+<Header>
+  <div
+    className="single__head"
+  >
+    <h1
+      className="single__socketpo"
+    >
+      <Link
+        replace={false}
+        to="/"
+      >
+        <a
+          href="/"
+          onClick={[Function]}
+        >
+          SocketPo
+        </a>
+      </Link>
+    </h1>
+  </div>
+</Header>
+`;

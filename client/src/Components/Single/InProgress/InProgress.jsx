@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-
-import { graphql, compose } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 
 import { parsePlayIcons } from '../../../Utils/enums';
@@ -39,7 +39,7 @@ class InProgress extends Component {
 		}
 	}
 
-	makePlay = async (e, playValue) => {
+	makePlay = async (e, playValue, play) => {
 
 		e && e.preventDefault();
 
@@ -62,7 +62,7 @@ class InProgress extends Component {
 			this.audio.select.play();
 		});
 
-		await this.props.play({
+		await play({
 			variables: {
 				hash,
 				player: {
@@ -77,60 +77,80 @@ class InProgress extends Component {
 
 		const { roundPlay, currentRoundMove } = this.state;
 		const { currentRound, currentPlayer } = this.props;
-		const { GameByHash } = this.props.getGame;
 
-		const game = GameByHash;
-		const players = game && game.players;
+		return (
+			<Query
+				query={getGame}
+				variables={{
+					hash: this.props.match.params.hash
+				}}
+			>
+				{({ data, loading, error }) => {
+					if(loading || error) return null
 
-		return players.map(player => (
-				<Player
-					key={`play-${player.id}`}
-					game={game}
-					player={player}
-					currentPlayer={currentPlayer}
-				>
-					{!roundPlay[currentRound] && player.id === currentPlayer.id && (
-						<div className="single__play-area">
-							<p>Make a move: </p>
+					const game = data.GameByHash;
+					const players = game && game.players;
 
-							<button className='single__play-btn' onClick={e => this.makePlay(e, 1)}>
-								<Rock />
-							</button>
+					return (
+						players.map(player => (
+							<Player
+								key={`play-${player.id}`}
+								game={game}
+								player={player}
+								currentPlayer={currentPlayer}
+							>
+								{!roundPlay[currentRound] && player.id === currentPlayer.id && (
+									<Mutation mutation={play}>
+										{play => {
+											return (
+												<div className="single__play-area">
+													<p>Make a move: </p>
 
-							<button className='single__play-btn' onClick={e => this.makePlay(e, 2)}>
-								<Paper />
-							</button>
+													<button className='single__play-btn' onClick={e => this.makePlay(e, 1, play)}>
+														<Rock />
+													</button>
 
-							<button className='single__play-btn' onClick={e => this.makePlay(e, 3)}>
-								<Scissors />
-							</button>
-						</div>
-					)}
+													<button className='single__play-btn' onClick={e => this.makePlay(e, 2, play)}>
+														<Paper />
+													</button>
 
-					{roundPlay[currentRound] && player.id === currentPlayer.id && (
-						<div>
-							<Loading />
-							<p>You choosed <span className="icon icon--small">{parsePlayIcons(currentRoundMove)}</span></p>
-						</div>
-					)}
+													<button className='single__play-btn' onClick={e => this.makePlay(e, 3, play)}>
+														<Scissors />
+													</button>
+											</div>
+											)
+										}}
+									</Mutation>
+								)}
 
-					{player.id !== currentPlayer.id && (
-						<div>
-							<Loading />
-							<p>Wait for other player move...</p>
-						</div>
-					)}
+								{roundPlay[currentRound] && player.id === currentPlayer.id && (
+									<div data-test="inprogress-choosed">
+										<Loading />
+										<p>You choosed <span className="icon icon--small">{parsePlayIcons(currentRoundMove)}</span></p>
+									</div>
+								)}
 
-					<RoundsSummary player={player} />
-				</Player>
-			));
-		}
+								{player.id !== currentPlayer.id && (
+									<div data-test="inprogress-wait">
+										<Loading />
+										<p>Wait for other player move...</p>
+									</div>
+								)}
+
+								<RoundsSummary player={player} />
+							</Player>
+						))
+					);
+				}}
+			</Query>
+		)
+	}
+
+	static propTypes = {
+		match: PropTypes.object.isRequired,
+		currentPlayer: PropTypes.object.isRequired,
+		currentRound: PropTypes.number
+	}
 };
 
-export default withRouter(compose(
-	graphql(getGame, {
-		name: 'getGame',
-		options: props => ({ variables: { hash: props.match.params.hash } })
-	}),
-	graphql(play, {name: 'play'}),
-)(InProgress));
+export default withRouter(InProgress);

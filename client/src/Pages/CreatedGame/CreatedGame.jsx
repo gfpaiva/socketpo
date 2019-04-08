@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 
@@ -63,6 +64,10 @@ class CreatedGame extends Component {
 				<p><Link className='link  link--underline' to={`/game/${createdGame.hash}`}>Go to the game</Link></p>
 			</div>
 		);
+	}
+
+	static propTypes = {
+		createdGame: PropTypes.object.isRequired
 	}
 }
 

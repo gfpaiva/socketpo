@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -63,7 +64,7 @@ class Join extends Component {
 
 		return (
 			<div className="page page--full page--centered page--bg-gradient page--single">
-				<form onSubmit={this.joinMatch}>
+				<form onSubmit={this.joinMatch} data-test="join-form">
 					<h1>{game.name}</h1>
 					<p>Want join this match? Enter your name:</p>
 					<Input
@@ -94,9 +95,13 @@ class Join extends Component {
 			</div>
 		);
 	}
+
+	static propTypes = {
+		game: PropTypes.object.isRequired
+	}
 }
 
-const joinGame = gql`
+export const joinGame = gql`
 	mutation joinGame($hash: String!, $player: PlayerInput!) {
 		joinGame(hash: $hash, player: $player) {
 			hash

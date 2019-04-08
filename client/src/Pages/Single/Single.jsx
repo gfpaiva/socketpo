@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import { graphql, compose } from 'react-apollo';
+import { Query } from 'react-apollo';
 
 import { getGame, gameSub } from '../../Utils/graphqlAPI';
 import { getObject, setObject } from '../../Utils/storageAPI';
@@ -26,7 +26,7 @@ class Single extends Component {
 	audio = {
 		win: null,
 		lose: null
-	};
+	}
 
 	state = {
 		currentRound: this.localMatch && this.localMatch.currentRound ? this.localMatch.currentRound : 0,
@@ -40,54 +40,41 @@ class Single extends Component {
 		}
 	}
 
-	componentWillMount() {
+	updateQuery = (prev, { subscriptionData }) => {
 
-		const { hash } = this.props.match.params;
+		if (!subscriptionData.data) return prev;
 
-		this.querySubscription = this.props.getGame.subscribeToMore({
-			document: gameSub,
-			variables: { hash },
-			updateQuery: (prev, { subscriptionData }) => {
+		const { match: { params: { hash } } } = this.props;
+		const { currentRound } = this.state;
+		const { game } = subscriptionData.data.gameSubscription;
+		const { results } = game;
 
-				if (!subscriptionData.data) return prev;
+		if(!results.matchWinner && results.rounds[currentRound] && results.rounds[currentRound].finished === true ) {
 
-				const { currentRound } = this.state;
-				const { game } = subscriptionData.data.gameSubscription;
-				const { results } = game;
+			this.setState(prevState => ({
 
-				if(!results.matchWinner && results.rounds[currentRound] && results.rounds[currentRound].finished === true ) {
+				currentRound: prevState.currentRound + 1,
+				showModal: true,
+			}), () => {
 
-					this.setState(prevState => ({
+				const lastRound = results.rounds[currentRound];
 
-						currentRound: prevState.currentRound + 1,
-						showModal: true,
-					}), () => {
-
-						const lastRound = results.rounds[currentRound];
-
-						if(lastRound && !lastRound.isDraw) {
-							if(this.currentPlayer.id === lastRound.winner.id) {
-								this.audio.win.play();
-							} else {
-								this.audio.lose.play();
-							}
-						}
-
-						setObject(`match-${hash}`, {
-							...getObject(`match-${hash}`),
-							currentRound: this.state.currentRound
-						});
-					});
+				if(lastRound && !lastRound.isDraw) {
+					if(this.currentPlayer.id === lastRound.winner.id) {
+						this.audio.win.play();
+					} else {
+						this.audio.lose.play();
+					}
 				}
 
-				return { GameByHash: game }
-			}
-		})
-	}
+				setObject(`match-${hash}`, {
+					...getObject(`match-${hash}`),
+					currentRound: this.state.currentRound
+				});
+			});
+		}
 
-	componentWillUnmount() {
-
-		this.querySubscription();
+		return { GameByHash: game }
 	}
 
 	componentDidUpdate() {
@@ -105,55 +92,71 @@ class Single extends Component {
 
 	render() {
 
-		const { GameByHash, loading } = this.props.getGame;
-		const { currentRound, showModal } = this.state;
-		const game = GameByHash;
-		const rounds = game && game.results.rounds;
-		const players = game && game.players;
-
-		if(loading) return <Alerts type='Loading' />
-		if(!loading && !game) return <Alerts type='Not Fround' />
-		if(players && players.length === 2 && !this.currentPlayer) return <Alerts type='Full' />
-		if(!this.currentPlayer) return <Join game={game} />
+		const { match: { params: { hash } } } = this.props;
 
 		return (
-			<div className={`page page--bg-gradient page--single${game && game.status === 2 ? ' page--height-auto' : ''}`}>
-				<div className='container'>
-					<Header />
-					<Title />
+			<Query
+				query={getGame}
+				variables={{
+					hash
+				}}
+			>
+				{({ data, loading, error, subscribeToMore }) => {
 
-					<div className={`single__content${game && game.status === 2 ? ' page--height-auto' : ''}`}>
-						{(game.status === 0 || game.status === 1) && (
-							<div className='single__split'>
-								{/* WAITING FOR PLAYER */}
-								{game.status === 0 && <StandBy currentPlayer={this.currentPlayer} />}
+					if(loading) return <Alerts type='Loading' />
+					if(error) return null
 
-								{/* GAME IN PROGRESS */}
-								{game.status === 1 && (
-									<Fragment>
-										<InProgress
-											currentPlayer={this.currentPlayer}
-											currentRound={currentRound}
-										/>
+					const { currentRound, showModal } = this.state;
+					const game = data.GameByHash;
+					const rounds = game && game.results.rounds;
+					const players = game && game.players;
 
-										{showModal && rounds.length > 0 && <RoundModal currentRound={currentRound} />}
-									</Fragment>
-								)}
+					if(!loading && !game) return <Alerts type='Not Fround' />
+					if(players && players.length === 2 && !this.currentPlayer) return <Alerts type='Full' />
+					if(!this.currentPlayer) return <Join game={game} />
+
+					subscribeToMore({
+						document: gameSub,
+						variables: { hash },
+						updateQuery: this.updateQuery
+					});
+
+					return (
+						<div className={`page page--bg-gradient page--single${game && game.status === 2 ? ' page--height-auto' : ''}`}>
+							<div className='container'>
+								<Header />
+								<Title />
+
+								<div className={`single__content${game && game.status === 2 ? ' page--height-auto' : ''}`}>
+									{(game.status === 0 || game.status === 1) && (
+										<div className='single__split'>
+											{/* WAITING FOR PLAYER */}
+											{game.status === 0 && <StandBy currentPlayer={this.currentPlayer} />}
+
+											{/* GAME IN PROGRESS */}
+											{game.status === 1 && (
+												<Fragment>
+													<InProgress
+														currentPlayer={this.currentPlayer}
+														currentRound={currentRound}
+													/>
+
+													{showModal && rounds.length > 0 && <RoundModal currentRound={currentRound} />}
+												</Fragment>
+											)}
+										</div>
+									)}
+
+									{/* GAME HAS FINISHED */}
+									{game.status === 2 && <End />}
+								</div>
 							</div>
-						)}
-
-						{/* GAME HAS FINISHED */}
-						{game.status === 2 && <End />}
-					</div>
-				</div>
-			</div>
+						</div>
+					);
+				}}
+			</Query>
 		);
 	}
 }
 
-export default compose(
-	graphql(getGame, {
-		name: 'getGame',
-		options: props => ({ variables: { hash: props.match.params.hash } })
-	})
-)(Single);
+export default Single;

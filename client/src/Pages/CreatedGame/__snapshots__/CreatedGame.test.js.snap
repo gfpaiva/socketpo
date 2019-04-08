@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreatedGame /> should mount properly 1`] = `
+<CreatedGame
+  createdGame={
+    Object {
+      "__typename": "Game",
+      "hash": "game01",
+      "id": "game01",
+      "name": "Game 01",
+      "players": Array [
+        Object {
+          "__typename": "Player",
+          "avatar": 3,
+          "id": "player01",
+          "name": "Player 01",
+          "ready": false,
+          "roundsWin": 0,
+        },
+      ],
+      "results": Object {
+        "__typename": "Result",
+        "matchWinner": null,
+        "message": null,
+        "rounds": Array [],
+      },
+      "status": 0,
+    }
+  }
+>
+  <div
+    className="page page--created"
+  >
+    <h2>
+      Game has been created: 
+    </h2>
+    <p>
+      <strong>
+        Name: 
+      </strong>
+      Game 01
+    </p>
+    <p>
+      <strong>
+        Link: 
+      </strong>
+      <span
+        className="created__game-url"
+      >
+        http://localhost/game/game01
+      </span>
+      <Button
+        onClick={[Function]}
+        spaced={true}
+      >
+        <button
+          className="
+			button
+			
+			
+			 button--spaced
+			
+			"
+          onClick={[Function]}
+        >
+          Copy Link
+        </button>
+      </Button>
+    </p>
+    <p>
+      <Link
+        className="link  link--underline"
+        replace={false}
+        to="/game/game01"
+      >
+        <a
+          className="link  link--underline"
+          href="/game/game01"
+          onClick={[Function]}
+        >
+          Go to the game
+        </a>
+      </Link>
+    </p>
+  </div>
+</CreatedGame>
+`;

@@ -87,7 +87,7 @@ class Create extends Component {
 					)}
 
 					{!loading && !createdGame && (
-						<form onSubmit={this.createGame}>
+						<form onSubmit={this.createGame} data-test="create-form">
 							<h1>Create a new game</h1>
 							<Input
 								type="text"
@@ -132,7 +132,7 @@ class Create extends Component {
 	}
 }
 
-const createGame = gql`
+export const createGame = gql`
 	mutation createGame($name: String!, $player: PlayerInput) {
 		createGame(name: $name, player: $player) {
 			id

@@ -11,6 +11,7 @@ exports[`<Player /> should mount other player properly (getting ready and ready)
     Object {
       "__typename": "Game",
       "hash": "game01",
+      "id": "game01",
       "name": "Game 01",
       "players": Array [
         Object {
@@ -643,6 +644,7 @@ exports[`<Player /> should mount other player properly (getting ready and ready)
     Object {
       "__typename": "Game",
       "hash": "game01",
+      "id": "game01",
       "name": "Game 01",
       "players": Array [
         Object {
@@ -1280,6 +1282,7 @@ exports[`<Player /> should mount same player properly (getting ready and ready) 
     Object {
       "__typename": "Game",
       "hash": "game01",
+      "id": "game01",
       "name": "Game 01",
       "players": Array [
         Object {
@@ -1960,6 +1963,7 @@ exports[`<Player /> should mount same player properly (getting ready and ready) 
     Object {
       "__typename": "Game",
       "hash": "game01",
+      "id": "game01",
       "name": "Game 01",
       "players": Array [
         Object {

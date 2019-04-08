@@ -14,6 +14,7 @@ export const fakeGame = (fullPlayers = true, matchWinner = null, rounds = [], re
 
 	return {
 		__typename: 'Game',
+		id: 'game01',
 		hash: 'game01',
 		name: 'Game 01',
 		players,

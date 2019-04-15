@@ -9,6 +9,7 @@ cache:
   - node_modules
 before_install:
 - npm update
+- cd client/ && npm install
 install:
 - npm install
 script:

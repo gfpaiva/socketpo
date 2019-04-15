@@ -14,7 +14,7 @@
 	"heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
 	"test:client": "cd client/ && npm test",
 	"build:client": "cd client/ && npm run test:coverage",
-	"coverage:client": "cd client/ && npm build"
+	"coverage:client": "cd client/ && npm run build"
   },
   "author": "Guilherme Paiva",
   "license": "ISC",

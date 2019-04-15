@@ -12,6 +12,6 @@ before_install:
 install:
 - npm install
 script:
-- npm test:client
+- npm run test:client
 - npm run coverage:client
-- npm build:client
+- npm run build:client

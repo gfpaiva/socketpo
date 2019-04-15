@@ -10,10 +10,10 @@ cache:
   - clinent/node_modules
 before_install:
 - npm update
+- cd client
 install:
-- cd client/ && npm install
 - npm install
 script:
-- npm run test:client
-- npm run coverage:client
-- npm run build:client
+- npm run test
+- npm run test:coverage
+- npm run build

@@ -7,10 +7,11 @@ branches:
 cache:
   directories:
   - node_modules
+  - clinent/node_modules
 before_install:
 - npm update
-- cd client/ && npm install
 install:
+- cd client/ && npm install
 - npm install
 script:
 - npm run test:client

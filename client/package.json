@@ -24,7 +24,7 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"test:coverage": "npm run test -- --coverage",
+		"test:coverage": "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
 		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
@@ -37,6 +37,7 @@
 		"not op_mini all"
 	],
 	"devDependencies": {
+		"coveralls": "^3.0.3",
 		"enzyme": "^3.9.0",
 		"enzyme-adapter-react-16": "^1.11.2",
 		"enzyme-to-json": "^3.3.5",
@@ -51,6 +52,6 @@
 		"collectCoverageFrom": [
 			"src/**/*.{js,jsx}",
 			"!src/index.js"
-		  ]
+		]
 	}
 }

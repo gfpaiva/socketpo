@@ -72,7 +72,7 @@ describe('<Join />', () => {
 			.find('form')
 			.simulate('submit');
 
-		await wait();
+		await wait(100);
 		wrapper.update();
 
 		expect(window.location.reload).toHaveBeenCalled();

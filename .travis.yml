@@ -2,11 +2,11 @@ language: node_js
 node_js:
 - '8'
 branches:
-	only:
-	- master
+  only:
+  - master
 cache:
-	directories:
-	- node_modules
+  directories:
+  - node_modules
 before_install:
 - npm update
 install:

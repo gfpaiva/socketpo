@@ -1,58 +1,45 @@
 const express = require('express'),
 	path = require('path'),
 	dotenv = require('dotenv').config(),
-	consign = require('consign'),
-	bodyParser = require('body-parser'),
 	compression = require('compression'),
-	cors = require('cors'),
 	helmet = require('helmet'),
-	{ createServer } = require('http'),
-	{ SubscriptionServer } = require('subscriptions-transport-ws'),
-	{ execute, subscribe } = require('graphql'),
-	schema = require('./graphql/schema');
-	app = express(),
-	server = createServer(app);
+	db = require('./libs/db')(),
+	models = require('./models/game'),
+	routes = require('./routes'),
+	{ Query, Mutation } = require('./graphql/resources/game/game.resolvers'),
+	{ Subscription } = require('./graphql/resources/subscription/subscription.resolvers'),
+	{ GraphQLServer } = require('graphql-yoga');
+
+const server = new GraphQLServer({
+	typeDefs: './graphql/schema.graphql',
+	resolvers: {
+		Mutation,
+		Query,
+		Subscription
+	},
+	resolverValidationOptions: {
+		requireResolversForResolveType: false,
+	},
+	context: req => ({
+		...req,
+		db,
+		models
+	}),
+});
+const app = server.express;
+
 
 app.use(compression());
 app.use(express.static(path.resolve(__dirname, './client/build')));
 app.use(helmet());
-app.use(cors({
-	origin: '*',
-	methods: ['GET', 'POST'],
-}));
-app.use(bodyParser.json());
 
-app.set('port', process.env.PORT || 3001);
-app.set("json spaces", 4);
+routes(app);
 
-consign({verbose: false})
-	.include('libs/config.js')
-	.then('libs/db.js')
-	.then('models')
-	.then('routes')
-	.into(app);
-
-server.listen(app.get('port'), () => {
-	console.log(`SocketPO running on port ${app.get('port')}`);
-
-	new SubscriptionServer({
-			execute,
-			subscribe,
-			schema,
-			/* onConnect: (connectionParams, webSocket, context) => {
-				console.log('CONNECT: connectionParams', connectionParams);
-				console.log('CONNECT: webSocket', webSocket);
-				console.log('CONNECT: context', context);
-			}, */
-			/* onDisconnect: (connectionParams, webSocket, context) => {
-				console.log('CONNECT: connectionParams', connectionParams);
-				console.log('CONNECT: webSocket', webSocket);
-				console.log('CONNECT: context', context);
-			}, */
-		}, {
-			server,
-			path: '/subscriptions',
-	});
-});
+server.start({
+	port: process.env.PORT || 3001,
+	endpoint: '/graphql',
+	subscriptions: '/graphql',
+	playground: '/graphql/playground'
+}, ({ port }) => console.log(`SocketPO running on port ${port}`));
 
 module.exports = app;

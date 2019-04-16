@@ -39,7 +39,7 @@ server.start({
 	port: process.env.PORT || 3001,
 	endpoint: '/graphql',
 	subscriptions: '/graphql',
-	playground: '/graphql/playground'
+	playground: process.env.NODE_ENV === 'development' ? '/graphql' : false
 }, ({ port }) => console.log(`SocketPO running on port ${port}`));
 
 module.exports = app;

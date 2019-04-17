@@ -36,7 +36,7 @@ app.use(helmet());
 routes(app);
 
 server.start({
-	port: process.env.PORT || 3001,
+	port: process.env.PORT || 3003,
 	endpoint: '/graphql',
 	subscriptions: '/graphql',
 	playground: process.env.NODE_ENV === 'development' ? '/graphql' : false

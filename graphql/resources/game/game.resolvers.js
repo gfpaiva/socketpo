@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const pubsub = require('../../../libs/pubsub');
 const { GAME } = require('../../../libs/events');
+const { gameNotFound, playerNotFound } = require('../../../libs/errorHandlers');
 
 module.exports = {
 	Query: {
@@ -10,7 +11,7 @@ module.exports = {
 	},
 
 	Mutation: {
-		createGame: (root, { name , player }, ctx) => {
+		createGame: async (root, { name , player }, ctx) => {
 			const Game = ctx.models.game;
 			let newGame;
 			let newGamePlayer;
@@ -25,7 +26,7 @@ module.exports = {
 				newGame.hash = crypto.createHash('sha1').update(newGame.id).digest('hex');
 				newGame.players.push(newGamePlayer);
 
-				newGame.save();
+				await newGame.save();
 			} catch (error) {
 				throw new Error(error);
 			}
@@ -37,11 +38,13 @@ module.exports = {
 		joinGame: async (root, { hash, player }, ctx) => {
 			const game = await ctx.models.game.findOne({ hash });
 
+			if(!game) return gameNotFound(hash);
+
 			if(game.status === 0 && game.players.length === 1) {
 				game.players.push(player);
 
 				try {
-					game.save();
+					await game.save();
 				} catch (error) {
 					throw new Error(error);
 				}
@@ -55,14 +58,17 @@ module.exports = {
 
 		ready: async (root, { hash, player }, ctx) => {
 			const game = await ctx.models.game.findOne({ hash });
-			const gamePlayer = game.players.id(player.id);
+			const gamePlayer = await game.players.id(player.id);
+
+			if(!game) return gameNotFound(hash);
+			if(!gamePlayer) playerNotFound(player.id);
 
 			if(game.status !== 0) throw new Error('Match alredy start');
 			gamePlayer.ready = true;
 			if(!game.players.some(player => player.ready === false)) game.status = 1;
 
 			try {
-				game.save();
+				await game.save();
 			} catch (error) {
 				throw new Error(error);
 			}
@@ -73,9 +79,11 @@ module.exports = {
 
 		play: async (root, { hash, player, play }, ctx) => {
 			const game = await ctx.models.game.findOne({ hash });
+			const gamePlayer = await game.players.id(player.id);
 			const { rounds } = game.results;
-			const gamePlayer = game.players.id(player.id);
 
+			if(!game) return gameNotFound(hash);
+			if(!gamePlayer) playerNotFound(player.id);
 			if(game.status !== 1) throw new Error('Match alredy finished');
 
 			if(rounds && rounds.length <= 0) game.results.rounds.push({ plays: [] });
@@ -158,7 +166,7 @@ module.exports = {
 			}
 
 			try {
-				game.save();
+				await game.save();
 			} catch (error) {
 				throw new Error(error);
 			}

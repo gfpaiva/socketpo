@@ -11,8 +11,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon -e js,graphql -x node --inspect server.js",
+    "dev:test": "NODE_ENV=test nodemon -e js,graphql -x node --inspect server.js",
     "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest --detectOpenHandles"
   },
   "author": "Guilherme Paiva",
   "license": "ISC",
@@ -32,16 +33,18 @@
     "subscriptions-transport-ws": "^0.9.15"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.11",
     "jest": "^24.7.1",
     "jest-cli": "^24.7.1",
     "nodemon": "^1.18.10",
     "supertest": "^4.0.2"
   },
   "jest": {
+    "verbose": true,
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/client/"
-	],
-	"testEnvironment": "node"
+    ],
+    "testEnvironment": "node"
   }
 }

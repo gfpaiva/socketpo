@@ -80,9 +80,6 @@ describe('<Create />', () => {
 		await wait(100);
 		wrapper.update();
 
-		console.log('STATE()', wrapper.find('Create').state());
-		console.log('INSTANCE()', wrapper.find('Create').instance().state)
-
 		expect(wrapper.find('Create').state().createdGame).toMatchObject(game);
 	});
 });

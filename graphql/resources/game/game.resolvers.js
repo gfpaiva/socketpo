@@ -37,7 +37,6 @@ module.exports = {
 
 		joinGame: async (root, { hash, player }, ctx) => {
 			const game = await ctx.models.game.findOne({ hash });
-
 			if(!game) return gameNotFound(hash);
 
 			if(game.status === 0 && game.players.length === 1) {
@@ -58,12 +57,13 @@ module.exports = {
 
 		ready: async (root, { hash, player }, ctx) => {
 			const game = await ctx.models.game.findOne({ hash });
-			const gamePlayer = await game.players.id(player.id);
-
 			if(!game) return gameNotFound(hash);
+
+			const gamePlayer = await game.players.id(player.id);
 			if(!gamePlayer) playerNotFound(player.id);
 
 			if(game.status !== 0) throw new Error('Match alredy start');
+
 			gamePlayer.ready = true;
 			if(!game.players.some(player => player.ready === false)) game.status = 1;
 
@@ -79,12 +79,14 @@ module.exports = {
 
 		play: async (root, { hash, player, play }, ctx) => {
 			const game = await ctx.models.game.findOne({ hash });
-			const gamePlayer = await game.players.id(player.id);
-			const { rounds } = game.results;
-
 			if(!game) return gameNotFound(hash);
+
+			const gamePlayer = await game.players.id(player.id);
 			if(!gamePlayer) playerNotFound(player.id);
+
 			if(game.status !== 1) throw new Error('Match alredy finished');
+
+			const { rounds } = game.results;
 
 			if(rounds && rounds.length <= 0) game.results.rounds.push({ plays: [] });
 

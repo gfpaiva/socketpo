@@ -1,0 +1,6 @@
+type GameSub {
+	game: Game
+	hash: String
+	player: String
+	message: String
+}

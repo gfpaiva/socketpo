@@ -19,7 +19,7 @@ const APIURL = process.env.NODE_ENV === 'production' ? 'socketpo.herokuapp.com' 
 const WS_PROTOCOL = process.env.NODE_ENV === 'production' ? 'wss' : 'ws';
 
 const wsLink = new WebSocketLink({
-	uri: `${WS_PROTOCOL}://${APIURL}/subscriptions`,
+	uri: `${WS_PROTOCOL}://${APIURL}/graphql`,
 	options: {
 		reconnect: true,
 		connectionParams: {

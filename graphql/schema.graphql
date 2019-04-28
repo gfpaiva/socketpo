@@ -1,0 +1,19 @@
+# import * from './resources/game/game.schema.graphql'
+# import * from './resources/subscription/subscription.schema.graphql'
+
+type Query {
+	Games: [ Game ]
+	GameByHash(hash: String!): Game
+	GameById(id: ID!): Game
+}
+
+type Mutation {
+	createGame(name: String!, player: PlayerInput): Game
+	joinGame(hash: String!, player: PlayerInput!): Game
+	ready(hash: String!, player: PlayerInput!): Game
+	play(hash: String!, player: PlayerInput!, play: Int!): Game
+}
+
+type Subscription {
+	gameSubscription(hash: String!): GameSub
+}

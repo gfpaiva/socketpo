@@ -1,6 +1,10 @@
 language: node_js
 node_js:
 - '8'
+services:
+  - mongodb
+env:
+  - SKIP_PREFLIGHT_CHECK=true
 branches:
   only:
   - master
@@ -11,9 +15,13 @@ cache:
 before_install:
 - npm update
 - cd client
+- npm install
+- cd ..
 install:
 - npm install
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 script:
-- npm run test
-- npm run test:coverage
-- npm run build
+- npm test
+- npm run test:client

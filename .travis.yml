@@ -22,4 +22,7 @@ before_script:
   - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 script:
 - npm test
-- npm run test:client
+- cd client
+- npm run test
+- npm run test:coverage
+- npm run build

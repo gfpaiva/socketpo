@@ -3,6 +3,8 @@ node_js:
 - '8'
 services:
   - mongodb
+env:
+  - SKIP_PREFLIGHT_CHECK=true
 branches:
   only:
   - master

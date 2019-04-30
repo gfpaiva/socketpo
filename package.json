@@ -14,7 +14,7 @@
     "dev:test": "NODE_ENV=test nodemon -e js,graphql -x node --inspect server.js",
     "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
 	"test": "NODE_ENV=test jest --detectOpenHandles --ci --forceExit",
-	"test:client": "cd client && npm test && npm run test:coverage && npm run build"
+	"test:client": "cd client && npm test -- --verbose --ci --forceExit && npm run test:coverage && npm run build"
   },
   "author": "Guilherme Paiva",
   "license": "ISC",

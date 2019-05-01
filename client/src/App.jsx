@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Route, Switch } from 'react-router-dom';
 
@@ -9,65 +9,52 @@ import Single from './Pages/Single/Single';
 
 import { SoundOn, SoundOff } from './Components/Icons/Icons';
 
-class App extends Component {
+const App = () => {
+	let audio = document.querySelector('#audio-initial');
 
-	state = {
-		isMusicMuted: false
-	}
-
-	audio = null;
-
-	musicHandler = e => {
+	const [ isMusicMuted, updateMusicMuted ] = useState(false);
+	const musicHandler = e => {
 		e.preventDefault();
-
-		this.setState(prevState => ({
-			isMusicMuted: !prevState.isMusicMuted
-		}), () => this.state.isMusicMuted ? this.audio.pause() : this.audio.play())
+		updateMusicMuted(!isMusicMuted);
 	};
+	useEffect(() => {
+		isMusicMuted ? audio.pause() : audio.play();
+	}, [isMusicMuted]);
 
-	componentDidMount() {
-		this.audio = document.querySelector('#audio-initial');
-
-		const playPromise = this.audio.play();
+	useEffect(() => {
+		const playPromise = audio.play();
 
 		if (playPromise !== undefined) {
 			playPromise.catch(error => {
-				this.setState({
-					isMusicMuted: true
-				});
+				updateMusicMuted(true);
 			});
-		}
-	}
+		};
+	}, []);
 
-	render() {
+	return (
+		<div className="App">
+			<Switch>
+				<Route exact path="/" component={Home}/>
+				<Route exact path="/create" component={Create}/>
+				<Route exact path="/game/:hash" component={Single}/>
 
-		const { isMusicMuted } = this.state;
+				{/* 404 page */}
+				<Route component={NotFound} />
+			</Switch>
 
-		return (
-			<div className="App">
-				<Switch>
-					<Route exact path="/" component={Home}/>
-					<Route exact path="/create" component={Create}/>
-					<Route exact path="/game/:hash" component={Single}/>
-
-					{/* 404 page */}
-					<Route component={NotFound} />
-				</Switch>
-
-				<div className="audio-controls">
-					<button
-						role="img"
-						aria-label="Sound"
-						className="audio-controls__volume"
-						onClick={this.musicHandler}
-					>
-						{isMusicMuted ? <SoundOff /> : <SoundOn /> }
-					</button>
-				</div>
-
+			<div className="audio-controls">
+				<button
+					role="img"
+					aria-label="Sound"
+					className="audio-controls__volume"
+					onClick={musicHandler}
+				>
+					{isMusicMuted ? <SoundOff /> : <SoundOn /> }
+				</button>
 			</div>
-		);
-	}
-}
+
+		</div>
+	);
+};
 
 export default App;

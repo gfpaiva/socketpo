@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import { graphql } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { parseAvatar } from '../../Utils/enums';
@@ -11,72 +11,70 @@ import { Play } from '../Icons/Icons';
 
 import './Player.scss';
 
+const Player = ({ game, player, currentPlayer, showReady, children }) => {
 
-class Player extends Component {
-
-	static propTypes = {
-		game: PropTypes.object.isRequired,
-		player: PropTypes.object.isRequired,
-		currentPlayer: PropTypes.object.isRequired,
-		showReady: PropTypes.bool
-	}
-
-	getReady = async e => {
+	const getReady = async (e, ready) => {
 		e.preventDefault();
 
-		const { hash } = this.props.game;
+		const { hash } = game;
 
-		return await this.props.ready({
+		return await ready({
 			variables: {
 				hash,
 				player: {
-					id: this.props.currentPlayer.id
+					id: currentPlayer.id
 				}
 			}
 		});
-	}
+	};
 
-	render() {
-
-		const { game, player, currentPlayer, showReady, children } = this.props;
-
-		return (
-			<div className={`single__player${player.id === currentPlayer.id ? ' single__player--me' : ''}`}>
-				<div className="single__player-container">
-					<div>
-						<div className="single__player-avatar">
-							{parseAvatar(player.avatar)}
-						</div>
-						<p className='single__player-name'>{player.name}</p>
+	return (
+		<div className={`single__player${player.id === currentPlayer.id ? ' single__player--me' : ''}`}>
+			<div className="single__player-container">
+				<div>
+					<div className="single__player-avatar">
+						{parseAvatar(player.avatar)}
 					</div>
-
-					{/* TO-DO: Improve component split */}
-					{showReady && (
-						<div>
-							<p>{player.ready ? 'Im ready' : 'Getting Ready'}<span className={`single__player-ready ${player.ready ? 'single__player-ready--on' : 'single__player-ready--off'}`}></span></p>
-							<p>
-								{
-									game.players.length === 2 &&
-									!player.ready &&
-									player.id === currentPlayer.id &&
-									<Button
-										onClick={this.getReady}
-										spaced
-										medium
-									>
-										<Play fill="#fff" className="icon icon--mr icon--fix icon--medium" />
-										Im Ready
-									</Button>
-								}
-							</p>
-						</div>
-					)}
-
-					{children ? children : null}
+					<p className='single__player-name'>{player.name}</p>
 				</div>
+
+				{/* TO-DO: Improve component split */}
+				{showReady && (
+					<div>
+						<p>{player.ready ? 'Im ready' : 'Getting Ready'}<span className={`single__player-ready ${player.ready ? 'single__player-ready--on' : 'single__player-ready--off'}`}></span></p>
+						<p>
+							{
+								game.players.length === 2 &&
+								!player.ready &&
+								player.id === currentPlayer.id &&
+								<Mutation mutation={ready}>
+									{ready => (
+										<Button
+											onClick={e => getReady(e, ready)}
+											spaced
+											medium
+										>
+											<Play fill="#fff" className="icon icon--mr icon--fix icon--medium" />
+											Im Ready
+										</Button>
+									)}
+								</Mutation>
+							}
+						</p>
+					</div>
+				)}
+
+				{children ? children : null}
 			</div>
-		);
-	}
+		</div>
+	);
+};
+
+Player.propTypes = {
+	game: PropTypes.object.isRequired,
+	player: PropTypes.object.isRequired,
+	currentPlayer: PropTypes.object.isRequired,
+	showReady: PropTypes.bool
 };
 
 export const ready = gql`
@@ -87,5 +85,5 @@ export const ready = gql`
 	}
 `;
 
-export default graphql(ready, {name: 'ready'})(Player);
+export default Player;
 

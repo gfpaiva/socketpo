@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-import { graphql } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import CreatedGame from '../CreatedGame/CreatedGame';
@@ -14,24 +14,19 @@ import { setObject } from '../../Utils/storageAPI';
 
 import './Create.scss';
 
-class Create extends Component {
+const Create = () => {
 
-	state = {
+	const [ { match, author, selectedAvatar }, updateInputData ] = useState({
 		match: '',
 		author: 'Player 1',
-		createdGame: null,
-		loading: false,
 		selectedAvatar: 1
-	}
+	});
+	const [ createdGame, updateCreatedGame ] = useState(null);
 
-	createGame = async e => {
+	const createGame = async (e, createGame) => {
 		e.preventDefault();
 
-		const { match, author, selectedAvatar } = this.state;
-
-		this.setState({ loading: true });
-
-		const { data } = await this.props.createGame({
+		const { data } = await createGame({
 			variables: {
 				name: `${match}`,
 				player: {
@@ -41,96 +36,82 @@ class Create extends Component {
 			}
 		});
 
-		const { createGame } = data;
+		setObject(`match-${data.createGame.hash}`, { player: data.createGame.players[0] });
 
-		setObject(`match-${createGame.hash}`, { player: createGame.players[0] });
-
-		this.setState({
-			loading: false,
-			createdGame: createGame
-		});
-	}
-
-	changeHandler = e => {
-		const { target } = e;
-
-		this.setState({
-			[target.name]: target.value
-		});
+		updateCreatedGame(data.createGame);
 	};
 
-	selectAvatar = (e, avatarValue) => {
+	const changeHandler = e => {
+		const { target } = e;
+
+		updateInputData((prevState) => ({
+			...prevState,
+			[target.name]: target.value
+		}));
+	};
+
+	const selectAvatar = (e, avatarValue) => {
 		e.preventDefault();
 
-		this.setState({
+		updateInputData((prevState) => ({
+			...prevState,
 			selectedAvatar: avatarValue
-		});
-	}
+		}));
+	};
 
-	render() {
+	return (
+		<div className="page page--full page--centered page--bg-gradient page--create">
+			<div>
+				{loading && <Loading />}
 
-		const {
-			match,
-			author,
-			loading,
-			createdGame,
-			selectedAvatar
-		} = this.state;
+				{!loading && createdGame && (
+					<CreatedGame {...{createdGame}} />
+				)}
 
-		return (
-			<div className="page page--full page--centered page--bg-gradient page--create">
-				<div>
-					{loading && <Loading />}
+				{!loading && !createdGame && (
+					<form onSubmit={this.createGame} data-test="create-form">
+						<h1>Create a new game</h1>
+						<Input
+							type="text"
+							placeholder="Match Name"
+							name="match"
+							id="match"
+							onChange={this.changeHandler}
+							value={match}
+							required
+							autoComplete="off"
+						/>
 
-					{!loading && createdGame && (
-						<CreatedGame {...{createdGame}} />
-					)}
+						<Input
+							type="text"
+							placeholder="Player Name"
+							name="author"
+							id="author"
+							onChange={this.changeHandler}
+							value={author}
+							required
+							autoComplete="off"
+						/>
 
-					{!loading && !createdGame && (
-						<form onSubmit={this.createGame} data-test="create-form">
-							<h1>Create a new game</h1>
-							<Input
-								type="text"
-								placeholder="Match Name"
-								name="match"
-								id="match"
-								onChange={this.changeHandler}
-								value={match}
-								required
-								autoComplete="off"
-							/>
+						<SelectAvatar
+							selectedAvatar={selectedAvatar}
+							selectAvatar={this.selectAvatar}
+						/>
 
-							<Input
-								type="text"
-								placeholder="Player Name"
-								name="author"
-								id="author"
-								onChange={this.changeHandler}
-								value={author}
-								required
-								autoComplete="off"
-							/>
-
-							<SelectAvatar
-								selectedAvatar={selectedAvatar}
-								selectAvatar={this.selectAvatar}
-							/>
-
-							<Button
-								type="submit"
-								medium
-								spaced
-							>
-								<Add fill="#fff" className="icon icon--mr icon--fix icon--medium" />
-								Create Game
-							</Button>
-						</form>
-					)}
-				</div>
+						<Button
+							type="submit"
+							medium
+							spaced
+						>
+							<Add fill="#fff" className="icon icon--mr icon--fix icon--medium" />
+							Create Game
+						</Button>
+					</form>
+				)}
 			</div>
-		);
-	}
-}
+		</div>
+	);
+};
 
 export const createGame = gql`
 	mutation createGame($name: String!, $player: PlayerInput) {
@@ -147,4 +128,4 @@ export const createGame = gql`
 	}
 `;
 
-export default graphql(createGame, { name: 'createGame' })(Create);
+export default Create;

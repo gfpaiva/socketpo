@@ -13,31 +13,31 @@
     "dev": "nodemon -e js,graphql -x node --inspect server.js",
     "dev:test": "NODE_ENV=test nodemon -e js,graphql -x node --inspect server.js",
     "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-	"test": "NODE_ENV=test jest --detectOpenHandles --ci --forceExit",
-	"test:client": "cd client && npm test && npm run test:coverage && npm run build"
+    "test": "NODE_ENV=test jest --detectOpenHandles --ci --forceExit",
+    "test:client": "cd client && npm test && npm run test:coverage && npm run build"
   },
   "author": "Guilherme Paiva",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "compression": "^1.7.3",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "consign": "^0.1.6",
     "cors": "^2.8.5",
-    "dotenv": "^6.2.0",
+    "dotenv": "^8.0.0",
     "express": "^4.16.4",
-    "graphql": "^14.1.1",
-    "graphql-subscriptions": "^1.0.0",
+    "graphql": "^14.2.1",
+    "graphql-subscriptions": "^1.1.0",
     "graphql-yoga": "^1.17.4",
-    "helmet": "^3.15.1",
+    "helmet": "^3.17.0",
     "lodash": "^4.17.11",
-    "mongoose": "^5.4.13",
-    "subscriptions-transport-ws": "^0.9.15"
+    "mongoose": "^5.5.5",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.11",
+    "@types/jest": "^24.0.12",
     "jest": "^24.7.1",
     "jest-cli": "^24.7.1",
-    "nodemon": "^1.18.10",
+    "nodemon": "^1.19.0",
     "supertest": "^4.0.2"
   },
   "jest": {

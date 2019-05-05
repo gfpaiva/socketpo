@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { graphql } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { getObject, setObject } from '../../Utils/storageAPI';
+import { setObject } from '../../Utils/storageAPI';
 
 import Button from '../../Components/Button/Button';
 import Input from '../../Components/Input/Input';
@@ -13,93 +13,91 @@ import SelectAvatar from '../../Components/SelectAvatar/SelectAvatar';
 
 import './Join.scss';
 
-class Join extends Component {
+const Join = ({ game }) => {
 
-	state = {
+	const [ { player, selectedAvatar }, updateInputData ] = useState({
 		player: 'Player 2',
 		selectedAvatar: 1
-	};
+	});
 
-	changeHandler = e => {
+	const changeHandler = e => {
 		const { target } = e;
 
-		this.setState({
+		updateInputData((prevState) => ({
+			...prevState,
 			[target.name]: target.value
-		});
+		}));
 	};
 
-	selectAvatar = (e, avatarValue) => {
+	const selectAvatar = (e, avatarValue) => {
 		e.preventDefault();
 
-		this.setState({
+		updateInputData((prevState) => ({
+			...prevState,
 			selectedAvatar: avatarValue
-		});
+		}));
 	};
 
-	joinMatch = async e => {
+	const joinMatch = async (e, joinGame) => {
 		e.preventDefault();
 
-		const { player } = this.state;
-		const { hash } = this.props.game;
-		const { data } = await this.props.joinGame({
+		const { hash } = game;
+		const { data } = await joinGame({
 			variables: {
 				hash,
 				player: {
 					name: player,
-					avatar: this.state.selectedAvatar
+					avatar: selectedAvatar
 				}
 			}
 		});
-		const { joinGame } = data;
 
-		setObject(`match-${hash}`, { player: joinGame.players[1] });
-		this.currentPlayer = getObject(`match-${hash}`);
+		setObject(`match-${hash}`, { player: data.joinGame.players[1] });
+		// this.currentPlayer = getObject(`match-${hash}`);
 		window.location.reload();
 	};
 
-	render() {
+	return (
+		<div className="page page--full page--centered page--bg-gradient page--single">
+			<Mutation mutation={joinGame}>
+				{joinGame => (
+					<form onSubmit={e => joinMatch(e, joinGame)} data-test="join-form">
+						<h1>{game.name}</h1>
+						<p>Want join this match? Enter your name:</p>
+						<Input
+							type="text"
+							placeholder="Player Name"
+							name="player"
+							id="player"
+							onChange={changeHandler}
+							value={player}
+							required
+							autoComplete="off"
+						/>
 
-		const { player, selectedAvatar } = this.state;
-		const { game } = this.props;
+						<SelectAvatar
+							selectedAvatar={selectedAvatar}
+							selectAvatar={selectAvatar}
+						/>
 
-		return (
-			<div className="page page--full page--centered page--bg-gradient page--single">
-				<form onSubmit={this.joinMatch} data-test="join-form">
-					<h1>{game.name}</h1>
-					<p>Want join this match? Enter your name:</p>
-					<Input
-						type="text"
-						placeholder="Player Name"
-						name="player"
-						id="player"
-						onChange={this.changeHandler}
-						value={player}
-						required
-						autoComplete="off"
-					/>
+						<Button
+							type="submit"
+							spaced
+							medium
+						>
+							<Play fill="#fff" className="icon icon--mr icon--fix icon--medium" />
+							Join game
+						</Button>
+					</form>
+				)}
+			</Mutation>
+		</div>
+	);
+};
 
-					<SelectAvatar
-						selectedAvatar={selectedAvatar}
-						selectAvatar={this.selectAvatar}
-					/>
-
-					<Button
-						type="submit"
-						spaced
-						medium
-					>
-						<Play fill="#fff" className="icon icon--mr icon--fix icon--medium" />
-						Join game
-					</Button>
-				</form>
-			</div>
-		);
-	}
-
-	static propTypes = {
-		game: PropTypes.object.isRequired
-	}
-}
+Join.propTypes = {
+	game: PropTypes.object.isRequired
+};
 
 export const joinGame = gql`
 	mutation joinGame($hash: String!, $player: PlayerInput!) {
@@ -114,4 +112,4 @@ export const joinGame = gql`
 	}
 `;
 
-export default graphql(joinGame, {name: 'joinGame'})(Join);
+export default Join;

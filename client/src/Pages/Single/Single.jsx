@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 
 import { Query } from 'react-apollo';
 
@@ -17,146 +17,119 @@ import RoundModal from '../../Components/Single/RoundModal/RoundModal';
 
 import './Single.scss';
 
-class Single extends Component {
+const Single = ({ match }) => {
 
-	localMatch = getObject(`match-${this.props.match.params.hash}`);
-	currentPlayer = this.localMatch ? this.localMatch.player : null;
-	querySubscription = null;
+	const localMatch = getObject(`match-${match.params.hash}`);
+	const currentPlayer = localMatch ? localMatch.player : null;
+	const audio = {
+		win: document.querySelector('#audio-win'),
+		lose: document.querySelector('#audio-lose')
+	};
+	const { params: { hash } } = match;
 
-	audio = {
-		win: null,
-		lose: null
-	}
+	const [ currentRound, updateCurrentRound ] = useState((localMatch && localMatch.currentRound) ? localMatch.currentRound : 0);
+	const [ showModal, updateShowModal ] = useState(false);
+	useEffect(() => {
 
-	state = {
-		currentRound: this.localMatch && this.localMatch.currentRound ? this.localMatch.currentRound : 0,
-		showModal: false,
-	}
+		if(showModal) setTimeout(() => updateShowModal(false), 3000);
+	}, [showModal]);
 
-	componentDidMount() {
-		this.audio = {
-			win: document.querySelector('#audio-win'),
-			lose: document.querySelector('#audio-lose')
-		}
-	}
-
-	updateQuery = (prev, { subscriptionData }) => {
+	const updateQuery = (prev, { subscriptionData }) => {
 
 		if (!subscriptionData.data) return prev;
 
-		const { match: { params: { hash } } } = this.props;
-		const { currentRound } = this.state;
 		const { game } = subscriptionData.data.gameSubscription;
 		const { results } = game;
 
 		if(!results.matchWinner && results.rounds[currentRound] && results.rounds[currentRound].finished === true ) {
 
-			this.setState(prevState => ({
+			updateCurrentRound(prevState => {
 
-				currentRound: prevState.currentRound + 1,
-				showModal: true,
-			}), () => {
-
-				const lastRound = results.rounds[currentRound];
+				const lastRound = results.rounds[prevState];
+				const currentRound = prevState + 1;
 
 				if(lastRound && !lastRound.isDraw) {
-					if(this.currentPlayer.id === lastRound.winner.id) {
-						this.audio.win.play();
+					if(currentPlayer.id === lastRound.winner.id) {
+						audio.win.play();
 					} else {
-						this.audio.lose.play();
+						audio.lose.play();
 					}
 				}
 
 				setObject(`match-${hash}`, {
 					...getObject(`match-${hash}`),
-					currentRound: this.state.currentRound
+					currentRound
 				});
+
+				return currentRound;
 			});
+			updateShowModal(true);
 		}
 
 		return { GameByHash: game }
-	}
+	};
 
-	componentDidUpdate() {
+	return (
+		<Query
+			query={getGame}
+			variables={{
+				hash
+			}}
+		>
+			{({ data, loading, error, subscribeToMore }) => {
 
-		const { showModal } = this.state;
+				if(loading) return <Alerts type='Loading' />
+				if(error) return null
 
-		if(showModal) {
-			setTimeout(() => {
-				this.setState({
-					showModal: false
-				})
-			}, 3000);
-		}
-	}
+				const game = data.GameByHash;
+				const rounds = game && game.results.rounds;
+				const players = game && game.players;
 
-	render() {
+				if(!loading && !game) return <Alerts type='Not Fround' />
+				if(players && players.length === 2 && !currentPlayer) return <Alerts type='Full' />
+				if(!currentPlayer) return <Join game={game} />
 
-		const { match: { params: { hash } } } = this.props;
+				subscribeToMore({
+					document: gameSub,
+					variables: { hash },
+					updateQuery
+				});
 
-		return (
-			<Query
-				query={getGame}
-				variables={{
-					hash
-				}}
-			>
-				{({ data, loading, error, subscribeToMore }) => {
+				return (
+					<div className={`page page--bg-gradient page--single${game && game.status === 2 ? ' page--height-auto' : ''}`}>
+						<div className='container'>
+							<Header />
+							<Title />
 
-					if(loading) return <Alerts type='Loading' />
-					if(error) return null
+							<div className={`single__content${game && game.status === 2 ? ' page--height-auto' : ''}`}>
+								{(game.status === 0 || game.status === 1) && (
+									<div className='single__split'>
+										{/* WAITING FOR PLAYER */}
+										{game.status === 0 && <StandBy currentPlayer={currentPlayer} />}
 
-					const { currentRound, showModal } = this.state;
-					const game = data.GameByHash;
-					const rounds = game && game.results.rounds;
-					const players = game && game.players;
+										{/* GAME IN PROGRESS */}
+										{game.status === 1 && (
+											<Fragment>
+												<InProgress
+													currentPlayer={currentPlayer}
+													currentRound={currentRound}
+												/>
 
-					if(!loading && !game) return <Alerts type='Not Fround' />
-					if(players && players.length === 2 && !this.currentPlayer) return <Alerts type='Full' />
-					if(!this.currentPlayer) return <Join game={game} />
+												{showModal && rounds.length > 0 && <RoundModal currentRound={currentRound} />}
+											</Fragment>
+										)}
+									</div>
+								)}
 
-					subscribeToMore({
-						document: gameSub,
-						variables: { hash },
-						updateQuery: this.updateQuery
-					});
-
-					return (
-						<div className={`page page--bg-gradient page--single${game && game.status === 2 ? ' page--height-auto' : ''}`}>
-							<div className='container'>
-								<Header />
-								<Title />
-
-								<div className={`single__content${game && game.status === 2 ? ' page--height-auto' : ''}`}>
-									{(game.status === 0 || game.status === 1) && (
-										<div className='single__split'>
-											{/* WAITING FOR PLAYER */}
-											{game.status === 0 && <StandBy currentPlayer={this.currentPlayer} />}
-
-											{/* GAME IN PROGRESS */}
-											{game.status === 1 && (
-												<Fragment>
-													<InProgress
-														currentPlayer={this.currentPlayer}
-														currentRound={currentRound}
-													/>
-
-													{showModal && rounds.length > 0 && <RoundModal currentRound={currentRound} />}
-												</Fragment>
-											)}
-										</div>
-									)}
-
-									{/* GAME HAS FINISHED */}
-									{game.status === 2 && <End />}
-								</div>
+								{/* GAME HAS FINISHED */}
+								{game.status === 2 && <End />}
 							</div>
 						</div>
-					);
-				}}
-			</Query>
-		);
-	}
-}
+					</div>
+				);
+			}}
+		</Query>
+	);
+};
 
 export default Single;

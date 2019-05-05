@@ -23,7 +23,7 @@ const Create = () => {
 	});
 	const [ createdGame, updateCreatedGame ] = useState(null);
 
-	const createGame = async (e, createGame) => {
+	const createGameSubmit = async (e, createGame) => {
 		e.preventDefault();
 
 		const { data } = await createGame({
@@ -61,54 +61,58 @@ const Create = () => {
 
 	return (
 		<div className="page page--full page--centered page--bg-gradient page--create">
-			<div>
-				{loading && <Loading />}
+			<Mutation mutation={createGame}>
+				{(createGame, { loading }) => (
+					<div>
+						{loading && <Loading />}
 
-				{!loading && createdGame && (
-					<CreatedGame {...{createdGame}} />
+						{!loading && createdGame && (
+							<CreatedGame {...{createdGame}} />
+						)}
+
+						{!loading && !createdGame && (
+							<form onSubmit={e => createGameSubmit(e, createGame)} data-test="create-form">
+								<h1>Create a new game</h1>
+								<Input
+									type="text"
+									placeholder="Match Name"
+									name="match"
+									id="match"
+									onChange={changeHandler}
+									value={match}
+									required
+									autoComplete="off"
+								/>
+
+								<Input
+									type="text"
+									placeholder="Player Name"
+									name="author"
+									id="author"
+									onChange={changeHandler}
+									value={author}
+									required
+									autoComplete="off"
+								/>
+
+								<SelectAvatar
+									selectedAvatar={selectedAvatar}
+									selectAvatar={selectAvatar}
+								/>
+
+								<Button
+									type="submit"
+									medium
+									spaced
+								>
+									<Add fill="#fff" className="icon icon--mr icon--fix icon--medium" />
+									Create Game
+								</Button>
+							</form>
+						)}
+					</div>
 				)}
-
-				{!loading && !createdGame && (
-					<form onSubmit={this.createGame} data-test="create-form">
-						<h1>Create a new game</h1>
-						<Input
-							type="text"
-							placeholder="Match Name"
-							name="match"
-							id="match"
-							onChange={this.changeHandler}
-							value={match}
-							required
-							autoComplete="off"
-						/>
-
-						<Input
-							type="text"
-							placeholder="Player Name"
-							name="author"
-							id="author"
-							onChange={this.changeHandler}
-							value={author}
-							required
-							autoComplete="off"
-						/>
-
-						<SelectAvatar
-							selectedAvatar={selectedAvatar}
-							selectAvatar={this.selectAvatar}
-						/>
-
-						<Button
-							type="submit"
-							medium
-							spaced
-						>
-							<Add fill="#fff" className="icon icon--mr icon--fix icon--medium" />
-							Create Game
-						</Button>
-					</form>
-				)}
-			</div>
+			</Mutation>
 		</div>
 	);
 };

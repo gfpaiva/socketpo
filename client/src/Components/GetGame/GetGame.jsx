@@ -4,9 +4,7 @@ import { Query } from 'react-apollo';
 
 import { getGame } from '../../Utils/graphqlAPI';
 
-const GetGame = ( { hash, children } ) => {
-
-	return (
+const GetGame = ( { hash, children } ) => (
 		<Query
 			query={getGame}
 			variables={{ hash }}
@@ -14,10 +12,9 @@ const GetGame = ( { hash, children } ) => {
 			{({ data, loading, error }) => {
 				if(loading || error) return null;
 
-				children(data);
+				return children(data);
 			}}
 		</Query>
-	);
-};
+);
 
 export default GetGame;

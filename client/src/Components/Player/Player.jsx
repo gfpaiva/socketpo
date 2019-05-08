@@ -48,14 +48,14 @@ const Player = ({ game, player, currentPlayer, showReady, children }) => {
 								!player.ready &&
 								player.id === currentPlayer.id &&
 								<Mutation mutation={ready}>
-									{ready => (
+									{(ready, { loading }) => (
 										<Button
-											onClick={e => getReady(e, ready)}
+											onClick={e => !loading && getReady(e, ready)}
 											spaced
 											medium
 										>
 											<Play fill="#fff" className="icon icon--mr icon--fix icon--medium" />
-											Im Ready
+											{loading ? 'Getting Ready' : 'Im Ready'}
 										</Button>
 									)}
 								</Mutation>

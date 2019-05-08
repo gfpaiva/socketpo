@@ -19,7 +19,7 @@ const App = () => {
 	};
 	useEffect(() => {
 		isMusicMuted ? audio.pause() : audio.play();
-	}, [isMusicMuted]);
+	}, [isMusicMuted, audio]);
 
 	useEffect(() => {
 		const playPromise = audio.play();
@@ -29,7 +29,7 @@ const App = () => {
 				updateMusicMuted(true);
 			});
 		};
-	}, []);
+	}, [audio]);
 
 	return (
 		<div className="App">

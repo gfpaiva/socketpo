@@ -33,7 +33,11 @@ const CreatedGame = ({ createdGame }) => {
 	};
 
 	// Clear timeout anyway on unmount
-	useEffect(() => clearTimeout(copyTimeout));
+	useEffect(() => {
+		return () => {
+			clearTimeout(copyTimeout);
+		}
+	});
 
 	return (
 		<div className="page page--created">

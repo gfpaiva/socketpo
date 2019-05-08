@@ -102,7 +102,6 @@ const InProgress = ({ match, currentPlayer, currentRound }) => {
 
 							{roundPlay[currentRound] && player.id === currentPlayer.id && (
 								<div data-test="inprogress-choosed">
-									<Loading />
 									<p>You choosed <span className="icon icon--small">{parsePlayIcons(currentRoundMove)}</span></p>
 								</div>
 							)}

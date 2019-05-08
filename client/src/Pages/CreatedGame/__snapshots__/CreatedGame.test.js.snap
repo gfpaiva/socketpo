@@ -70,7 +70,6 @@ exports[`<CreatedGame /> should mount properly 1`] = `
     <p>
       <Link
         className="link  link--underline"
-        replace={false}
         to="/game/game01"
       >
         <a

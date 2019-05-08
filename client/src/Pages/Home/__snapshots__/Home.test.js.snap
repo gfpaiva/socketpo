@@ -292,7 +292,6 @@ exports[`<Home /> should mount properly 1`] = `
         >
           <Link
             className="link link--medium link--spaced"
-            replace={false}
             to="/create"
           >
             <a

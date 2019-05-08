@@ -355,7 +355,6 @@ exports[`<App /> should mount properly and play the audio 1`] = `
                 >
                   <Link
                     className="link link--medium link--spaced"
-                    replace={false}
                     to="/create"
                   >
                     <a

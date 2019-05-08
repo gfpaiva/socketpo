@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Query, Mutation } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 
 import { parsePlayIcons } from '../../../Utils/enums';
-import { getGame, play } from '../../../Utils/graphqlAPI';
+import { play } from '../../../Utils/graphqlAPI';
 import { getObject, setObject } from '../../../Utils/storageAPI';
 
+import GetGame from '../../GetGame/GetGame';
 import Loading from '../../Loading/Loading';
 import Player from '../../Player/Player';
 import RoundsSummary from '../RoundsSummary/RoundsSummary';
@@ -62,14 +63,8 @@ const InProgress = ({ match, currentPlayer, currentRound }) => {
 	};
 
 	return (
-		<Query
-			query={getGame}
-			variables={{
-				hash: match.params.hash
-			}}
-		>
-			{({ data, loading, error }) => {
-				if(loading || error) return null
+		<GetGame hash={match.params.hash}>
+			{data => {
 
 				const game = data.GameByHash;
 				const players = game && game.players;
@@ -124,7 +119,7 @@ const InProgress = ({ match, currentPlayer, currentRound }) => {
 					))
 				);
 			}}
-		</Query>
+		</GetGame>
 	);
 };
 

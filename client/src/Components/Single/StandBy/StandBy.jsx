@@ -1,25 +1,17 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { Query } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 
-import { getGame } from '../../../Utils/graphqlAPI';
-
+import GetGame from '../../GetGame/GetGame';
 import Loading from '../../Loading/Loading';
 import Player from '../../Player/Player';
 
 const StandBy = ( { currentPlayer, match } ) => {
 
 	return (
-		<Query
-			query={getGame}
-			variables={{
-				hash: match.params.hash
-			}}
-		>
-			{({ data, loading, error }) => {
-				if(loading || error) return null;
+		<GetGame hash={match.params.hash}>
+			{data => {
 
 				const game = data.GameByHash;
 				const players = game && game.players;
@@ -45,9 +37,9 @@ const StandBy = ( { currentPlayer, match } ) => {
 							</div>
 						)}
 					</Fragment>
-				)
+				);
 			}}
-		</Query>
+		</GetGame>
 	);
 };
 

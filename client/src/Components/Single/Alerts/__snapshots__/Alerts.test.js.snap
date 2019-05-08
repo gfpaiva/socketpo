@@ -13,7 +13,6 @@ exports[`<Alerts /> should mount "full" properly 1`] = `
         <br />
         <Link
           className="link link--underline"
-          replace={false}
           to="/create"
         >
           <a
@@ -92,7 +91,6 @@ exports[`<Alerts /> should mount "not found" properly 1`] = `
         <br />
         <Link
           className="link link--underline"
-          replace={false}
           to="/create"
         >
           <a

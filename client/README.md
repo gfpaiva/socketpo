@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/gfpaiva/socketpo.svg?branch=master)](https://travis-ci.org/gfpaiva/socketpo) [![Coverage Status](https://coveralls.io/repos/github/gfpaiva/socketpo/badge.svg?branch=master)](https://coveralls.io/github/gfpaiva/socketpo?branch=master) [![StackShare](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/gfpaiva/socketpo)
 
-[SocketPO](https://socketpo.herokuapp.com) is a JokenPo (Rock, Paper, Scissors) game made with NodeJS, GraphQL and React for study case.
+[SocketPO](https://socketpo.herokuapp.com) is a JokenPo (Rock, Paper, Scissors) game made with NodeJS, GraphQL and React for study and fun.
 
 _Had a cool idea? Please open an [Issue](hhttps://github.com/gfpaiva/socketpo/issues/new) and let's talk!_
 
@@ -53,7 +53,7 @@ Npm scripts:
 
 ## 📦 Build
 
-Server start the server on Heroku and Client-side build run after with a [heroku-postbuild](https://devcenter.heroku.com/articles/nodejs-support#customizing-the-build-process)
+Server start the on Heroku, and Client-side build run after with a [heroku-postbuild](https://devcenter.heroku.com/articles/nodejs-support#customizing-the-build-process)
 
 On `client/` folder:
 
@@ -63,4 +63,5 @@ On `client/` folder:
 
 ## 🚀 Deploy
 
-Both Server-side and Client-side are hosted into [Heroku](https://www.heroku.com/) the build run automatically after the CI pass on branch `master`
+Both Server-side and Client-side are hosted at [Heroku](https://www.heroku.com/).
+Deploy and build process are run automatically after the CI checks on branch `master`.

@@ -54,7 +54,7 @@ exports[`<RoundsSummary /> should mount properly (Win, Lose, Draw) 1`] = `
         2
       </h3>
       <span>
-        <Loose>
+        <Lose>
           <svg
             version="1.1"
             viewBox="0 0 91 113.75"
@@ -73,7 +73,7 @@ exports[`<RoundsSummary /> should mount properly (Win, Lose, Draw) 1`] = `
               />
             </g>
           </svg>
-        </Loose>
+        </Lose>
       </span>
     </div>
     <div

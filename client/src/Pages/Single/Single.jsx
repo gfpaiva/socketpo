@@ -104,7 +104,6 @@ class Single extends Component {
 
 					const { currentRound, showModal } = this.state;
 					const game = data.GameByHash;
-					const rounds = game && game.results.rounds;
 					const players = game && game.players;
 
 					if(!loading && !game) return <Alerts type='Not Fround' />

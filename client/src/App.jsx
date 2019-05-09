@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { AnimatedSwitch } from 'react-router-transition';
 
 import NotFound from './Pages/NotFound/NotFound';
 import Home from './Pages/Home/Home';
@@ -34,14 +35,32 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<Switch>
+			<AnimatedSwitch
+				atEnter={{
+					opacity: 0,
+					translateX: 10,
+				}}
+				atLeave={{
+					opacity: 0,
+					translateX: -10,
+				}}
+				atActive={{
+					opacity: 1,
+					translateX: 0,
+				}}
+				mapStyles={styles => ({
+					transform: `translateX(${styles.translateX}%)`,
+					opacity: styles.opacity
+				})}
+				className="switch-wrapper"
+			>
 				<Route exact path="/" component={Home}/>
 				<Route exact path="/create" component={Create}/>
 				<Route exact path="/game/:hash" component={Single}/>
 
 				{/* 404 page */}
 				<Route component={NotFound} />
-			</Switch>
+			</AnimatedSwitch>
 
 			<div className="audio-controls">
 				<button

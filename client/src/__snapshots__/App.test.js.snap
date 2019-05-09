@@ -5,397 +5,189 @@ exports[`<App /> should mount properly and play the audio 1`] = `
   <div
     className="App"
   >
-    <Switch>
-      <Route
-        component={[Function]}
-        computedMatch={
-          Object {
-            "isExact": true,
-            "params": Object {},
-            "path": "/",
-            "url": "/",
-          }
+    <RouteWrapper
+      atActive={
+        Object {
+          "opacity": 1,
+          "translateX": 0,
         }
-        exact={true}
-        location={
-          Object {
-            "hash": "",
-            "pathname": "/",
-            "search": "",
-            "state": undefined,
-          }
+      }
+      atEnter={
+        Object {
+          "opacity": 0,
+          "translateX": 10,
         }
-        path="/"
-      >
-        <Home
-          history={
+      }
+      atLeave={
+        Object {
+          "opacity": 0,
+          "translateX": -10,
+        }
+      }
+      className="switch-wrapper"
+      mapStyles={[Function]}
+    >
+      <Route>
+        <AnimatedSwitch
+          atActive={
             Object {
-              "action": "POP",
-              "block": [Function],
-              "createHref": [Function],
-              "go": [Function],
-              "goBack": [Function],
-              "goForward": [Function],
-              "length": 1,
-              "listen": [Function],
-              "location": Object {
-                "hash": "",
-                "pathname": "/",
-                "search": "",
-                "state": undefined,
-              },
-              "push": [Function],
-              "replace": [Function],
+              "opacity": 1,
+              "translateX": 0,
             }
           }
-          location={
+          atEnter={
             Object {
-              "hash": "",
-              "pathname": "/",
-              "search": "",
-              "state": undefined,
+              "opacity": 0,
+              "translateX": 10,
             }
           }
-          match={
+          atLeave={
             Object {
-              "isExact": true,
-              "params": Object {},
-              "path": "/",
-              "url": "/",
+              "opacity": 0,
+              "translateX": -10,
             }
           }
+          className="switch-wrapper"
+          location={Object {}}
+          mapStyles={[Function]}
         >
-          <div
-            className="page page--full page--centered page--bg-gradient page--home"
+          <RouteTransition
+            atActive={
+              Object {
+                "opacity": 1,
+                "translateX": 0,
+              }
+            }
+            atEnter={
+              Object {
+                "opacity": 0,
+                "translateX": 10,
+              }
+            }
+            atLeave={
+              Object {
+                "opacity": 0,
+                "translateX": -10,
+              }
+            }
+            className="switch-wrapper"
+            mapStyles={[Function]}
+            runOnMount={false}
+            wrapperComponent="div"
           >
-            <div
-              className="page--home__content"
+            <TransitionMotion
+              defaultStyles={null}
+              didLeave={[Function]}
+              styles={
+                Array [
+                  Object {
+                    "data": <Switch
+                      location={Object {}}
+                    >
+                      <Route
+                        component={[Function]}
+                        exact={true}
+                        path="/"
+                      />
+                      <Route
+                        component={[Function]}
+                        exact={true}
+                        path="/create"
+                      />
+                      <Route
+                        component={[Function]}
+                        exact={true}
+                        path="/game/:hash"
+                      />
+                      <Route
+                        component={[Function]}
+                      />
+                    </Switch>,
+                    "key": "",
+                    "style": Object {
+                      "opacity": Object {
+                        "damping": 26,
+                        "precision": 0.01,
+                        "stiffness": 170,
+                        "val": 1,
+                      },
+                      "translateX": Object {
+                        "damping": 26,
+                        "precision": 0.01,
+                        "stiffness": 170,
+                        "val": 0,
+                      },
+                    },
+                  },
+                ]
+              }
+              willEnter={[Function]}
+              willLeave={[Function]}
             >
               <div
-                className="page--home__title-section"
+                className="switch-wrapper"
               >
                 <div
-                  className="page--home__title-animation"
+                  key=""
+                  style={
+                    Object {
+                      "opacity": 1,
+                      "transform": "translateX(0%)",
+                    }
+                  }
                 >
-                  <Rock
-                    className="icon icon-animation icon-animation--f"
-                    width={70}
+                  <Switch
+                    key=""
+                    location={Object {}}
                   >
-                    <svg
-                      className="icon icon-animation icon-animation--f"
-                      enableBackground="new 0 0 45 48"
-                      id="Layer_1"
-                      version="1.1"
-                      viewBox="0 0 45 48"
-                      width={70}
-                      x="0px"
-                      xmlSpace="preserve"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      y="0px"
+                    <Route
+                      component={[Function]}
+                      computedMatch={Object {}}
+                      location={Object {}}
                     >
-                      <g>
-                        <polygon
-                          points="30,30 30,27 18,27 18,30 	"
-                        />
-                        <path
-                          d="M42,15c0,6,0,12,0,18h3c0-6,0-12,0-18H42L42,15z"
-                        />
-                        <polygon
-                          points="27,0 21,0 21,3 27,3 	"
-                        />
-                        <polygon
-                          points="33,33 33,30 30,30 30,33 	"
-                        />
-                        <path
-                          d="M9,24v3c3,0,6,0,9,0c0-2,0-4,0-6h-3v3h-3c0-6,0-12,0-18C9,6,6,6,3,6v3c2,0,4,0,6,0c0,4,0,8,0,12H3c0-4,0-8,0-12H0 c0,7,0,14,0,21h3v-6H9L9,24z"
-                        />
-                        <polygon
-                          points="3,30 3,39 6,39 6,30 	"
-                        />
-                        <path
-                          d="M36,39h-3c0,2,0,4,0,6H9v-6H6v9c10,0,20,0,30,0c0-2,0-4,0-6h3v-6h-3V39L36,39z"
-                        />
-                        <polygon
-                          points="39,36 42,36 42,33 39,33 	"
-                        />
-                        <path
-                          d="M18,15c0,2,0,4,0,6c7,0,14,0,21,0v-6h3v-3h-3V6h-3c0,4,0,8,0,12h-6c0-4,0-8,0-12h6V3h-9c0,5,0,10,0,15c-2,0-4,0-6,0 c0-5,0-10,0-15c-3,0-6,0-9,0v3h6V15L18,15z"
-                        />
-                      </g>
-                    </svg>
-                  </Rock>
-                  <Paper
-                    className="icon icon-animation icon-animation--s"
-                    width={70}
-                  >
-                    <svg
-                      className="icon icon-animation icon-animation--s"
-                      enableBackground="new 0 0 51 66"
-                      version="1.1"
-                      viewBox="0 0 51 66"
-                      width={70}
-                      x="0px"
-                      xmlSpace="preserve"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      y="0px"
-                    >
-                      <g>
-                        <path
-                          d="M18,33h3c0-10,0-20,0-30c-3,0-6,0-9,0v3h6V33z"
-                        />
-                        <path
-                          d="M9,39h3c0-11,0-22,0-33H9v3C7,9,5,9,3,9v3c2,0,4,0,6,0C9,21,9,30,9,39z"
-                        />
-                        <path
-                          d="M30,33c0-8,0-16,0-24h6V6h-6V3h-3c0,10,0,20,0,30H30z"
-                        />
-                        <path
-                          d="M39,42c0-3,0-6,0-9h3v-3h-3V9h-3c0,11,0,22,0,33H39z"
-                        />
-                        <rect
-                          height="36"
-                          width="3"
-                          y="12"
-                        />
-                        <rect
-                          height="3"
-                          width="6"
-                          x="21"
-                        />
-                        <rect
-                          height="9"
-                          width="3"
-                          x="3"
-                          y="48"
-                        />
-                        <path
-                          d="M33,63H9v-6H6v9c10,0,20,0,30,0c0-3,0-6,0-9h-3V63z"
-                        />
-                        <path
-                          d="M42,27v3h6v6h3c0-3,0-6,0-9H42z"
-                        />
-                        <rect
-                          height="6"
-                          width="3"
-                          x="42"
-                          y="39"
-                        />
-                        <rect
-                          height="3"
-                          width="3"
-                          x="45"
-                          y="36"
-                        />
-                        <rect
-                          height="6"
-                          width="3"
-                          x="36"
-                          y="51"
-                        />
-                        <rect
-                          height="6"
-                          width="3"
-                          x="39"
-                          y="45"
-                        />
-                      </g>
-                    </svg>
-                  </Paper>
-                  <Scissors
-                    className="icon icon-animation icon-animation--t"
-                    width={70}
-                  >
-                    <svg
-                      className="icon icon-animation icon-animation--t"
-                      enableBackground="new 0 0 48 66;"
-                      version="1.1"
-                      viewBox="0 0 48 66"
-                      width={70}
-                      x="0px"
-                      xmlSpace="preserve"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      y="0px"
-                    >
-                      <g>
-                        <rect
-                          height="3"
-                          width="3"
-                          x="42"
-                          y="33"
-                        />
-                        <polygon
-                          points="36,45 39,45 39,33 42,33 42,30 39,30 39,21 36,21 	"
-                        />
-                        <rect
-                          height="9"
-                          width="3"
-                          x="33"
-                          y="3"
-                        />
-                        <rect
-                          height="9"
-                          width="3"
-                          x="39"
-                          y="12"
-                        />
-                        <rect
-                          height="3"
-                          width="6"
-                          x="36"
-                        />
-                        <rect
-                          height="9"
-                          width="3"
-                          x="30"
-                          y="12"
-                        />
-                        <rect
-                          height="9"
-                          width="3"
-                          x="12"
-                          y="3"
-                        />
-                        <rect
-                          height="3"
-                          width="6"
-                          x="15"
-                        />
-                        <rect
-                          height="18"
-                          width="3"
-                          y="30"
-                        />
-                        <rect
-                          height="9"
-                          width="3"
-                          x="42"
-                          y="3"
-                        />
-                        <rect
-                          height="3"
-                          width="3"
-                          x="3"
-                          y="27"
-                        />
-                        <path
-                          d="M33,63H9v-6H6v9c10,0,20,0,30,0c0-3,0-6,0-9h-3V63z"
-                        />
-                        <path
-                          d="M36,57h3v-3h3v-3c-2,0-4,0-6,0V57z"
-                        />
-                        <rect
-                          height="12"
-                          width="3"
-                          x="27"
-                          y="21"
-                        />
-                        <rect
-                          height="12"
-                          width="3"
-                          x="45"
-                          y="36"
-                        />
-                        <rect
-                          height="3"
-                          width="3"
-                          x="42"
-                          y="48"
-                        />
-                        <rect
-                          height="9"
-                          width="3"
-                          x="3"
-                          y="48"
-                        />
-                        <rect
-                          height="9"
-                          width="3"
-                          x="24"
-                          y="12"
-                        />
-                        <rect
-                          height="9"
-                          width="3"
-                          x="21"
-                          y="3"
-                        />
-                        <polygon
-                          points="18,30 21,30 21,21 18,21 18,12 15,12 15,21 12,21 12,24 18,24 	"
-                        />
-                        <path
-                          d="M9,36h3c0-4,0-8,0-12c-2,0-4,0-6,0v3h3V36z"
-                        />
-                      </g>
-                    </svg>
-                  </Scissors>
-                </div>
-                <h2
-                  className="page--home__welcome"
-                >
-                  Welcome to
-                </h2>
-                <h1
-                  className="page--home__title"
-                >
-                  SocketPo
-                </h1>
-              </div>
-              <Button>
-                <button
-                  className="
-			button
-			
-			
-			
-			
-			"
-                >
-                  <Link
-                    className="link link--medium link--spaced"
-                    to="/create"
-                  >
-                    <a
-                      className="link link--medium link--spaced"
-                      href="/create"
-                      onClick={[Function]}
-                    >
-                      <Add
-                        className="icon icon--mr icon--fix icon--medium"
-                        fill="#fff"
+                      <NotFound
+                        history={
+                          Object {
+                            "action": "POP",
+                            "block": [Function],
+                            "createHref": [Function],
+                            "go": [Function],
+                            "goBack": [Function],
+                            "goForward": [Function],
+                            "length": 1,
+                            "listen": [Function],
+                            "location": Object {
+                              "hash": "",
+                              "pathname": "/",
+                              "search": "",
+                              "state": undefined,
+                            },
+                            "push": [Function],
+                            "replace": [Function],
+                          }
+                        }
+                        location={Object {}}
+                        match={Object {}}
                       >
-                        <svg
-                          className="icon icon--mr icon--fix icon--medium"
-                          version="1.1"
-                          viewBox="0 0 90 90"
-                          x="0px"
-                          y="0px"
-                        >
-                          <g
-                            fill="none"
-                            fillRule="evenodd"
-                            stroke="none"
-                            strokeWidth="1"
+                        <h1>
+                          Page not foud 
+                          <span
+                            aria-label="Neutral Face"
+                            role="img"
                           >
-                            <path
-                              d="M22.7383,0.5051 L22.7383,8.0051 L30.2383,8.0051 L37.7383,8.0051 L45.2383,8.0051 L52.7383,8.0051 L60.2383,8.0051 L67.7383,8.0051 L67.7383,0.5051 L60.2383,0.5051 L52.7383,0.5051 L45.2383,0.5051 L37.7383,0.5051 L30.2383,0.5051 L22.7383,0.5051 L22.7383,0.5051 Z M67.7383,8.0051 L67.7383,15.5051 L75.2383,15.5051 L75.2383,8.0051 L67.7383,8.0051 L67.7383,8.0051 Z M75.2383,15.5051 L75.2383,23.0051 L82.7383,23.0051 L82.7383,15.5051 L75.2383,15.5051 L75.2383,15.5051 Z M82.7383,23.0051 L82.7383,30.5051 L82.7383,38.0051 L82.7383,45.5051 L82.7383,53.0051 L82.7383,60.5051 L82.7383,68.0051 L90.2383,68.0051 L90.2383,60.5051 L90.2383,53.0051 L90.2383,45.5051 L90.2383,38.0051 L90.2383,30.5051 L90.2383,23.0051 L82.7383,23.0051 L82.7383,23.0051 Z M82.7383,68.0051 L75.2383,68.0051 L75.2383,75.5051 L82.7383,75.5051 L82.7383,68.0051 L82.7383,68.0051 Z M75.2383,75.5051 L67.7383,75.5051 L67.7383,83.0051 L75.2383,83.0051 L75.2383,75.5051 L75.2383,75.5051 Z M67.7383,83.0051 L60.2383,83.0051 L52.7383,83.0051 L45.2383,83.0051 L37.7383,83.0051 L30.2383,83.0051 L22.7383,83.0051 L22.7383,90.5051 L30.2383,90.5051 L37.7383,90.5051 L45.2383,90.5051 L52.7383,90.5051 L60.2383,90.5051 L67.7383,90.5051 L67.7383,83.0051 L67.7383,83.0051 Z M22.7383,83.0051 L22.7383,75.5051 L15.2383,75.5051 L15.2383,83.0051 L22.7383,83.0051 L22.7383,83.0051 Z M15.2383,75.5051 L15.2383,68.0051 L7.7383,68.0051 L7.7383,75.5051 L15.2383,75.5051 L15.2383,75.5051 Z M7.7383,68.0051 L7.7383,60.5051 L7.7383,53.0051 L7.7383,45.5051 L7.7383,38.0051 L7.7383,30.5051 L7.7383,23.0051 L0.2383,23.0051 L0.2383,30.5051 L0.2383,38.0051 L0.2383,45.5051 L0.2383,53.0051 L0.2383,60.5051 L0.2383,68.0051 L7.7383,68.0051 L7.7383,68.0051 Z M7.7383,23.0051 L15.2383,23.0051 L15.2383,15.5051 L7.7383,15.5051 L7.7383,23.0051 L7.7383,23.0051 Z M15.2383,15.5051 L22.7383,15.5051 L22.7383,8.0051 L15.2383,8.0051 L15.2383,15.5051 L15.2383,15.5051 Z M37.7383,23.0051 L37.7383,30.5051 L37.7383,38.0051 L30.2383,38.0051 L22.7383,38.0051 L22.7383,45.5051 L22.7383,53.0051 L30.2383,53.0051 L37.7383,53.0051 L37.7383,60.5051 L37.7383,68.0051 L45.2383,68.0051 L52.7383,68.0051 L52.7383,60.5051 L52.7383,53.0051 L60.2383,53.0051 L67.7383,53.0051 L67.7383,45.5051 L67.7383,38.0051 L60.2383,38.0051 L52.7383,38.0051 L52.7383,30.5051 L52.7383,23.0051 L45.2383,23.0051 L37.7383,23.0051 L37.7383,23.0051 Z"
-                              fill="#fff"
-                            />
-                          </g>
-                        </svg>
-                      </Add>
-                      Create a new game
-                    </a>
-                  </Link>
-                </button>
-              </Button>
-            </div>
-          </div>
-        </Home>
+                            😐
+                          </span>
+                        </h1>
+                      </NotFound>
+                    </Route>
+                  </Switch>
+                </div>
+              </div>
+            </TransitionMotion>
+          </RouteTransition>
+        </AnimatedSwitch>
       </Route>
-    </Switch>
+    </RouteWrapper>
     <div
       className="audio-controls"
     >

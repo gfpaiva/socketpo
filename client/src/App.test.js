@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { mount } from 'enzyme';
+import { mountWrap } from './Utils/testUtils'
 import App from './App';
 
 // Mock play and pause on audio tags
@@ -11,7 +11,7 @@ Object.defineProperty(document, 'querySelector', {
 let wrapper;
 
 beforeEach(() => {
-	wrapper = mount(
+	wrapper = mountWrap(
 		<Router>
 			<App />
 		</Router>

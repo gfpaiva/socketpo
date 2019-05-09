@@ -7,7 +7,7 @@ import GetGame from '../../GetGame/GetGame';
 import {
 	Draw,
 	Win,
-	Loose
+	Lose
 } from '../../Icons/Icons';
 
 import './RoundsSummary.scss';
@@ -37,7 +37,7 @@ const RoundsSummary = ( { match, player } ) => {
 												<span>
 													{round.isDraw && <Draw />}
 													{!round.isDraw && round.winner.id === player.id && <Win />}
-													{!round.isDraw && round.winner.id !== player.id && <Loose />}
+													{!round.isDraw && round.winner.id !== player.id && <Lose />}
 												</span>
 											</div>
 										);

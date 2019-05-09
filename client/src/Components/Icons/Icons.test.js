@@ -10,7 +10,7 @@ describe('Icons', () => {
 				<Icons.Add />
 				<Icons.Champion />
 				<Icons.Draw />
-				<Icons.Loose />
+				<Icons.Lose />
 				<Icons.Paper />
 				<Icons.Play />
 				<Icons.Rock />

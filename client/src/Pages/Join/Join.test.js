@@ -59,7 +59,7 @@ describe('<Join />', () => {
 			.find('input#player')
 			.simulate('change', { target: { value: player.name, name: 'player' } });
 
-		expect(wrapper.find('Join').state().player).toBe(player.name);
+		expect(wrapper.find('input#player').props().value).toBe(player.name);
 	});
 
 	it('should submit the form properly', async () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { Query } from 'react-apollo';
 
@@ -8,128 +8,138 @@ import { getObject, setObject } from '../../Utils/storageAPI';
 import Header from '../../Components/Single/Header/Header';
 import Alerts from '../../Components/Single/Alerts/Alerts';
 import Title from '../../Components/Single/Title/Title';
-
-import StandBy from '../../Components/Single/StandBy/StandBy';
-import InProgress from '../../Components/Single/InProgress/InProgress';
-import End from '../../Components/Single/End/End';
+import Steps from '../../Components/Single/Steps/Steps';
 import Join from '../Join/Join';
-import RoundModal from '../../Components/Single/RoundModal/RoundModal';
 
 import './Single.scss';
 
-const Single = ({ match }) => {
+class Single extends Component {
 
-	const localMatch = getObject(`match-${match.params.hash}`);
-	const currentPlayer = localMatch ? localMatch.player : null;
-	const audio = {
-		win: document.querySelector('#audio-win'),
-		lose: document.querySelector('#audio-lose')
-	};
-	const { params: { hash } } = match;
+	localMatch = getObject(`match-${this.props.match.params.hash}`);
+	currentPlayer = this.localMatch ? this.localMatch.player : null;
+	querySubscription = null;
 
-	const [ currentRound, updateCurrentRound ] = useState((localMatch && localMatch.currentRound) ? localMatch.currentRound : 0);
-	const [ showModal, updateShowModal ] = useState(false);
-	useEffect(() => {
+	audio = {
+		win: null,
+		lose: null
+	}
 
-		if(showModal) setTimeout(() => updateShowModal(false), 3000);
-	}, [showModal]);
+	state = {
+		currentRound: this.localMatch && this.localMatch.currentRound ? this.localMatch.currentRound : 0,
+		showModal: false,
+	}
 
-	const updateQuery = (prev, { subscriptionData }) => {
+	componentDidMount() {
+		this.audio = {
+			win: document.querySelector('#audio-win'),
+			lose: document.querySelector('#audio-lose')
+		}
+	}
+
+	updateQuery = (prev, { subscriptionData }) => {
 
 		if (!subscriptionData.data) return prev;
 
+		const { match: { params: { hash } } } = this.props;
+		const { currentRound } = this.state;
 		const { game } = subscriptionData.data.gameSubscription;
 		const { results } = game;
 
 		if(!results.matchWinner && results.rounds[currentRound] && results.rounds[currentRound].finished === true ) {
 
-			updateCurrentRound(prevState => {
+			this.setState(prevState => ({
 
-				const lastRound = results.rounds[prevState];
-				const currentRound = prevState + 1;
+				currentRound: prevState.currentRound + 1,
+				showModal: true,
+			}), () => {
+
+				const lastRound = results.rounds[currentRound];
 
 				if(lastRound && !lastRound.isDraw) {
-					if(currentPlayer.id === lastRound.winner.id) {
-						audio.win.play();
+					if(this.currentPlayer.id === lastRound.winner.id) {
+						this.audio.win.play();
 					} else {
-						audio.lose.play();
+						this.audio.lose.play();
 					}
 				}
 
 				setObject(`match-${hash}`, {
 					...getObject(`match-${hash}`),
-					currentRound
+					currentRound: this.state.currentRound
 				});
-
-				return currentRound;
 			});
-			updateShowModal(true);
 		}
 
 		return { GameByHash: game }
-	};
+	}
 
-	return (
-		<Query
-			query={getGame}
-			variables={{
-				hash
-			}}
-		>
-			{({ data, loading, error, subscribeToMore }) => {
+	componentDidUpdate() {
 
-				if(loading) return <Alerts type='Loading' />
-				if(error) return null
+		const { showModal } = this.state;
 
-				const game = data.GameByHash;
-				const rounds = game && game.results.rounds;
-				const players = game && game.players;
+		if(showModal) {
+			setTimeout(() => {
+				this.setState({
+					showModal: false
+				})
+			}, 3000);
+		}
+	}
 
-				if(!loading && !game) return <Alerts type='Not Fround' />
-				if(players && players.length === 2 && !currentPlayer) return <Alerts type='Full' />
-				if(!currentPlayer) return <Join game={game} />
+	render() {
 
-				subscribeToMore({
-					document: gameSub,
-					variables: { hash },
-					updateQuery
-				});
+		const { match: { params: { hash } } } = this.props;
 
-				return (
-					<div className={`page page--bg-gradient page--single${game && game.status === 2 ? ' page--height-auto' : ''}`}>
-						<div className='container'>
-							<Header />
-							<Title />
+		return (
+			<Query
+				query={getGame}
+				variables={{
+					hash
+				}}
+			>
+				{({ data, loading, error, subscribeToMore }) => {
 
-							<div className={`single__content${game && game.status === 2 ? ' page--height-auto' : ''}`}>
-								{(game.status === 0 || game.status === 1) && (
-									<div className='single__split'>
-										{/* WAITING FOR PLAYER */}
-										{game.status === 0 && <StandBy currentPlayer={currentPlayer} />}
+					if(loading) return <Alerts type='Loading' />
+					if(error) return null
 
-										{/* GAME IN PROGRESS */}
-										{game.status === 1 && (
-											<Fragment>
-												<InProgress
-													currentPlayer={currentPlayer}
-													currentRound={currentRound}
-												/>
+					const { currentRound, showModal } = this.state;
+					const game = data.GameByHash;
+					const rounds = game && game.results.rounds;
+					const players = game && game.players;
 
-												{showModal && rounds.length > 0 && <RoundModal currentRound={currentRound} />}
-											</Fragment>
-										)}
-									</div>
-								)}
+					if(!loading && !game) return <Alerts type='Not Fround' />
+					if(players && players.length === 2 && !this.currentPlayer) return <Alerts type='Full' />
+					if(!this.currentPlayer) return <Join game={game} />
 
-								{/* GAME HAS FINISHED */}
-								{game.status === 2 && <End />}
+					subscribeToMore({
+						document: gameSub,
+						variables: { hash },
+						updateQuery: this.updateQuery
+					});
+
+					return (
+						<div className={`page page--bg-gradient page--single${game && game.status === 2 ? ' page--height-auto' : ''}`}>
+							<div className='container'>
+								<Header />
+								<Title />
+								<Steps
+									currentRound={currentRound}
+									currentPlayer={this.currentPlayer}
+									showModal={showModal}
+									data={data}
+									subscribeToNewData={() => subscribeToMore({
+										document: gameSub,
+										variables: { hash },
+										updateQuery: this.updateQuery
+									})}
+								/>
 							</div>
 						</div>
-					</div>
-				);
-			}}
-		</Query>
-	);
-};
+					);
+				}}
+			</Query>
+		);
+	}
+}
 
 export default Single;

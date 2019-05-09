@@ -67,7 +67,7 @@ describe('<InProgress />', () => {
 		expect(wrapper.find('[data-test="inprogress-wait"]')).toHaveLength(1);
 	});
 
-	it('should mount whith round play properly', async () => {
+	it('should handle play move', async () => {
 		const wrapper = mount(
 			<MockedProvider mocks={mocks}>
 				<Router>
@@ -80,36 +80,13 @@ describe('<InProgress />', () => {
 			</MockedProvider>
 		);
 
-		wrapper.find('InProgress').setState({
-			roundPlay: [true],
-			currentRoundMove: 2
-		});
-
 		await wait();
 		wrapper.update();
 
-		expect(wrapper.find('[data-test="inprogress-choosed"]')).toHaveLength(1);
-		expect(wrapper.find('[data-test="inprogress-wait"]')).toHaveLength(1);
-	});
-
-	it('should handle play move', async () => {
-		const wrapper = mount(
-			<MockedProvider mocks={mocks}>
-				<Router>
-					<InProgress.WrappedComponent
-						match={{params: {hash: game.hash}}}
-						currentPlayer={{id: player.id}}
-					/>
-				</Router>
-			</MockedProvider>
-		);
-
-		await wait();
-		wrapper.update();
+		expect(wrapper.find('[data-test="inprogress-choosed"]')).toHaveLength(0);
 
 		wrapper.find('.single__play-btn').at(1).simulate('click');
 
-		expect(wrapper.find('InProgress').state().roundPlay[0]).toBeTruthy();
-		expect(wrapper.find('InProgress').state().currentRoundMove).toBe(2);
+		expect(wrapper.find('[data-test="inprogress-choosed"]')).toHaveLength(1);
 	});
 });

@@ -69,6 +69,8 @@ const InProgress = ({ match, currentPlayer, currentRound }) => {
 				const game = data.GameByHash;
 				const players = game && game.players;
 
+				// console.log('HAAA', roundPlay, currentRound, players, currentPlayer.id);
+
 				return (
 					players.map(player => (
 						<Player

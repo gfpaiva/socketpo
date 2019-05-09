@@ -76,24 +76,6 @@ describe('<Player />', () => {
 		expect(wrapperNotReadyOtherPlayer.find('Player')).toMatchSnapshot();
 	});
 
-	it('should call mutation player ready', async () => {
-		const wrapper = mount(
-			<MockedProvider mocks={mocks}>
-				<Player
-					game={game}
-					player={player}
-					currentPlayer={player}
-					showReady
-				/>
-			</MockedProvider>
-		);
-
-		const PlayerInstance = wrapper.find('Player').instance();
-		const { data: { ready } } = await PlayerInstance.getReady({ preventDefault: jest.fn() });
-
-		expect(ready.hash).toBe('test');
-	});
-
 	it('should call handler when click', async () => {
 		const wrapper = mount(
 			<MockedProvider mocks={mocks}>
@@ -106,12 +88,10 @@ describe('<Player />', () => {
 			</MockedProvider>
 		);
 
-		const PlayerInstance = wrapper.find('Player').instance();
-		PlayerInstance.getReady = jest.fn();
-		PlayerInstance.forceUpdate();
+		expect(wrapper.find('Button').text()).toBe('Im Ready');
 
 		wrapper.find('Button').simulate('click');
 
-		expect(PlayerInstance.getReady).toHaveBeenCalled();
+		expect(wrapper.find('Button').text()).toBe('Getting Ready');
 	});
 });

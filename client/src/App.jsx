@@ -9,19 +9,20 @@ import Single from './Pages/Single/Single';
 
 import { SoundOn, SoundOff } from './Components/Icons/Icons';
 
+const audio = document.querySelector('#audio-initial');
+
 const App = () => {
-	let audio = document.querySelector('#audio-initial');
 
 	const [ isMusicMuted, updateMusicMuted ] = useState(false);
 	const musicHandler = e => {
 		e.preventDefault();
 		updateMusicMuted(!isMusicMuted);
 	};
-	useEffect(() => {
+	/* useEffect(() => {
 		isMusicMuted ? audio.pause() : audio.play();
-	}, [isMusicMuted, audio]);
+	}, [isMusicMuted]); */
 
-	useEffect(() => {
+	/* useEffect(() => {
 		const playPromise = audio.play();
 
 		if (playPromise !== undefined) {
@@ -29,7 +30,7 @@ const App = () => {
 				updateMusicMuted(true);
 			});
 		};
-	}, [audio]);
+	}, []); */
 
 	return (
 		<div className="App">

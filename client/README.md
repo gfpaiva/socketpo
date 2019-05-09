@@ -65,3 +65,8 @@ On `client/` folder:
 
 Both Server-side and Client-side are hosted at [Heroku](https://www.heroku.com/).
 Deploy and build process are run automatically after the CI checks on branch `master`.
+
+___
+
+This RADME doc is highly inspired in by [this one](https://github.com/rodgerpaulo/rogerramos.me)
+Ty Baêa 💚

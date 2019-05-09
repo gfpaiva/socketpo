@@ -68,5 +68,6 @@ Deploy and build process are run automatically after the CI checks on branch `ma
 
 ___
 
-This RADME doc is highly inspired in by [this one](https://github.com/rodgerpaulo/rogerramos.me)
-Ty Baêa 💚
+This RADME doc is highly inspired by [this one](https://github.com/rodgerpaulo/rogerramos.me)
+
+Thank You My King 💚

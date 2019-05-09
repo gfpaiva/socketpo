@@ -4,7 +4,7 @@
 
 [SocketPO](https://socketpo.herokuapp.com) is a JokenPo (Rock, Paper, Scissors) game made with NodeJS, GraphQL and React for study and fun.
 
-_Had a cool idea? Please open an [Issue](hhttps://github.com/gfpaiva/socketpo/issues/new) and let's talk!_
+_Had a cool idea? Please open an [Issue](https://github.com/gfpaiva/socketpo/issues/new) and let's talk!_
 
 ## ⚙️ Requires
 

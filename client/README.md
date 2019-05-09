@@ -1,68 +1,72 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ✊ 🤚 ✌️ SOCKETPO ✊ 🤚 ✌️ #
 
-## Available Scripts
+[![Build Status](https://travis-ci.org/gfpaiva/socketpo.svg?branch=master)](https://travis-ci.org/gfpaiva/socketpo) [![Coverage Status](https://coveralls.io/repos/github/gfpaiva/socketpo/badge.svg?branch=master)](https://coveralls.io/github/gfpaiva/socketpo?branch=master) [![StackShare](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/gfpaiva/socketpo)
 
-In the project directory, you can run:
+[SocketPO](https://socketpo.herokuapp.com) is a JokenPo (Rock, Paper, Scissors) game made with NodeJS, GraphQL and React for study and fun.
 
-### `npm start`
+_Had a cool idea? Please open an [Issue](https://github.com/gfpaiva/socketpo/issues/new) and let's talk!_
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## ⚙️ Requires
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+- Node 10.9.0+
+- NPM 6.4.1
 
-### `npm test`
+## 🏃🏽‍♂️ Running locally
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+First of all you will need to create a `.env` file on the root folder, with a required configs:
+- **MONGODB_URI**={URI from a mongodb} (I am using [MLab](https://mlab.com/) for local development)
+- **NODE_ENV**=`DEVELOPMENT`
 
-### `npm run build`
+Npm scripts:
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| command              | description                                                                                                                                  |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| npm run dev          | start local both **client** at `localhost:3000` and the **server** at `localhost:3001` (GraphQL Playground at http://localhost:3001/graphql) |
+| npm run dev:server   | start local **server**  at `localhost:3001` (GraphQL Playground at http://localhost:3001/graphql)                                            |
+| npm run dev:client   | start local **client** at `localhost:3000`                                                                                                   |
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## ✔️ Checks
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [TravisCI](https://travis-ci.org) checks both server and client tests and build
+- [Coveralls](https://coveralls.io) check the coverage of client tests
 
-### `npm run eject`
+## 🔍 Testing
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Server-side** tests are made with [Jest](https://jestjs.io/) and [supertest](https://github.com/visionmedia/supertest) to request the GraphQL endpoint and run some queries/mutations. (local mongodb)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Npm scripts:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+| command              | description                                |
+| -------------------- | ------------------------------------------ |
+| npm test             | run all server tests without a watch mode  |
+| npm run test:client  | run all the client side tests and build    |
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+**Client-side** tests are made with [Jest](https://jestjs.io/) and [Enzyme](https://airbnb.io/enzyme/)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Npm scripts:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| command              | description                                        |
+| -------------------- | -------------------------------------------------- |
+| npm test              | run all client tests with a watch mode            |
+| npm run test:coverage | run all client tests and extract coverage reports |
 
-### Code Splitting
+## 📦 Build
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Server start the on Heroku, and Client-side build run after with a [heroku-postbuild](https://devcenter.heroku.com/articles/nodejs-support#customizing-the-build-process)
 
-### Analyzing the Bundle Size
+On `client/` folder:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+| command              | description                                                   |
+| -------------------- | ------------------------------------------------------------- |
+| npm run build        | serve files into `/build` folder                              |
 
-### Making a Progressive Web App
+## 🚀 Deploy
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+Both Server-side and Client-side are hosted at [Heroku](https://www.heroku.com/).
+Deploy and build process are run automatically after the CI checks on branch `master`.
 
-### Advanced Configuration
+___
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+This RADME doc is highly inspired in by [this one](https://github.com/rodgerpaulo/rogerramos.me)
+Ty Baêa 💚

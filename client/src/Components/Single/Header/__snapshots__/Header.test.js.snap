@@ -9,7 +9,6 @@ exports[`<Header /> should mount properly 1`] = `
       className="single__socketpo"
     >
       <Link
-        replace={false}
         to="/"
       >
         <a

@@ -663,7 +663,6 @@ exports[`<End /> should mount draw properly 1`] = `
     <p>
       <Link
         className="link link--underline"
-        replace={false}
         to="/create"
       >
         <a

@@ -1,3 +1,7 @@
+import { BrowserRouter } from 'react-router-dom';
+import { shape } from 'prop-types';
+import { mount } from 'enzyme';
+
 export const fakePlayer = (rewrite) => ({
 	__typename: 'Player',
 	avatar: 3,
@@ -47,3 +51,21 @@ export const fakePlay = (rewrite) => ({
 	play: 0,
 	...rewrite
 });
+
+// Instantiate router context
+const router = {
+	history: new BrowserRouter().history,
+	route: {
+		location: {},
+		match: {},
+	},
+};
+
+const createContext = () => ({
+	context: { router },
+	childContextTypes: { router: shape({}) },
+});
+
+export function mountWrap(node) {
+	return mount(node, createContext());
+}

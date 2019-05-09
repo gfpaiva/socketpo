@@ -19,7 +19,7 @@ First of all you will need to create a `.env` file on the root folder, with a re
 
 Npm scripts:
 | command              | description                                                                                                                                  |
-| -------------------- | -----------------------------------------------------------------------------------------------------------------------------------------    |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | npm run dev          | start local both **client** at `localhost:3000` and the **server** at `localhost:3001` (GraphQL Playground at http://localhost:3001/graphql) |
 | npm run dev:server   | start local **server**  at `localhost:3001` (GraphQL Playground at http://localhost:3001/graphql)                                            |
 | npm run dev:client   | start local **client** at `localhost:3000`                                                                                                   |

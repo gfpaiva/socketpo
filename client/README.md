@@ -18,8 +18,9 @@ First of all you will need to create a `.env` file on the root folder, with a re
 - **NODE_ENV**=`DEVELOPMENT`
 
 Npm scripts:
+
 | command              | description                                                                                                                                  |
-| -------------------- | -----------------------------------------------------------------------------------------------------------------------------------------    |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | npm run dev          | start local both **client** at `localhost:3000` and the **server** at `localhost:3001` (GraphQL Playground at http://localhost:3001/graphql) |
 | npm run dev:server   | start local **server**  at `localhost:3001` (GraphQL Playground at http://localhost:3001/graphql)                                            |
 | npm run dev:client   | start local **client** at `localhost:3000`                                                                                                   |
@@ -34,6 +35,7 @@ Npm scripts:
 **Server-side** tests are made with [Jest](https://jestjs.io/) and [supertest](https://github.com/visionmedia/supertest) to request the GraphQL endpoint and run some queries/mutations. (local mongodb)
 
 Npm scripts:
+
 | command              | description                                |
 | -------------------- | ------------------------------------------ |
 | npm test             | run all server tests without a watch mode  |
@@ -43,6 +45,7 @@ Npm scripts:
 **Client-side** tests are made with [Jest](https://jestjs.io/) and [Enzyme](https://airbnb.io/enzyme/)
 
 Npm scripts:
+
 | command              | description                                        |
 | -------------------- | -------------------------------------------------- |
 | npm test              | run all client tests with a watch mode            |
@@ -53,6 +56,7 @@ Npm scripts:
 Server start the server on Heroku and Client-side build run after with a [heroku-postbuild](https://devcenter.heroku.com/articles/nodejs-support#customizing-the-build-process)
 
 On `client/` folder:
+
 | command              | description                                                   |
 | -------------------- | ------------------------------------------------------------- |
 | npm run build        | serve files into `/build` folder                              |

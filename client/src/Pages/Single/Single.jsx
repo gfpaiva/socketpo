@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { Query } from 'react-apollo';
 
@@ -8,12 +8,8 @@ import { getObject, setObject } from '../../Utils/storageAPI';
 import Header from '../../Components/Single/Header/Header';
 import Alerts from '../../Components/Single/Alerts/Alerts';
 import Title from '../../Components/Single/Title/Title';
-
-import StandBy from '../../Components/Single/StandBy/StandBy';
-import InProgress from '../../Components/Single/InProgress/InProgress';
-import End from '../../Components/Single/End/End';
+import Steps from '../../Components/Single/Steps/Steps';
 import Join from '../Join/Join';
-import RoundModal from '../../Components/Single/RoundModal/RoundModal';
 
 import './Single.scss';
 
@@ -108,7 +104,6 @@ class Single extends Component {
 
 					const { currentRound, showModal } = this.state;
 					const game = data.GameByHash;
-					const rounds = game && game.results.rounds;
 					const players = game && game.players;
 
 					if(!loading && !game) return <Alerts type='Not Fround' />
@@ -126,30 +121,17 @@ class Single extends Component {
 							<div className='container'>
 								<Header />
 								<Title />
-
-								<div className={`single__content${game && game.status === 2 ? ' page--height-auto' : ''}`}>
-									{(game.status === 0 || game.status === 1) && (
-										<div className='single__split'>
-											{/* WAITING FOR PLAYER */}
-											{game.status === 0 && <StandBy currentPlayer={this.currentPlayer} />}
-
-											{/* GAME IN PROGRESS */}
-											{game.status === 1 && (
-												<Fragment>
-													<InProgress
-														currentPlayer={this.currentPlayer}
-														currentRound={currentRound}
-													/>
-
-													{showModal && rounds.length > 0 && <RoundModal currentRound={currentRound} />}
-												</Fragment>
-											)}
-										</div>
-									)}
-
-									{/* GAME HAS FINISHED */}
-									{game.status === 2 && <End />}
-								</div>
+								<Steps
+									currentRound={currentRound}
+									currentPlayer={this.currentPlayer}
+									showModal={showModal}
+									data={data}
+									subscribeToNewData={() => subscribeToMore({
+										document: gameSub,
+										variables: { hash },
+										updateQuery: this.updateQuery
+									})}
+								/>
 							</div>
 						</div>
 					);

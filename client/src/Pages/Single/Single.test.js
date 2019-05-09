@@ -46,6 +46,70 @@ const mocks = [
 			}
 		},
 	},
+	{
+		request: { query: gameSub, variables: { hash: game.hash } },
+		result: {
+			data: {
+				gameSubscription: {
+					__typename: "GameSub",
+					game : {
+						...game
+					},
+					message: '',
+					hash: game.hash,
+					player: player.name
+				}
+			}
+		},
+	},
+	{
+		request: { query: gameSub, variables: { hash: game.hash } },
+		result: {
+			data: {
+				gameSubscription: {
+					__typename: "GameSub",
+					game : {
+						...game
+					},
+					message: '',
+					hash: game.hash,
+					player: player.name
+				}
+			}
+		},
+	},
+	{
+		request: { query: gameSub, variables: { hash: game.hash } },
+		result: {
+			data: {
+				gameSubscription: {
+					__typename: "GameSub",
+					game : {
+						...game
+					},
+					message: '',
+					hash: game.hash,
+					player: player.name
+				}
+			}
+		},
+	},
+	{
+		request: { query: gameSub, variables: { hash: game.hash } },
+		result: {
+			data: {
+				gameSubscription: {
+					__typename: "GameSub",
+					game : {
+						...game
+					},
+					message: '',
+					hash: game.hash,
+					player: player.name
+				}
+			}
+		},
+	},
 ];
 
 describe('<Single />', () => {

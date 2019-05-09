@@ -30,6 +30,6 @@ describe('<CreatedGame />', () => {
 
 		wrapper.find('Button').simulate('click');
 
-		expect(wrapper.find('CreatedGame').state().copied).toBeTruthy();
+		expect(wrapper.find('Button').text()).toBe('Link Copied');
 	});
 });

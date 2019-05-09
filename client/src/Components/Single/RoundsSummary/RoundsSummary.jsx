@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Query } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 
-import { getGame } from '../../../Utils/graphqlAPI';
-
+import GetGame from '../../GetGame/GetGame';
 import {
 	Draw,
 	Win,
@@ -17,14 +15,8 @@ import './RoundsSummary.scss';
 const RoundsSummary = ( { match, player } ) => {
 
 	return (
-		<Query
-			query={getGame}
-			variables={{
-				hash: match.params.hash
-			}}
-		>
-			{({ data, loading, error }) => {
-				if(loading || error) return null;
+		<GetGame hash={match.params.hash}>
+			{data => {
 
 				const game = data.GameByHash;
 				const rounds = game && game.results.rounds;
@@ -58,7 +50,7 @@ const RoundsSummary = ( { match, player } ) => {
 					</div>
 				);
 			}}
-		</Query>
+		</GetGame>
 	);
 };
 

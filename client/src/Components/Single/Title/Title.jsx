@@ -1,26 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Query } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 
 import { parseStatus } from '../../../Utils/enums';
 import { sanitize } from '../../../Utils/helpers';
-import { getGame } from '../../../Utils/graphqlAPI';
+
+import GetGame from '../../GetGame/GetGame';
 
 import './Title.scss';
 
 const Title = ( { match } ) => {
 
 	return (
-		<Query
-			query={getGame}
-			variables={{
-				hash: match.params.hash
-			}}
-		>
-			{({ data, loading, error }) => {
-				if(loading || error) return null;
+		<GetGame hash={match.params.hash}>
+			{data => {
 
 				const game = data.GameByHash;
 
@@ -34,7 +28,7 @@ const Title = ( { match } ) => {
 					</div>
 				);
 			}}
-		</Query>
+		</GetGame>
 	);
 };
 

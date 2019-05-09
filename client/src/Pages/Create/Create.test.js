@@ -59,8 +59,8 @@ describe('<Create />', () => {
 			.find('input#author')
 			.simulate('change', { target: { value: player.name, name: 'author' } });
 
-		expect(wrapper.find('Create').state().match).toBe(game.name);
-		expect(wrapper.find('Create').state().author).toBe(player.name);
+		expect(wrapper.find('input#match').props().value).toBe(game.name);
+		expect(wrapper.find('input#author').props().value).toBe(player.name);
 	});
 
 	it('should submit the form properly', async () => {
@@ -80,6 +80,6 @@ describe('<Create />', () => {
 		await wait(100);
 		wrapper.update();
 
-		expect(wrapper.find('Create').state().createdGame).toMatchObject(game);
+		expect(wrapper.find('CreatedGame')).toHaveLength(1);
 	});
 });

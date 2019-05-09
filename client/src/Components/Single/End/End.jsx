@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { Query } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import GetGame from '../../GetGame/GetGame';
+
 import { parsePlayIcons, parseAvatar } from '../../../Utils/enums';
-import { getGame } from '../../../Utils/graphqlAPI';
 
 import {
 	Draw,
@@ -18,14 +18,8 @@ import './End.scss';
 const End = ( { match } ) => {
 
 	return (
-		<Query
-			query={getGame}
-			variables={{
-				hash: match.params.hash
-			}}
-		>
-			{({ data, loading, error }) => {
-				if(loading || error) return null;
+		<GetGame hash={match.params.hash}>
+			{data => {
 
 				const game = data.GameByHash;
 				const rounds = game && game.results.rounds;
@@ -85,7 +79,7 @@ const End = ( { match } ) => {
 					</div>
 				);
 			}}
-		</Query>
+		</GetGame>
 	);
 };
 

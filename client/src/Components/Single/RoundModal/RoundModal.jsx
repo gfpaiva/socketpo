@@ -1,12 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { graphql, compose, Query } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 
-import { getGame } from '../../../Utils/graphqlAPI';
 import { parsePlayIcons, parseAvatar } from '../../../Utils/enums';
 
+import GetGame from '../../GetGame/GetGame';
 import Modal from '../../Modal/Modal';
 import {
 	Draw,
@@ -18,14 +17,8 @@ import './RoundModal.scss';
 const RoundModal = ( { match, currentRound } ) => {
 
 	return (
-		<Query
-			query={getGame}
-			variables={{
-				hash: match.params.hash
-			}}
-		>
-			{({ data, loading, error }) => {
-				if(loading || error) return null;
+		<GetGame hash={match.params.hash}>
+			{data => {
 
 				const game = data.GameByHash;
 				const rounds = game && game.results.rounds;
@@ -82,7 +75,7 @@ const RoundModal = ( { match, currentRound } ) => {
 					</Modal>
 				);
 			}}
-		</Query>
+		</GetGame>
 	);
 };
 
@@ -91,9 +84,4 @@ RoundModal.propTypes = {
 	currentRound: PropTypes.number.isRequired
 }
 
-export default withRouter(compose(
-	graphql(getGame, {
-		name: 'getGame',
-		options: props => ({ variables: { hash: props.match.params.hash } })
-	}),
-)(RoundModal));
+export default withRouter(RoundModal);

@@ -9,7 +9,7 @@ body {
 	color: $text-color;
 	font: normal normal 1em/1.5 $fontFamily;
 	min-width: 100vw;
-	min-height: 100vh;
+	min-height: calc(var(--vh, 1vh) * 100);
 	overflow-x: hidden;
 }
 

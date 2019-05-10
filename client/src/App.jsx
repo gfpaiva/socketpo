@@ -10,6 +10,10 @@ import Single from './Pages/Single/Single';
 
 import { SoundOn, SoundOff } from './Components/Icons/Icons';
 
+const heightHandler = () => {
+	const vh = window.innerHeight * 0.01;
+	document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
 
 const App = () => {
 
@@ -23,6 +27,7 @@ const App = () => {
 		isMusicMuted ? audio.pause() : audio.play();
 	}, [isMusicMuted, audio]);
 
+	// Try to autoplay the audio-music on 1st load
 	useEffect(() => {
 		const playPromise = audio.play();
 
@@ -32,6 +37,12 @@ const App = () => {
 			});
 		};
 	}, [audio]);
+
+	// On 1st load set the --vh css variable to handle with full height
+	useEffect(() => {
+		heightHandler();
+		window.addEventListener('resize', heightHandler);
+	}, []);
 
 	return (
 		<div className="App">

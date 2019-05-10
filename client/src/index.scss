@@ -15,8 +15,8 @@ body {
 
 @keyframes rotateBg {
 	0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+	50%{background-position:100% 50%}
+	100%{background-position:0% 50%}
 }
 
 *,
@@ -67,7 +67,7 @@ a {
 
 .page {
 	&--full {
-		height: 100vh;
+		height: calc(var(--vh, 1vh) * 100);
 		width: 100%;
 	}
 
@@ -88,7 +88,7 @@ a {
 
 	&--height-auto {
 		height: initial;
-		min-height: 100vh;
+		min-height: calc(var(--vh, 1vh) * 100);;
 	}
 }
 

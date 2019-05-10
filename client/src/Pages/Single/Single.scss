@@ -3,10 +3,10 @@
 .single {
 
 	&__content {
-		min-height: calc(100vh - (60px + 48px + 88px));
+		min-height: calc((var(--vh, 1vh) * 100) - (60px + 48px + 88px));
 		position: relative;
 
-		@media screen and (max-width: 767px) { min-height: calc(100vh - (30px + 48px + 88px)) }
+		@media screen and (max-width: 767px) { min-height: calc((var(--vh, 1vh) * 100) - (30px + 48px + 88px)) }
 	}
 
 	&__split {

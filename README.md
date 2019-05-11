@@ -17,6 +17,10 @@ First of all you will need to create a `.env` file on the root folder, with a re
 - **MONGODB_URI**={URI from a mongodb} (I am using [MLab](https://mlab.com/) for local development)
 - **NODE_ENV**=`DEVELOPMENT`
 
+**Installation**
+- Run `npm install` on root folder
+- Run `npm install` on `/client` folder
+
 Npm scripts:
 
 | command              | description                                                                                                                                  |
@@ -65,6 +69,10 @@ On `client/` folder:
 
 Both Server-side and Client-side are hosted at [Heroku](https://www.heroku.com/).
 Deploy and build process are run automatically after the CI checks on branch `master`.
+
+## ⚖️ License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ___
 

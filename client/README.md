@@ -57,7 +57,7 @@ Npm scripts:
 
 ## 📦 Build
 
-Server start the on Heroku, and Client-side build run after with a [heroku-postbuild](https://devcenter.heroku.com/articles/nodejs-support#customizing-the-build-process)
+Server start on Heroku, and Client (React) build run after with a [heroku-postbuild](https://devcenter.heroku.com/articles/nodejs-support#customizing-the-build-process)
 
 On `client/` folder:
 

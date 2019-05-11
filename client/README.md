@@ -70,7 +70,7 @@ On `client/` folder:
 Both Server-side and Client-side are hosted at [Heroku](https://www.heroku.com/).
 Deploy and build process are run automatically after the CI checks on branch `master`.
 
-## ⚖👨‍💻 Contributing
+## 👨‍💻 Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 

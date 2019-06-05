@@ -18,8 +18,20 @@
     "test": "NODE_ENV=test jest --detectOpenHandles --ci --forceExit",
     "test:client": "cd client && npm test && npm run test:coverage && npm run build"
   },
-  "author": "Guilherme Paiva",
-  "license": "ISC",
+  "author": {
+    "name": "Guilherme Paiva",
+    "url": "https://guilherme.dev/",
+    "email": "gf.paiva@yahoo.com.br"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gfpaiva/socketpo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gfpaiva/socketpo/issues"
+  },
+  "homepage": "https://socketpo.herokuapp.com/",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",

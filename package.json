@@ -45,7 +45,7 @@
     "graphql-yoga": "^1.17.4",
     "helmet": "^3.17.0",
     "lodash": "^4.17.11",
-    "mongoose": "^5.5.5",
+    "mongoose": "^5.7.5",
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {

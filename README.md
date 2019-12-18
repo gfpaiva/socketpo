@@ -1,7 +1,6 @@
 # ✊ 🤚 ✌️ SOCKETPO ✊ 🤚 ✌️ #
 
-[![Build Status](https://travis-ci.org/gfpaiva/socketpo.svg?branch=master)](https://travis-ci.org/gfpaiva/socketpo) [![Coverage Status](https://coveralls.io/repos/github/gfpaiva/socketpo/badge.svg?branch=master)](https://coveralls.io/github/gfpaiva/socketpo?branch=master) [![StackShare](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/gfpaiva/socketpo) ![Uptime Robot status](https://img.shields.io/uptimerobot/status/m782639717-8a57813a7f6a777812440328.svg) ![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m782639717-8a57813a7f6a777812440328.svg)
-
+[![Build Status](https://travis-ci.org/gfpaiva/socketpo.svg?branch=master)](https://travis-ci.org/gfpaiva/socketpo) [![Coverage Status](https://coveralls.io/repos/github/gfpaiva/socketpo/badge.svg?branch=master)](https://coveralls.io/github/gfpaiva/socketpo?branch=master) [![StackShare](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/gfpaiva/socketpo)
 [SocketPO](https://socketpo.herokuapp.com) is a JokenPo (Rock, Paper, Scissors) game made with NodeJS, GraphQL and React for study and fun.
 
 _Had a cool idea? Please open an [Issue](https://github.com/gfpaiva/socketpo/issues/new) and let's talk!_

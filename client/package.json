@@ -26,7 +26,7 @@
 		"enzyme-adapter-react-16": "^1.12.1",
 		"enzyme-to-json": "^3.3.5",
 		"jest-transform-graphql": "^2.1.0",
-		"node-sass": "^4.12.0",
+		"node-sass": "^4.13.1",
 		"waait": "^1.0.4"
 	},
 	"proxy": "http://localhost:3001",
